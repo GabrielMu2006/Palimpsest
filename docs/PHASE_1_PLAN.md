@@ -654,19 +654,21 @@ not an automatic build order.
 
 ---
 
-## 14. GitHub Branch Protection — Known Constraint
+## 14. GitHub Branch Protection
 
-The GitHub **private** repository `GabrielMu2006/Palimpsest` was initialized and
-`main` was established. **Branch protection currently is NOT in force**: the
-project's GitHub plan returns **HTTP 403** when branch-protection settings are
-attempted, so **required checks / protected-branch rules could not be created.**
+**Updated 2026-08-29: protection is now IN FORCE.** The product owner converted
+`GabrielMu2006/Palimpsest` from private to **public** on 2026-08-29, which
+removed the previous HTTP 403 plan limitation. Branch protection on `main` now
+requires the `rust-quality-and-smoke-benchmarks` and
+`godot-macos-integration` checks (strict mode; branches must be up to date),
+enforces the rules for admins, and disables force pushes and branch deletion.
+This completes decision 8 of the Phase 0 spike report.
 
-This plan must therefore **not claim** that `main` is protected, that merge
-queues/required checks are enforced, or that CI is mandatory at the branch level.
-All governance on the Rust/CI side is enforced via the local gate script and the
-hosted workflow definitions (`CHRON-034`), but the **repository-level protection
-remains unenforced** until the plan/account supports it. This is recorded as a
-known limitation, not a completed control.
+Historical record: the repository was initialized as **private** and `main`
+was established, but branch protection initially could not be created (the
+private-repo plan returned HTTP 403). During that window, governance was
+enforced only via the local gate script and hosted workflow definitions
+(`CHRON-034`); no server-side enforcement was claimed.
 
 ---
 
