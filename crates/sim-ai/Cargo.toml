@@ -12,6 +12,8 @@ publish.workspace = true
 # sim-events, sim-scheduler, sim-storage, godot-bridge, bevy_ecs, Godot, or
 # any LLM crate.
 [dependencies]
+palimpsest-sim-time = { path = "../sim-time" }
+serde.workspace = true
 
 [dev-dependencies]
 serde_json.workspace = true

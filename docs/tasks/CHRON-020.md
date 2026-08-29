@@ -1,7 +1,7 @@
 # CHRON-020 — Terrain and Deterministic World Generation
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Objective
 Provide a minimal terrain model and a deterministic world-generation routine in `sim-world`: the same seed always produces the same 128×128 terrain map, and terrain only defines surface type + walkability. No ecology, resources, climate, or long-history world evolution is implemented.

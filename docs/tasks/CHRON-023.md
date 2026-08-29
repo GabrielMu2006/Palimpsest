@@ -1,7 +1,7 @@
 # CHRON-023 — Activity Sites
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Objective
 Provide static Activity Sites (Meal, Rest, Work) that act as the fixed, walkable affordance locations a Person can path to (CHRON-024) and act at (CHRON-027), so the Phase 1 Eat/Sleep/Work loop is closed. These systems model only the static affordance and a bounded work counter; they implement no inventory, resource, production, storage, or economy.

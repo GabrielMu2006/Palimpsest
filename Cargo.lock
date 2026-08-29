@@ -759,6 +759,8 @@ dependencies = [
 name = "palimpsest-sim-ai"
 version = "0.0.0"
 dependencies = [
+ "palimpsest-sim-time",
+ "serde",
  "serde_json",
 ]
 
@@ -766,11 +768,15 @@ dependencies = [
 name = "palimpsest-sim-core"
 version = "0.0.0"
 dependencies = [
+ "bevy_ecs",
+ "palimpsest-sim-ai",
  "palimpsest-sim-entity",
  "palimpsest-sim-events",
  "palimpsest-sim-scheduler",
  "palimpsest-sim-time",
+ "palimpsest-sim-world",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -824,6 +830,10 @@ dependencies = [
 [[package]]
 name = "palimpsest-sim-world"
 version = "0.0.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "parking"

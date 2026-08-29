@@ -12,6 +12,10 @@ publish.workspace = true
 # Never sim-core, sim-events, sim-scheduler, sim-storage, godot-bridge,
 # bevy_ecs, Godot, or any LLM crate.
 [dependencies]
+serde.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
 
 [lints]
 workspace = true

@@ -1,7 +1,7 @@
 # CHRON-019 — World Coordinates and LocalGrid
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Context
 Master Spec §29 defines a square-cell map hierarchy (WORLD GRID → REGION → LOCAL CHUNK → TILE) where MVP Local is a single 128×128 grid. Phase 1 needs a strongly typed integer coordinate representation and a boundary-safe single LocalGrid container that later tasks (Terrain CHRON-020, worldgen, Person location CHRON-021, Pathfinding CHRON-024) can rely on without reimplementing index/access checks. This Task establishes only the coordinate types and the single LocalGrid container; it implements no terrain or generation logic.

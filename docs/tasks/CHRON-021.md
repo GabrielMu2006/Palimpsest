@@ -1,7 +1,7 @@
 # CHRON-021 — Person Runtime Model
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Objective
 Establish the minimal runtime Person shell in Simulation Core: a stable `EntityId` bound to a runtime ECS handle plus a valid `Location`. Needs and CurrentAction are attached by later Tasks, avoiding a dependency cycle.

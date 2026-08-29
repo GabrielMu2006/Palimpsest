@@ -1,7 +1,7 @@
 # CHRON-022 — Needs Model
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Objective
 Provide a bounded, integer (fixed-point), NaN-free Needs model for hunger and fatigue that advances strictly from elapsed `SimDuration` and provides deterministic signals for Utility AI (CHRON-026) and the action state machine (CHRON-027).

@@ -1,7 +1,7 @@
 # CHRON-024 — Deterministic Pathfinding
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Objective
 Implement a deterministic, headless pathfinder over a single 128×128 `LocalGrid` that produces a stable path or a documented unreachable/budget-limited result.

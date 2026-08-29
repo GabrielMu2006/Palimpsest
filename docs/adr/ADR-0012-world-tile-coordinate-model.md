@@ -1,6 +1,6 @@
 # ADR-0012: Phase 1 World Tile Coordinate Model
 
-- Status: Proposed — awaiting product-owner approval with the first implementing Task
+- Status: Accepted — approved by the product owner with CHRON-019 on 2026-08-29
 - Date: 2026-08-29
 - Decision owners: Product owner confirmation required for spatial/tile-model changes
 
