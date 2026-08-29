@@ -1,7 +1,7 @@
 # CHRON-018 — Phase 1 Workspace Boundaries
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Context
 Phase 0 established a virtual Cargo workspace with a headless `palimpsest-sim-core` and focused domain crates (`sim-entity`, `sim-time`, `sim-events`, `sim-scheduler`, `sim-storage`), recorded boundary rules in ADR-0001, and confirmed the spike on 2026-08-29. Phase 1 (Master Spec §84) builds a Micro World Kernel from World Grid, Terrain, Local Tile, Person Entity, Basic Movement, Time, Needs, and Basic Utility AI. Before any Phase 1 domain logic is written, the repository needs two new, minimal crate boundaries with a verified inward dependency direction, so that world/terrain logic and AI/behavior logic each get an independently testable, Godot-free, LLM-free home. This Task adds only those boundaries and audits the existing direction; it implements no domain logic.

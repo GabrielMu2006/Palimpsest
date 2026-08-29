@@ -1,6 +1,6 @@
 # ADR-0017: Phase 1 Crate Boundaries
 
-- Status: Proposed — awaiting product-owner approval with CHRON-018
+- Status: Accepted — approved by the product owner with CHRON-018 on 2026-08-29
 - Date: 2026-08-29
 - Decision owners: Product owner confirmation required for cross-crate boundary changes
 

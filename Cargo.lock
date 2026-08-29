@@ -756,6 +756,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "palimpsest-sim-ai"
+version = "0.0.0"
+dependencies = [
+ "serde_json",
+]
+
+[[package]]
 name = "palimpsest-sim-core"
 version = "0.0.0"
 dependencies = [
@@ -813,6 +820,10 @@ dependencies = [
  "serde",
  "serde_json",
 ]
+
+[[package]]
+name = "palimpsest-sim-world"
+version = "0.0.0"
 
 [[package]]
 name = "parking"
