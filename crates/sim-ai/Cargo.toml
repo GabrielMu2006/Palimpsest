@@ -1,4 +1,5 @@
 # Authored by Kimi Code (AI coding agent) — task CHRON-018.
+# Extended by Kimi Code (AI coding agent) — task CHRON-025.
 [package]
 name = "palimpsest-sim-ai"
 version = "0.0.0"
@@ -13,6 +14,7 @@ publish.workspace = true
 # any LLM crate.
 [dependencies]
 palimpsest-sim-time = { path = "../sim-time" }
+palimpsest-sim-world = { path = "../sim-world" }
 serde.workspace = true
 
 [dev-dependencies]

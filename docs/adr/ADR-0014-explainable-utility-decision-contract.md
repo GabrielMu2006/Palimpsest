@@ -1,6 +1,6 @@
 # ADR-0014: Explainable Utility Decision Contract
 
-- Status: Proposed — awaiting product-owner approval with the first implementing Task
+- Status: Accepted — approved by the product owner with CHRON-025 on 2026-08-29
 - Date: 2026-08-29
 - Decision owners: Product owner confirmation required for AI decision-contract changes
 

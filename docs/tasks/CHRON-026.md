@@ -1,7 +1,7 @@
 # CHRON-026 — Utility Scoring and Selection
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — awaiting product-owner confirmation.**
+> The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
 ## Objective
 Implement integer Utility scoring and a stable, deterministic selection over the candidate set from CHRON-025, with an explicit, seed-derived perturbation that may be zero, limited to the Phase 1 actions (Move, Eat, Sleep, Work, Idle). No Personality, Values, Goals, Memory, or Social factors are used.

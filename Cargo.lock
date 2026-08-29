@@ -760,6 +760,7 @@ name = "palimpsest-sim-ai"
 version = "0.0.0"
 dependencies = [
  "palimpsest-sim-time",
+ "palimpsest-sim-world",
  "serde",
  "serde_json",
 ]

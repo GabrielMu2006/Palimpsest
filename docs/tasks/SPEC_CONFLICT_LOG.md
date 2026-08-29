@@ -114,3 +114,99 @@ Rules:
 - **Spec-text correction:** pending; if kernel-side expansion stats are wanted
   later (CHRON-028), they need a small explicit API addition then. This entry
   is the correction of record.
+
+## SC-006 — CHRON-025: "serde is the only expected dependency" vs mandated `LocalCoord` target
+
+- **Found:** 2026-08-29, implementing CHRON-025.
+- **Conflict:** `docs/tasks/CHRON-025.md` **Files Modified / Allowed** says
+  "`Cargo.toml`, `Cargo.lock` if a dependency is required (serde is the only
+  expected one)", but the same file's **API Contract** mandates
+  `ActionCandidate { kind: ActionKind, target: Option<LocalCoord>, order: u64 }`,
+  and `LocalCoord` lives in `palimpsest-sim-world`. The mandated contract
+  therefore requires a dependency beyond serde.
+- **Resolution implemented:** `palimpsest-sim-world` was added to
+  `crates/sim-ai/Cargo.toml`. The addition was pre-authorized, so no ADR
+  change was needed: ADR-0017's dependency direction already places
+  `sim-world` below `sim-ai`, the sim-ai allow-set in
+  `crates/sim-ai/tests/dependency_direction.rs` already lists
+  `palimpsest-sim-world`, and the crate's own Cargo.toml header comment
+  documented that allow-set. serde remains the only external dependency.
+- **Spec-text correction:** pending; the parenthetical in CHRON-025's Files
+  Modified should read "serde plus already allow-listed workspace crates
+  (ADR-0017)". This entry is the correction of record.
+
+## SC-007 — CHRON-026: spec references a `TraceFactor` type CHRON-025 never shipped
+
+- **Found:** 2026-08-29, implementing CHRON-026.
+- **Conflict:** `docs/tasks/CHRON-026.md` **Scope** and **API Contract**
+  reference a `TraceFactor` type from CHRON-025 ("the bounded, order-stable
+  `TraceFactor` inputs from CHRON-025"; `Vec<TraceFactor>` in the scorer
+  signature), and **Dependencies** lists `TraceFactor` among the CHRON-025
+  deliverables. CHRON-025 actually shipped `FactorInput` (the raw input
+  record) and `FactorEvaluation` (input + contribution) in
+  `crates/sim-ai/src/trace.rs`; no `TraceFactor` type exists.
+- **Resolution implemented:** the implementation uses the shipped names:
+  `score_candidates` builds on `factor_inputs_for` → `FactorInput` and
+  records `FactorEvaluation` values in each `CandidateTrace`. The spec's
+  intent (bounded, order-stable factor inputs feeding the scorer) is
+  satisfied exactly; only the type name differed.
+- **Spec-text correction:** pending; CHRON-026's `TraceFactor` mentions
+  should read `FactorInput`/`FactorEvaluation`. This entry is the correction
+  of record.
+
+## SC-008 — CHRON-026: "a documented weight per FactorId" vs needs-driven selection
+
+- **Found:** 2026-08-29, implementing CHRON-026.
+- **Conflict:** `docs/tasks/CHRON-026.md` **Scope** and **API Contract**
+  require "an explicit, documented weight per `FactorId`" (a single weight
+  per factor), while the same file's **Tests** require closed-loop behavior
+  where high hunger selects `Eat` and high fatigue selects `Sleep`. The
+  CHRON-025 `Hunger`/`Fatigue` inputs are identical for every candidate of a
+  person (they read the person's pressures, not anything
+  candidate-specific), so a single global weight per `FactorId` makes the
+  required tests mathematically unsatisfiable: every candidate would get the
+  same needs contribution and the ranking would be needs-independent.
+- **Resolution implemented:** `Weights` is keyed per (`ActionKind` ×
+  `FactorId`) — one `FactorWeights` set per action kind, e.g. `Eat` weights
+  `Hunger` +10 while `Sleep` weights `Fatigue` +10. Every candidate still
+  records every factor with an explicit (possibly 0) weight and contribution
+  in the trace, satisfying CHRON-026 invariant 4 and the complete-trace
+  contract. No ADR change is needed: ADR-0014 mandates integer bounded
+  inputs, checked arithmetic, and a stable tie-break, not a weight shape.
+- **Spec-text correction:** pending; CHRON-026 should say "a documented
+  weight per (`ActionKind` × `FactorId`)". This entry is the correction of
+  record.
+
+## SC-009 — CHRON-026: the drafted default SiteAvailable weights invert availability
+
+- **Found:** 2026-08-29, implementing CHRON-026.
+- **Conflict:** the implementation design pins handed to the CHRON-026
+  implementer specified the default `SiteAvailable` weight as **−10_000**
+  for `Eat`/`Sleep` (rationale: "sinks fabricated/unreachable targets") and
+  documented the achievable base range as [−11_270, 10_000]. Under the
+  pinned scoring formula `contribution = weight × input` and the CHRON-025
+  input semantics (`SiteAvailable` = 1 when the target site exists and is
+  reachable), a negative availability weight penalizes *available* sites:
+  `Eat` would score `10·hunger − 5·distance − 10_000 ≤ −10`, so `Eat` could
+  never outrank even the `Move` baseline (0 at the same target) and the
+  task's own closed-loop Tests (high hunger → `Eat`, high fatigue → `Sleep`,
+  satisfied → `Work` beats `Idle`) would be unsatisfiable. The documented
+  range [−11_270, 10_000] is likewise only self-consistent under a
+  penalty-on-*unavailability* reading, which the pinned formula cannot
+  express.
+- **Resolution implemented:** the `Eat`/`Sleep` `SiteAvailable` weights are
+  **+10_000** (availability bonus): a real, reachable site gains 10_000, so
+  a fabricated or unreachable target (input 0) forgoes the bonus and is sunk
+  by comparison, exactly the stated intent. The formula
+  (`contribution = weight × input`, saturating) and the trace-honesty
+  invariant (contribution always equals weight × recorded input) are
+  unchanged. The corrected achievable ranges with the default table are
+  base ∈ [−1_270, 20_000] and, with ε ≤ `MAX_EPSILON` (100), total ∈
+  [−1_370, 20_100]; both are documented on `UtilityScore` and asserted in
+  `default_weights_achievable_range_is_as_documented`. All other default
+  weights are exactly as drafted. MASTER_SPEC.md is silent on weight values
+  (§14 requires only interpretable scoring), so no Change Proposal was
+  required.
+- **Spec-text correction:** pending; the design-pin table should read
+  +10_000 for `Eat`/`Sleep` `SiteAvailable` and the achievable range should
+  be restated as above. This entry is the correction of record.
