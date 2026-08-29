@@ -15,9 +15,11 @@ Before work, read in full:
 ## Scope and Phase Boundary
 
 - Execute one bounded task at a time. Do not broaden scope or perform unrelated refactors.
-- Current work is Phase 0 — Architecture Spike only.
-- Do not implement NPC AI, war, politics, religion, magic, historians, NLG, LLMs, Rule Editor, or a web client during Phase 0.
-- Do not enter Phase 1 before `docs/reports/ARCHITECTURE_SPIKE_V1.md` is confirmed by the product owner.
+- Phase 0 — Architecture Spike is complete and `docs/reports/ARCHITECTURE_SPIKE_V1.md` was confirmed by the product owner on 2026-08-29.
+- Phase 1 planning, Task specifications, and ADR work are authorized.
+- Phase 1 implementation may begin only for one explicitly product-owner-approved Task at a time; approval of the Phase 1 plan is not blanket approval to implement its Tasks.
+- Phase 1 implementation scope is limited to World Grid, Terrain, Local Tile, Person Entity, Basic Movement, Time, Needs, Basic Utility AI, and the 100-NPC/10-year validation required by the Master Spec.
+- Do not implement Phase 2+ systems, war, politics, religion, magic, historians, NLG, LLMs, Rule Editor, or a web client during Phase 1.
 
 ## Non-Negotiable Architecture
 
@@ -41,4 +43,3 @@ Before work, read in full:
 Every task specification must include Context, Scope, Out of Scope, Dependencies, Files Modified/Allowed, API Contract when applicable, Tests, Benchmark when applicable, and Definition of Done.
 
 Finish each task with the change summary, commands actually run, benchmark results or an explicit N/A, known limitations, and blockers. Do not automatically start the next task.
-

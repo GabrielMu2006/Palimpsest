@@ -4,11 +4,14 @@
 - Date: 2026-08-29
 - Reference machine: Apple M5 MacBook Air, 10 cores, 16 GiB unified memory
 - OS: macOS 26.6.2, arm64
-- Status: **Implementation and local/hosted validation complete; awaiting product-owner confirmation**
+- Status: **Confirmed by the product owner; Phase 0 complete**
+- Product-owner confirmation: **2026-08-29**
 
 `MASTER_SPEC.md` remains the read-only authority. Its verified SHA-256 is
 `a6fa0654582eca360b3fc8be6d7989200d310707677f841e58130c301b2de5ea`.
-This report does not authorize Phase 1.
+The product owner accepted decisions 1–8 on 2026-08-29 and authorized Phase 1
+planning, Task specifications, and ADR work. Phase 1 implementation remains
+subject to explicit approval of each bounded Task.
 
 ## Executive Decision
 
@@ -115,7 +118,7 @@ Godot client (rendering / input / read-only metrics)
 | CHRON-015 Test/Lint/Benchmark/CI | Complete locally and on hosted CI |
 | CHRON-016 Event Throughput | Complete |
 | CHRON-017 Headless/Rendered Comparison | Complete |
-| CHRON-014 Architecture Spike Report | Complete; awaiting confirmation |
+| CHRON-014 Architecture Spike Report | Complete and confirmed |
 
 ## ADRs Established
 
@@ -169,31 +172,35 @@ discovery and the Rust 1.95 code-generation toolchain requirements.
 11. **Long-run stability unproven.** Phase 0 does not claim a 200-year world,
     memory-leak freedom, or interesting historical emergence.
 
-## Product-Owner Decisions Required Before Phase 1
+## Product-Owner Decision Resolution
 
-1. Confirm the recommendation to continue **Godot 4.7 + Rust/GDExtension** with
+The product owner accepted the following recommendations on 2026-08-29:
+
+1. Continue **Godot 4.7 + Rust/GDExtension** with
    batched, presentation-only Render Snapshots.
-2. Confirm `bevy_ecs` 0.19.1 as the provisional Phase 1 runtime ECS, with stable
+2. Continue `bevy_ecs` 0.19.1 as the provisional Phase 1 runtime ECS, with stable
    `EntityId` remaining the only persistent identity.
-3. Confirm the existing **3 GB / 5 GB / 7 GB** memory caps remain unchanged for
+3. Keep the existing **3 GB / 5 GB / 7 GB** memory caps unchanged for
    the next scale gates.
-4. Select the Event Store durability policy: when `NORMAL` is acceptable and
-   when a stronger checkpoint/`FULL` guarantee is required.
-5. Decide the Snapshot compatibility promise for Phase 1: migration window,
-   maximum decoded size, and whether old spike saves are intentionally invalid.
-6. Select the Phase 1 Simulation/Render scheduling policy: synchronous budget,
-   worker thread, or another snapshot-publication mechanism to spike.
-7. Decide whether the isolated Godot editor-exit crash requires an upstream
-   investigation before Phase 1 or may remain a monitored risk.
-8. Confirm repository governance: stable default branch, required CI checks,
-   and branch-protection policy. The private GitHub remote and first passing
-   hosted run now exist.
-9. Review and explicitly confirm this report. **Until that confirmation, Phase
-   1 must not begin.**
+4. Use SQLite WAL + `NORMAL` for routine batched events and stronger checkpoint
+   or `FULL` guarantees at explicit durability boundaries.
+5. Intentionally invalidate Phase 0 snapshot artifacts and define a hardened,
+   versioned Snapshot V1 before treating snapshots as supported saves.
+6. Spike a Simulation worker with immutable, batched Render Snapshot
+   publication rather than running production simulation work on Godot's main
+   thread; do not introduce a separate process yet.
+7. Keep the isolated Godot editor-exit crash as a monitored, non-blocking risk;
+   recurrence in normal editor, game, or CI paths is a stop signal.
+8. Keep the GitHub repository private and establish a protected `main` branch
+   with required hosted CI checks.
+
+This confirmation authorizes Phase 1 planning and ADR preparation. It does not
+authorize implementation of any Phase 1 Task until that Task is explicitly
+approved by the product owner.
 
 ## Final Recommendation
 
-Phase 0 has demonstrated the intended separation of concerns and has not found a
-reason to abandon Godot + Rust or standalone `bevy_ecs`. Proceeding to Phase 1
-is recommended **only after** the product owner confirms the decisions above.
-The implementation remains stopped at the Phase 0 boundary.
+Phase 0 demonstrated the intended separation of concerns and found no reason to
+abandon Godot + Rust or standalone `bevy_ecs`. The report is confirmed. Phase 1
+planning is authorized, while implementation remains stopped until the product
+owner explicitly approves a bounded Phase 1 Task.
