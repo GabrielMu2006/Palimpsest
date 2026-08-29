@@ -4,7 +4,7 @@
 - Date: 2026-08-29
 - Reference machine: Apple M5 MacBook Air, 10 cores, 16 GiB unified memory
 - OS: macOS 26.6.2, arm64
-- Status: **Implementation and local validation complete; awaiting product-owner confirmation**
+- Status: **Implementation and local/hosted validation complete; awaiting product-owner confirmation**
 
 `MASTER_SPEC.md` remains the read-only authority. Its verified SHA-256 is
 `a6fa0654582eca360b3fc8be6d7989200d310707677f841e58130c301b2de5ea`.
@@ -112,7 +112,7 @@ Godot client (rendering / input / read-only metrics)
 | CHRON-011 128×128 Tile Renderer | Complete |
 | CHRON-012 Snapshot Prototype | Complete |
 | CHRON-013 SQLite Event Store Prototype | Complete |
-| CHRON-015 Test/Lint/Benchmark/CI | Complete locally; hosted run awaits remote push |
+| CHRON-015 Test/Lint/Benchmark/CI | Complete locally and on hosted CI |
 | CHRON-016 Event Throughput | Complete |
 | CHRON-017 Headless/Rendered Comparison | Complete |
 | CHRON-014 Architecture Spike Report | Complete; awaiting confirmation |
@@ -137,9 +137,11 @@ tests/targets/features, Rust 1.95 MSRV, seven benchmark families including the s
 probe, Godot GDExtension initialization, and a full scene smoke run. The
 `MASTER_SPEC.md` hash is a CI guard. No test was removed, skipped, or weakened.
 
-GitHub Actions defines Ubuntu Rust quality/benchmark smoke and arm64 macOS Godot
-integration jobs. The directory only gained Git metadata during Phase 0; it has
-no selected remote, so no hosted workflow run can yet be cited.
+GitHub Actions runs Ubuntu Rust quality/benchmark smoke and arm64 macOS Godot
+integration jobs. Both jobs passed in hosted run
+[`33241747464`](https://github.com/GabrielMu2006/Palimpsest/actions/runs/33241747464)
+from commit `40bcd9c`. The clean-checkout runs additionally verified GDExtension
+discovery and the Rust 1.95 code-generation toolchain requirements.
 
 ## Known Risks
 
@@ -162,8 +164,8 @@ no selected remote, so no hosted workflow run can yet be cited.
    replaceable runtime implementation behind stable domain identity.
 9. **Renderer simplicity.** The 60 FPS result uses one static generated atlas,
    no animation, path overlays, sprites, production panels, or camera effects.
-10. **Hosted CI absent.** Local gates pass, but platform permissions, runner
-    availability, and workflow behavior still need the first remote run.
+10. **CI governance remains minimal.** Hosted CI passes, but the default-branch,
+    required-check, and branch-protection policies are not yet finalized.
 11. **Long-run stability unproven.** Phase 0 does not claim a 200-year world,
     memory-leak freedom, or interesting historical emergence.
 
@@ -183,7 +185,9 @@ no selected remote, so no hosted workflow run can yet be cited.
    worker thread, or another snapshot-publication mechanism to spike.
 7. Decide whether the isolated Godot editor-exit crash requires an upstream
    investigation before Phase 1 or may remain a monitored risk.
-8. Select the GitHub remote and enable the first hosted CI run.
+8. Confirm repository governance: stable default branch, required CI checks,
+   and branch-protection policy. The private GitHub remote and first passing
+   hosted run now exist.
 9. Review and explicitly confirm this report. **Until that confirmation, Phase
    1 must not begin.**
 

@@ -15,4 +15,4 @@ Run both local entry points, validate the workflow YAML, verify MSRV 1.95, and e
 ## Benchmark
 CI executes correctness-preserving smoke workloads for Scheduler, 10K ECS, events, SQLite, snapshots, and the headless runner. Published performance claims remain M5-local release measurements.
 ## Definition of Done
-All local gates pass and a GitHub Actions workflow is ready to run after the repository is pushed to a GitHub remote; no tests are skipped or weakened. **Complete locally; hosted execution awaits a remote push.**
+All local gates and both hosted GitHub Actions jobs pass; no tests are skipped or weakened. **Complete locally and on hosted CI.**
