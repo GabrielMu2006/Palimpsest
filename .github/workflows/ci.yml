@@ -1,0 +1,53 @@
+name: Phase 0 CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase-0-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust-quality-and-smoke-benchmarks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust toolchains
+        run: |
+          rustup toolchain install 1.98.0 --profile minimal --component clippy,rustfmt
+          rustup toolchain install 1.95.0 --profile minimal
+      - name: Cache Rust build data
+        uses: Swatinem/rust-cache@v2
+      - name: Test, lint, MSRV check, and benchmark smoke tests
+        run: ./tools/ci-rust.sh
+
+  godot-macos-integration:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        run: rustup toolchain install 1.98.0 --profile minimal
+      - name: Cache Rust build data
+        uses: Swatinem/rust-cache@v2
+      - name: Download and verify Godot 4.7.2
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl --fail --location --retry 3 \
+            --output Godot_v4.7.2-stable_macos.universal.zip \
+            https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_macos.universal.zip
+          curl --fail --location --retry 3 \
+            --output SHA512-SUMS.txt \
+            https://github.com/godotengine/godot/releases/download/4.7.2-stable/SHA512-SUMS.txt
+          grep 'Godot_v4.7.2-stable_macos.universal.zip' SHA512-SUMS.txt \
+            | shasum -a 512 --check
+          ditto -x -k Godot_v4.7.2-stable_macos.universal.zip .
+      - name: Build and run Godot-Rust smoke test
+        env:
+          PALIMPSEST_GODOT: ${{ runner.temp }}/Godot.app/Contents/MacOS/Godot
+        run: ./tools/ci-godot.sh

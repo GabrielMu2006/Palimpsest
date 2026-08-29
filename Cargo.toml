@@ -1,0 +1,42 @@
+[workspace]
+resolver = "3"
+members = [
+    "apps/headless-runner",
+    "crates/sim-core",
+    "crates/sim-entity",
+    "crates/sim-events",
+    "crates/godot-bridge",
+    "crates/sim-scheduler",
+    "crates/sim-storage",
+    "crates/sim-time",
+]
+default-members = ["crates/sim-core"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.95"
+license = "UNLICENSED"
+publish = false
+
+[workspace.dependencies]
+bevy_ecs = "0.19.1"
+bincode = { version = "2.0.1", features = ["serde"] }
+godot = { version = "0.5.5", default-features = false, features = ["api-4-7", "codegen-rustfmt"] }
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+tempfile = "3.27.0"
+zstd = "0.13.3"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = "warn"
+pedantic = "warn"
+
+[profile.release]
+lto = "thin"
+
+[profile.bench]
+debug = true

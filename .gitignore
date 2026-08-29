@@ -1,0 +1,6 @@
+/target/
+/apps/macos-godot/.godot/
+/apps/macos-godot/bin/*.dylib
+*.tmp
+*.log
+.DS_Store

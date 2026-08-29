@@ -1,0 +1,4 @@
+interface:
+  display_name: "Palimpsest Godot/Rust"
+  short_description: "Build the Godot client and Rust bridge"
+  default_prompt: "Use $palimpsest-godot-rust to implement this Godot or bridge task."

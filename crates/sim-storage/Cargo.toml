@@ -1,0 +1,25 @@
+[package]
+name = "palimpsest-sim-storage"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+palimpsest-sim-entity = { path = "../sim-entity" }
+palimpsest-sim-events = { path = "../sim-events" }
+palimpsest-sim-time = { path = "../sim-time" }
+bincode.workspace = true
+rusqlite.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+zstd.workspace = true
+
+[dev-dependencies]
+palimpsest-sim-time = { path = "../sim-time" }
+serde.workspace = true
+tempfile.workspace = true
+
+[lints]
+workspace = true

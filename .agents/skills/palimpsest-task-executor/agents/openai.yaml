@@ -1,0 +1,4 @@
+interface:
+  display_name: "Palimpsest Task Executor"
+  short_description: "Execute one bounded Palimpsest task"
+  default_prompt: "Use $palimpsest-task-executor to execute this bounded Palimpsest task."

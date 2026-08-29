@@ -1,0 +1,4 @@
+interface:
+  display_name: "Palimpsest Rust Simulation"
+  short_description: "Build the headless Rust simulation core"
+  default_prompt: "Use $palimpsest-rust-sim to implement this Rust simulation-core task."

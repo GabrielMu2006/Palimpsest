@@ -1,0 +1,16 @@
+[package]
+name = "palimpsest-sim-events"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+palimpsest-sim-entity = { path = "../sim-entity" }
+palimpsest-sim-time = { path = "../sim-time" }
+serde.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

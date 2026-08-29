@@ -1,0 +1,22 @@
+[package]
+name = "palimpsest-godot-bridge"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+godot.workspace = true
+palimpsest-sim-core = { path = "../sim-core" }
+
+[lints.rust]
+unsafe_code = "allow"
+
+[lints.clippy]
+all = "warn"
+pedantic = "warn"
+

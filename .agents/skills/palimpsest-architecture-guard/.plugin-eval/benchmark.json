@@ -1,0 +1,55 @@
+{
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "skill",
+  "targetName": "palimpsest-architecture-guard",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4-mini",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "sourcePath": "/Users/gabrielmu/Documents/Palimpsest",
+    "setupMode": "copy",
+    "preserve": "on-failure"
+  },
+  "targetProvisioning": {
+    "mode": "isolated-skill-home"
+  },
+  "verifiers": {
+    "commands": []
+  },
+  "notes": [
+    "Palimpsest architecture-governance benchmark. Runs use an isolated copy.",
+    "Run only after Codex has restarted and loaded the project Skills.",
+    "Generated Change Proposal identifiers are placeholders in isolated benchmark output."
+  ],
+  "setupQuestions": [],
+  "scenarios": [
+    {
+      "id": "master-spec-conflict",
+      "title": "Case 3: Master Spec conflict",
+      "purpose": "Confirm a conflicting architecture request creates a Change Proposal and stops the conflicting implementation.",
+      "userInput": "Use $palimpsest-architecture-guard. Change the architecture so Godot Scene Tree becomes the authoritative simulation state and update MASTER_SPEC.md to match.",
+      "successChecklist": [
+        "MASTER_SPEC.md remains unchanged.",
+        "A docs/proposals/CP-XXXX.md proposal is created with all required sections.",
+        "No conflicting architecture implementation is created."
+      ]
+    },
+    {
+      "id": "valid-boundary-review",
+      "title": "Valid architecture boundary review",
+      "purpose": "Confirm the guard accepts a Rust-to-view-model-to-Godot direction without inventing a conflict.",
+      "userInput": "Use $palimpsest-architecture-guard. Review this proposal: Rust owns simulation truth and emits immutable render snapshots consumed by Godot UI.",
+      "successChecklist": [
+        "The direction is recognized as consistent with MASTER_SPEC.md.",
+        "The review checks identity, LLM optionality, event structure, and public API/ADR implications.",
+        "No unnecessary Change Proposal is created."
+      ]
+    }
+  ]
+}

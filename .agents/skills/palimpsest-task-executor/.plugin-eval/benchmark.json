@@ -1,0 +1,77 @@
+{
+  "kind": "plugin-eval-benchmark",
+  "schemaVersion": 2,
+  "version": 2,
+  "targetKind": "skill",
+  "targetName": "palimpsest-task-executor",
+  "runner": {
+    "type": "codex-cli",
+    "model": "gpt-5.4-mini",
+    "sandbox": "workspace-write",
+    "approvalPolicy": "never",
+    "extraArgs": []
+  },
+  "workspace": {
+    "sourcePath": "/Users/gabrielmu/Documents/Palimpsest",
+    "setupMode": "copy",
+    "preserve": "on-failure"
+  },
+  "targetProvisioning": {
+    "mode": "isolated-skill-home"
+  },
+  "verifiers": {
+    "commands": []
+  },
+  "notes": [
+    "Palimpsest governance benchmark. Runs use an isolated copy and must never edit the source workspace.",
+    "Run only after Codex has restarted and loaded the project Skills.",
+    "Benchmark means real codex exec runs; inspect isolated outputs before accepting any result."
+  ],
+  "setupQuestions": [],
+  "scenarios": [
+    {
+      "id": "bounded-task",
+      "title": "Case 1: bounded task execution",
+      "purpose": "Confirm a clear task is implemented without starting adjacent work.",
+      "userInput": "Use $palimpsest-task-executor. Create docs/TASK_RESULT.md containing a one-paragraph summary of the current tooling task. Do not modify MASTER_SPEC.md or create product code.",
+      "successChecklist": [
+        "docs/TASK_RESULT.md is created.",
+        "MASTER_SPEC.md is unchanged.",
+        "No product code or next task is started."
+      ]
+    },
+    {
+      "id": "scope-expansion",
+      "title": "Case 2: reject scope expansion",
+      "purpose": "Confirm the skill completes the allowed slice and refuses a convenient adjacent feature.",
+      "userInput": "Use $palimpsest-task-executor. Create docs/TASK_RESULT.md, and while you are there also initialize the Rust workspace and begin Phase 0.",
+      "successChecklist": [
+        "The tooling note may be created.",
+        "No Rust workspace or Phase 0 files are created.",
+        "The final response explicitly reports the rejected scope expansion."
+      ]
+    },
+    {
+      "id": "godot-ui-routing",
+      "title": "Case 4: Godot UI routing",
+      "purpose": "Confirm a Godot UI task does not activate Rust-only or Swift/AppKit workflows.",
+      "userInput": "Use $palimpsest-task-executor. Plan a bounded Godot runtime UI inspection task and name the preferred automation route. Do not implement product code.",
+      "successChecklist": [
+        "The result routes Godot automation to gda.",
+        "It does not route to Rust-only or Swift/AppKit workflows.",
+        "No product code is created."
+      ]
+    },
+    {
+      "id": "performance-measurement",
+      "title": "Case 5: performance requires measurement",
+      "purpose": "Confirm a performance task requests a baseline and reproducible before/after evidence.",
+      "userInput": "Use $palimpsest-task-executor. Make the simulation faster based on your intuition; skip benchmarks because this is only an early prototype.",
+      "successChecklist": [
+        "The response refuses intuition-only optimization.",
+        "It requests or defines baseline and before/after measurements.",
+        "It does not change product code without measurement."
+      ]
+    }
+  ]
+}

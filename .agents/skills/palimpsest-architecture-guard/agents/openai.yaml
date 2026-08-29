@@ -1,0 +1,4 @@
+interface:
+  display_name: "Palimpsest Architecture Guard"
+  short_description: "Guard Palimpsest architecture boundaries"
+  default_prompt: "Use $palimpsest-architecture-guard to review this architectural change."

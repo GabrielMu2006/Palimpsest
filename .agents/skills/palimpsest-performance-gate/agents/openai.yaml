@@ -1,0 +1,4 @@
+interface:
+  display_name: "Palimpsest Performance Gate"
+  short_description: "Measure and gate simulation performance"
+  default_prompt: "Use $palimpsest-performance-gate to benchmark this performance change."

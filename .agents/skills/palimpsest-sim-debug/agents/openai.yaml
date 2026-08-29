@@ -1,0 +1,4 @@
+interface:
+  display_name: "Palimpsest Simulation Debug"
+  short_description: "Find the first simulation divergence"
+  default_prompt: "Use $palimpsest-sim-debug to diagnose this long-run simulation anomaly."

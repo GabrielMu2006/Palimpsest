@@ -1,0 +1,34 @@
+#!/bin/sh
+set -eu
+
+expected_spec_hash="a6fa0654582eca360b3fc8be6d7989200d310707677f841e58130c301b2de5ea"
+if command -v sha256sum >/dev/null 2>&1; then
+    actual_spec_hash=$(sha256sum MASTER_SPEC.md | awk '{print $1}')
+else
+    actual_spec_hash=$(shasum -a 256 MASTER_SPEC.md | awk '{print $1}')
+fi
+if [ "$actual_spec_hash" != "$expected_spec_hash" ]; then
+    echo "MASTER_SPEC.md differs from the Phase 0 read-only baseline" >&2
+    exit 1
+fi
+
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo test --workspace --all-targets --all-features
+cargo +1.95.0 check --workspace --all-targets --all-features
+
+cargo run --release -p palimpsest-headless-runner --bin palimpsest-headless-runner -- \
+    --entities 1000 --seconds 100 \
+    | python3 -c 'import json,sys; assert json.load(sys.stdin)["generated_events"] == 1000'
+cargo run --release -p palimpsest-sim-scheduler --example scheduler_bench -- 10000 2 \
+    | python3 -c 'import json,sys; assert json.load(sys.stdin)["items"] == 10000'
+cargo run --release -p palimpsest-headless-runner --bin bench_10k_entities -- 10000 10 \
+    | python3 -c 'import json,sys; assert json.load(sys.stdin)["stable_mapping_entries"] == 10000'
+cargo run --release -p palimpsest-headless-runner --bin bench_event_throughput -- 10000 2 \
+    | python3 -c 'import json,sys; assert json.load(sys.stdin)["events"] == 10000'
+cargo run --release -p palimpsest-headless-runner --bin bench_mode_workload -- 1000 100 2 \
+    | python3 -c 'import json,sys; assert json.load(sys.stdin)["entities"] == 1000'
+cargo run --release -p palimpsest-sim-storage --example event_store_bench -- 10000 1000 \
+    | python3 -c 'import json,sys; assert json.load(sys.stdin)["events"] == 10000'
+cargo run --release -p palimpsest-sim-storage --example snapshot_bench -- 1000 2 \
+    | python3 -c 'import json,sys; assert json.load(sys.stdin)["entities"] == 1000'
