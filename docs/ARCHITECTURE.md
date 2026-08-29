@@ -122,3 +122,37 @@ unavailable client-side scheduler state rather than inventing Godot-owned truth.
 the standalone runner and Godot bridge solely to compare process modes with
 identical Rust code. It is not a game-system API and must be reviewed or removed
 before Phase 1. See ADR-0010.
+
+## Phase 1 Crate Plan
+
+CHRON-018 added two boundary-only crates ahead of Micro World Kernel
+implementation. They contain crate documentation and no domain logic; later
+tasks populate them.
+
+- `palimpsest-sim-world` hosts local-grid coordinates, terrain, deterministic
+  world generation, activity sites, and deterministic local-grid pathfinding
+  (CHRON-019, CHRON-020, CHRON-023, CHRON-024).
+- `palimpsest-sim-ai` hosts needs, action/decision-trace contracts, and
+  utility scoring/selection (CHRON-022, CHRON-025, CHRON-026).
+
+The Phase 1 dependency direction extends the Phase 0 inward rule:
+
+```text
+sim-entity / sim-time
+          ↑
+       sim-world
+          ↑
+        sim-ai
+          ↑
+       sim-core
+          ↑
+headless-runner / godot-bridge
+```
+
+`sim-world` may depend only on `sim-entity`, `sim-time`, and `serde`;
+`sim-ai` may add `sim-world` to that set. Neither may depend on `sim-core`,
+`sim-events`, `sim-scheduler`, `sim-storage`, `godot-bridge`, `bevy_ecs`,
+Godot, or any LLM crate. The allow-sets are enforced by an audit integration
+test in `crates/sim-ai/tests/dependency_direction.rs`. `sim-core` remains the
+headless composition root and gains its `sim-world`/`sim-ai` dependencies in
+CHRON-021. See ADR-0017.
