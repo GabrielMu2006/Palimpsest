@@ -18,6 +18,9 @@ The local `tools/ci-rust.sh` entry point completed successfully with:
 The local `tools/ci-godot.sh` entry point built the GDExtension, installed the
 dynamic library into the Godot project, initialized godot-rust under Godot 4.7.2,
 ran the complete scene for 30 headless frames, and observed no engine errors.
+The deterministic `.godot/extension_list.cfg` is tracked so a clean checkout can
+discover the native extension before parsing scripts that reference its class;
+all other Godot editor/import cache remains ignored.
 
 The GitHub Actions YAML parsed locally. Its pinned Godot download URL and
 official SHA-512 manifest entry were verified reachable. It defines an Ubuntu

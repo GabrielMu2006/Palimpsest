@@ -1,5 +1,6 @@
 /target/
-/apps/macos-godot/.godot/
+/apps/macos-godot/.godot/*
+!/apps/macos-godot/.godot/extension_list.cfg
 /apps/macos-godot/bin/*.dylib
 *.tmp
 *.log
