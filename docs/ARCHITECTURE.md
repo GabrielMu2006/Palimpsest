@@ -1,6 +1,6 @@
-# Palimpsest Architecture — Phase 0 Baseline
+# Palimpsest Architecture
 
-`MASTER_SPEC.md` is authoritative. This document describes the Architecture Spike baseline and may not override it.
+`MASTER_SPEC.md` is authoritative. This document describes the spike baseline and current Phase1 boundaries; it may not override the specification.
 
 ## System Boundary
 
@@ -240,3 +240,20 @@ covers config + time + ordered per-person views + sites + kernel counters and
 excludes wall-clock/RSS/thread/pointer/ECS handles, so same-seed runs are
 byte-deterministic. The binary `chaos_runner` in `headless-runner` is a thin
 parse/report wrapper; the Report (JSON + Markdown) feeds CHRON-033/034/036.
+
+## Phase1 closeout
+
+WorldKernel remains authoritative and headless. A single in-process worker owns
+it; Godot consumes immutable render snapshots and acknowledged commands. Paired
+publication/status observation, real movement accounting and diagnostic-only path/
+scheduler counters are recorded in ADR0028/0029. Wall time never decides truth.
+The shared production spike API is retired (ADR0010); the default headless runner
+uses the actual kernel. Primitive benchmarks/historical reports are retained as
+such, not current gameplay measurements.
+
+[The Phase1 report](reports/PHASE_1_MICRO_WORLD_KERNEL_V1.md) recommends continuing
+bevy_ecs provisionally and the current worker for100persons.10KCore diagnostics
+are not a10Kclient/full-lifecycle guarantee. Rolling diagnostics do not replace
+durable EventStore/history, render DTOs do not become production saves, and all
+LOD/identity/history/persistence/optional-LLM boundaries remain. Phase2 needs a
+new explicit approval; report delivery does not authorize it.

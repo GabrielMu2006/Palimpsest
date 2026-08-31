@@ -1,0 +1,76 @@
+   Compiling palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+   Compiling palimpsest-godot-bridge v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/godot-bridge)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.28s
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.2.stable.official, safeguards strict)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started 项目初始化 (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | 正在扫描文件结构……[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | 正在加载全局类名……[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | 正在校验 GDExtension……[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | 正在创建自动加载脚本……[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | 正在初始化插件……[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | 正在启动文件扫描……[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started 正在加载编辑器 (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | 正在加载编辑器布局……[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | 正在加载停靠面板……[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.2.stable.official, safeguards strict)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.2.stable.official, safeguards strict)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ok: p95 frame time uses sorted durations
+ok: p95 FPS uses sorted reciprocal samples
+ok: p95 FPS is not inverse p95 frame time
+ok: invalid interval rejects capture
+capture statistics: ALL PASS
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.2.stable.official, safeguards strict)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ok: retired spike method is unavailable
+ok: world created with seed 42 and 100 persons
+ok: second create_world rejected
+ok: bad seed rejected
+ok: initial frame ok
+ok: schema version 2
+ok: initial sim_second is the epoch
+ok: terrain batch has 128x128 cells
+ok: 100 persons presented
+ok: person y array matches
+ok: 100 lossless 8-byte ids
+ok: person action array matches
+ok: activity sites present
+ok: metrics person count mirrors snapshot
+ok: worker starts paused
+ok: terrain renderer accepts snapshot batch
+ok: person renderer applied all snapshot persons
+ok: every terrain atlas coordinate mirrors snapshot
+ok: every site node coordinate mirrors snapshot
+ok: person ids are non-zero, unique, byte-encoded
+ok: person coords and states in range
+ok: invalid speed rejected at bridge
+ok: unknown command rejected at bridge
+ok: negative step rejected at bridge
+ok: step enqueued
+ok: step ack applied
+ok: step committed exactly 10 sim seconds
+ok: published snapshot at exactly 10s
+ok: worker stays paused after step
+person fidelity readback unavailable in headless renderer
+ok: resume enqueued
+ok: unpaused step enqueues (rejection is an ack)
+ok: unpaused step rejected
+ok: set_speed 1000 enqueued
+ok: running worker advances beyond prior boundary
+ok: pause freezes the presented sim_second
+ok: editing/removing presentation nodes preserves Rust frame
+ok: presentation mutation never reaches the snapshot
+ok: shutdown enqueued
+ok: worker closed after shutdown
+ok: closed worker rejects commands
+CHRON-031 integration: ALL PASS

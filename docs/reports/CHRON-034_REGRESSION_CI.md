@@ -1,6 +1,6 @@
 # CHRON-034 — Deterministic regression and CI
 
-Status: preparation during CHRON-033 sampling; local and hosted final gates pending.
+Status: complete at candidate8dc1595; both hosted checks and local gates passed. Final delivery on the same PR is checked again after035/036.
 Owner authorization: current request to complete033–036, P1-REMAINING/r1.
 
 ## Contract
@@ -60,3 +60,19 @@ Candidate publication includes pre-existing027–032/remediation implementation 
 evidence needed to reproduce this workspace, not just the new benchmark files.
 The pre-turn backup/source manifests retain attribution; no other branch is merged,
 no main write/merge/force push or protection change is performed.
+
+Full local candidate gates passed: `bash tools/ci-rust.sh` and
+`bash tools/ci-godot.sh`, both exit0. Rust includes809test executions across debug,
+release and doctests (not809unique tests), zero failures/ignored, fmt/Clippy/MSRV/
+rustdoc, locked dependency graph and every smoke. [Validation record](data/chron-034-validation.json)
+links complete logs. The remote macOS job has passed; final Linux completion is pending.
+
+## Hosted completion
+
+Both stable required jobs passed at8dc15954ad28c34c2b1ca213f308a180bc2cdc4c:
+[run33406959266](https://github.com/GabrielMu2006/Palimpsest/actions/runs/33406959266).
+[Raw run/jobs](data/chron-034-hosted.json) record the associated SHA and conclusions.
+Actions checkout is the clean-checkout validation; local commands matched it.
+The earlier pending notes describe previous checkpoints, not the final034 outcome.
+[Locked dependency review](data/chron-034-dependency-review.json) confirms inward
+normal dependencies. No future automatic enforcement is inferred from that review.

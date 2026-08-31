@@ -1,0 +1,15 @@
+{
+  "candidate": "8dc15954ad28c34c2b1ca213f308a180bc2cdc4c",
+  "purpose": "one short capture after query observers; no repeat of minimal-render or long-run measurements",
+  "command": "/usr/bin/time -l tools/capture-frames.sh docs/reports/data/chron-031-final-frames.json --skip-build",
+  "sha256": {
+    "MASTER_SPEC.md": "a6fa0654582eca360b3fc8be6d7989200d310707677f841e58130c301b2de5ea",
+    "Cargo.lock": "c9f0adcbed4452304a71e0f13c8fb8c9a845d5782f3ca6b5e0c80f18a1193a1c",
+    "crates/sim-core/src/actions.rs": "81d868a6224961d2e47cadf6e55f18a64d3bd807ac90f4c12f92154e43260528",
+    "crates/sim-core/src/worker.rs": "5f15d7a33b8266fedf090d71891992e24372da4a015cea397f17f45f768ac4aa",
+    "crates/godot-bridge/src/lib.rs": "d69766f843e085d3def2803df2e8a48ed8f48a7364b78bc978d537b6e0b89f4b",
+    "apps/macos-godot/main.gd": "dece4975ef9c44bc090f9ffb93313b10a51a2108f84bf159bb5ef44cec06a066",
+    "apps/macos-godot/capture_statistics.gd": "ab0c6a912a41425a928c305d4ef9933acfd981fa86cab6845931ca60362c4a97",
+    "target/release/libpalimpsest_godot_bridge.dylib": "58ae1caaccf2ef8f929047cd59aeafe75926160b840f1397b73ddf0be9cb070e"
+  }
+}

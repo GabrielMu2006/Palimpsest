@@ -70,7 +70,9 @@ All direct/worker/rendered results end at86400seconds with diagnostic hash
 14346005809762790435 and identical render DTO/work counters. This hash is a
 non-cryptographic DTO comparison, not a full persistence-state archive. Godot used
 the real main scene/worker,120engine-warmup frames and2+10fresh worlds. No1x pacing.
-Worker polling is1ms; Godot confirmation is observed on a rendered frame. Publication
+The mode wall times also include OS scheduling and rendering; the ratio does not
+isolate FFI overhead or identify a CPU bottleneck. Worker polling is1ms; Godot
+confirmation is observed on a rendered frame. Publication
 uses the worker timestamp, so it is not incorrectly inferred from an earlier poll.
 Godot final target rendering adds a median33.309ms after acknowledgement observation.
 Final-point snapshot read median16µs, bridge conversion14µs, build8µs, age48.709ms;

@@ -1,6 +1,6 @@
 # CHRON-035 — Retire Phase 0 Spike Workload
 
-> **Status: Authorized — current033–036 owner instruction; completion waits for verified dependencies.**
+> **Status: Implementation and final local validation complete at2d050b8; final hosted delivery record is PR2.**
 > Approval of this Task **or its identified execution plan** authorizes its stated steps once.
 > Follow [Execution Contract](../EXECUTION_CONTRACT.md) and
 > [remaining-plan decisions, supporting files and commands](../PHASE_1_REMAINING_EXECUTION.md).

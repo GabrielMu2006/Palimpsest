@@ -1,6 +1,6 @@
 # CHRON-036 — Phase 1 Validation Report
 
-> **Status: Authorized — current033–036 owner instruction; completion waits for verified dependencies.**
+> **Status: Report assembled with verified reference/local evidence; exact-head hosted closure is recorded inPR2; product-owner confirmation unset.**
 > Approval of this Task **or its identified execution plan** authorizes its stated steps once.
 > Follow [Execution Contract](../EXECUTION_CONTRACT.md) and
 > [remaining-plan decisions, supporting files and commands](../PHASE_1_REMAINING_EXECUTION.md).

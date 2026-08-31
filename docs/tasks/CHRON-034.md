@@ -1,6 +1,6 @@
 # CHRON-034 — Deterministic Regression and CI
 
-> **Status: Implemented locally — hosted candidate gates pending; explicitly authorized033–036 instruction.**
+> **Status: Complete at8dc1595 — both hosted checks and full local gates passed; final delivery checks recorded inPR2.**
 > Approval of this Task **or its identified execution plan** authorizes its stated steps once.
 > Follow [Execution Contract](../EXECUTION_CONTRACT.md) and
 > [remaining-plan decisions, supporting files and commands](../PHASE_1_REMAINING_EXECUTION.md).

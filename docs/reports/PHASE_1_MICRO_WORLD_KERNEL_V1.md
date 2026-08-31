@@ -1,10 +1,15 @@
 # Phase 1 — Micro World Kernel V1
 
-Status: evidence assembly in progress; NOT yet complete or owner-confirmed.
+Status: implementation/report record; product-owner confirmation is unset.
+Delivery acceptance requires both checks at the exact PR head; the final SHA and
+hosted run are recorded in the [PR2 delivery record](https://github.com/GabrielMu2006/Palimpsest/pull/2).
+A pending/failing check means delivery is not complete.
 Phase2 implementation is not authorized. Owner confirmation date: unset.
 Reference platform: Apple M5,16GiB,macOS26.6.2,Rust1.98.0,Godot4.7.2;
-locked bevy_ecs0.19.1. Candidate/hosted-check identities will be recorded after
-publication; raw source manifests identify the measurements independently.
+locked bevy_ecs0.19.1. Code source: [2d050b82138d92a6c2caf657f086123ab2d14441](https://github.com/GabrielMu2006/Palimpsest/commit/2d050b82138d92a6c2caf657f086123ab2d14441).
+The delivery head adds reporting only; its literal SHA and CI run are recorded in
+PR2 after verification, avoiding a self-referential report commit ID. Raw source
+manifests separately identify each reference measurement.
 
 ## What exists
 
@@ -40,21 +45,47 @@ are retained. n=1 proves this observation only, with no sampling variance or
 universal leak-free claim. The owner's original one-RSS sample remains valid for
 its older colocated fixture; it is not substituted for this chaos fixture.
 
-Corrected native windowed presentation:120warmup+300consecutive monotonic frame
-intervals, mean59.975FPS,min47.714FPS,p95FPS61.072; p95frame16.997ms,max20.958ms.
-This is approximately60Hz with observed jitter, not constant60FPS. Main UI draw
-calls19; full-process high-water277954560B on this capture. Snapshot age p95102.169ms,
-construction90us, bridgeconversion110us, fullsnapshotcall120us (all p95).
+Native windowed presentation uses120warmup+300consecutive monotonic frame intervals.
+The repaired capture measured mean59.975FPS,p95frame16.997ms. A single short capture
+after the CHRON033 observers, on candidate8dc1595, measured mean60.002FPS,
+min38.974FPS,p95FPS61.237; p95frame17.008ms,max25.658ms. Both raw captures remain
+visible. This is approximately60Hz with observed jitter, not constant60FPS.
+Latest normal-UI draw calls19; whole-process high-water278315008B. Snapshot age
+p95102.451ms, construction90µs, bridgeconversion125µs, fullsnapshotcall139µs.
+[Latest raw/source](data/chron-031-final-frame-source.json) identifies the code;
+subsequent spike retirement does not change this normal presentation path.
 Actual MultiMesh transforms/colors were read back and a deliberate corruption
 was detected. Headless CI explicitly cannot replace this GPU evidence.
 
 ## Representative scale and matching-work measurements
 
-Pending completion of CHRON033. The final table must include100/1K/3K/5K/10K
-attempts, all raw samples, native RSS proof, applicable work/cost metrics, and
-same-horizon direct/worker/windowed comparison. Do not treat this placeholder as
-a completed gate. The source [ADR0029](../adr/ADR-0029-representative-benchmark-observation.md)
-fixes identical fixtures, warmups, sample policy, counter boundaries and limitations.
+[CHRON033 scale report](CHRON-033_SCALE_BENCHMARKS.md) contains every raw sample,
+source/binary hash, work counter, isolated path probe and memory-proof interval.
+All scales use the same seed42 reachable fixture and86400-second horizon, with
+2warmups/10timed runs and one native cold-RSS observation per scale.
+
+| Persons | Advance median s | Native workload peak B | Cold increment B |
+|---:|---:|---:|---:|
+| 100 | 0.430765 | 6422528 | 4866048 |
+| 1000 | 4.306776 | 14843904 | 13287424 |
+| 3000 | 13.040591 | 27377664 | 25821184 |
+| 5000 | 22.128023 | 38420480 | 36864000 |
+| 10000 | 44.261398 | 64454656 | 62898176 |
+
+All60runs passed required work/state checks and within-scale deterministic
+comparisons. Each RSS run's snapshot hash matches its timing fixture. These are
+headless Core diagnostics, not full10K-game/client guarantees. Integrated scheduler,
+decision, path-query, event and transition rates plus snapshot bytes/build/serialization
+cost are in the task report, with method limits. No synthetic per-system cost is
+presented where only an integrated work count was measured.
+
+The matching100-person comparison uses direct median428.760ms, worker observed-ack
+430.561ms and native Godot observed-ack563.488ms; ratios of medians are1.0042 and1.3142.
+Godot's final target frame appears by median596.728ms from submission. Every run
+has final DTO/work diagnostic hash14346005809762790435. Confirmation is observed
+with1ms worker polling or a rendered frame in Godot, so those delays are explicit.
+Godot whole-process high-water286244864B includes Core+Client. The Phase0 dummy
+ratio~2.09 is not reused as a current result.
 
 ## Architecture recommendations
 
@@ -92,7 +123,29 @@ The200-year broader MVP ambition is not claimed from this Phase1 ten-year test.
 - The pre-existing custom dependency test was removed under explicitREM002 approval;
   locked metadata/tree receives manual review, not equivalent automatic enforcement.
 
-CI, spike retirement and final candidate evidence are pending; fill before delivery.
+## DoD and source routing
+
+| Task | Outcome and evidence | Limits / final gate |
+|---|---|---|
+| 027 | [Action execution](CHRON-027_ACTION_STATE_MACHINE.md), committed-observation/closed-loop tests | Real arrivals, not zero-distance completion proxies |
+| 028 | [Kernel](CHRON-028_KERNEL.md), full chaos and fixed-seed regression | Headless authority; bounded rounds are not latency guarantees |
+| 029 | [Render DTO](CHRON-029_RENDER_SNAPSHOT.md), native fidelity test, same-work snapshot hash | Transient DTO, not a production save |
+| 030 | [Review closeout](CHRON-030_032_REVIEW_CLOSEOUT.md), worker tests and033 comparator | Ordering/interruption/paired publication; no IPC claim beyond current scope |
+| 031 | [Presentation](CHRON-031_GODOT_MICRO_WORLD.md), both corrected frame captures | Around60Hz with raw slow frames retained |
+| 032 | [Corrected ten-year evidence](CHRON-030_032_REVIEW_CLOSEOUT.md) | One corrected long RSS/timing run; old timings retain their own source |
+| 033 | [Scale report](CHRON-033_SCALE_BENCHMARKS.md) | All five scales passed; higher client/worker configurations not measured |
+| 034 | [Regression/CI](CHRON-034_REGRESSION_CI.md), [hosted baseline](data/chron-034-hosted.json) | Both checks passed8dc1595; final delivery checks must match PR head |
+| 035 | [Spike retirement](CHRON-035_SPIKE_RETIREMENT.md), negative API and replacement tests | Primitive diagnostics/historical reports remain; no dummy current-path alias |
+| 036 | This report plus PR2's exact-head delivery record | No new workload, no Phase2 implementation |
+
+Final local validation passed at the code source above:399executions in each
+debug/release profile plus16doctests,814total, zero failures/ignored.
+[Validation and complete logs](data/chron-035-036-local-validation.json) include
+fmt/Clippy/MSRV/rustdoc, real/primitive smokes and Godot integration.
+The publication record in PR2 names the final documentation head and both hosted
+check conclusions, and links its immutable run. That external status must not be
+inferred merely from local success or from the earlier034 green commit.
+
 The owner will accept/reject this Phase1 report separately. Acceptance alone does
 not invent a Phase2 execution plan. Do not begin Phase2 implementation without
 explicit authorization of its scope.

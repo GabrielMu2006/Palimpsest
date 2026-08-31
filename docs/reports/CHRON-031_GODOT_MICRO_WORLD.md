@@ -165,3 +165,17 @@ frame; measured implicitly by the 60 FPS capture (no per-person calls exist).
 CHRON-032 (headless 10-year chaos runner, depends on CHRON-028) is the next
 task in the approved DAG; it is **not** authorized by this report and was not
 started.
+
+## Final short presentation observation
+
+After CHRON033's observational query counters, one short normal-UI capture on
+candidate8dc1595 recorded300consecutive frames after120warmups: mean60.002088FPS,
+min38.974199FPS,p95FPS61.236987; frame mean16.666087ms,p9517.008ms,max25.658ms.
+Draw calls19; snapshot age p95102.451ms, build90µs, bridgeconversion125µs,
+fullsnapshotcall139µs, nodeupdate154µs. Whole-process high-water278315008B.
+Both corrected captures remain visible; this is not a rerun-until-pass policy.
+Only the short normal capture was repeated after instrumentation, not minimal
+rendering or the ten-year run. [Raw](data/chron-031-final-frames.json),
+[source](data/chron-031-final-frame-source.json), [time/RSS](data/chron-031-final-frames.time.txt).
+Subsequent spike retirement removes unused APIs; the normal presentation path
+and simulation rules are unchanged. No constant60FPS claim is made.

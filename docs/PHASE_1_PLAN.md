@@ -1,12 +1,11 @@
 # Phase 1 — Micro World Kernel Plan
 
 > Current execution/status entry: [CURRENT_PROGRESS](CURRENT_PROGRESS.md).
-> CHRON-027–031 are implemented and locally verified (027–029 via the
-> [V2 repair](reports/P1_KERNEL_REPAIR_V2.md); 030 via
-> [its report](reports/CHRON-030_SIMULATION_WORKER.md); 031 via
-> [its report](reports/CHRON-031_GODOT_MICRO_WORLD.md)). Historical
-> planning/proposed language below does not override per-task approvals or
-> authorize CHRON-032+.
+> Phase1 implementation and local closeout verification are complete. See the
+> [Phase1 report](reports/PHASE_1_MICRO_WORLD_KERNEL_V1.md) and PR2 delivery record
+> for reference data, the final candidate SHA and both hosted checks. Historical
+> proposed/approval wording below is planning history, not current permission.
+> The owner explicitly authorized033–036; Phase2 remains unauthorized.
 
 > Approval clarification (product owner, 2026-08-30): an explicit instruction
 > to follow/execute an identified plan accepts that plan's stated decisions
@@ -18,8 +17,8 @@
 Current execution surface for the remaining work:
 [P1-REMAINING / 2026-08-30-r1](PHASE_1_REMAINING_EXECUTION.md), together with
 CHRON-027–036. It specifies recommended semantics, supporting files/tools,
-commands, ownership and the terminal boundary. It remains **Proposed**, not
-implementation approval. All future plans use [Execution Contract](EXECUTION_CONTRACT.md).
+commands, ownership and the terminal boundary. The owner’s current033–036 implementation instruction accepts the relevant
+execution steps; earlier tasks retain their recorded approvals. All future plans use [Execution Contract](EXECUTION_CONTRACT.md).
 
 - Phase: **1 — Micro World Kernel**
 - Owner: Palimpsest Phase 1 planning document author

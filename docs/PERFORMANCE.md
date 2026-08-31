@@ -1,5 +1,6 @@
 # Palimpsest Performance Baseline
 
+> Current Phase1 measurements: [consolidated report](reports/PHASE_1_MICRO_WORLD_KERNEL_V1.md), [scale/same-work results](reports/CHRON-033_SCALE_BENCHMARKS.md), and [corrected frame/RSS observations](reports/CHRON-030_032_REVIEW_CLOSEOUT.md). Older sections retain historical source-specific evidence; the shared spike API is retired.
 `MASTER_SPEC.md` defines the M5 16GB performance contract. This document records methods and measured results; it cannot relax product budgets.
 
 ## Reference Machine
@@ -330,3 +331,5 @@ CHRON033 uses release code, one identical seed42 reachable fixture,86400seconds,
 unpaced direct/worker/windowed work. Missing/failing higher scales remain visible.
 Native RSS, serialized bytes and rendered GPU-memory estimates are distinct.
 NLG/history-query/fullrelationship metrics remain NotApplicable inPhase1.
+
+Completed CHRON033 evidence: [scale and same-work comparison](reports/CHRON-033_SCALE_BENCHMARKS.md). All five scales completed; no budget changed.
