@@ -22,8 +22,8 @@ fn main() -> ExitCode {
 }
 
 fn parse_args() -> Result<(u64, i64), String> {
-    let mut entities = 10_000_u64;
-    let mut seconds = 1_000_i64;
+    let mut entities = 100_u64;
+    let mut seconds = 86_400_i64;
     let mut arguments = std::env::args().skip(1);
     while let Some(argument) = arguments.next() {
         let value = arguments

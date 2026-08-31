@@ -9,12 +9,23 @@
 //! the simulation worker command bridge (CHRON-030, ADR-0015 supplement);
 //! broader game systems arrive with their own scoped tasks.
 
+//! The Phase0 comparison API is retired; real callers use `WorldKernel`.
+//!
+//! ```compile_fail
+//! use palimpsest_sim_core::run_spike_workload;
+//! ```
+//! ```compile_fail
+//! use palimpsest_sim_core::SpikeRunMetrics;
+//! ```
+//! ```compile_fail
+//! use palimpsest_sim_core::SpikeRunError;
+//! ```
+
 mod actions;
 mod chaos;
 mod kernel;
 mod person;
 mod render;
-mod spike_workload;
 mod worker;
 
 pub use actions::{
@@ -47,7 +58,6 @@ pub use render::{
     ActivitySiteRender, PersonRender, RENDER_SCHEMA_VERSION, RenderError, RenderMetrics,
     RenderSnapshot, TerrainBatch,
 };
-pub use spike_workload::{SpikeRunError, SpikeRunMetrics, run_spike_workload};
 pub use worker::{
     ACK_LOG_CAPACITY, COMMAND_QUEUE_CAPACITY, CommandAck, CommandOutcome, CommandSequence,
     CommandStatus, MAX_STEP_STEPS, SimulationWorker, SpeedMultiplier, WorkerCommand, WorkerError,

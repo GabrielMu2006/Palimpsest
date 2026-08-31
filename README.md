@@ -22,10 +22,10 @@
 | 阶段 | 状态 |
 |---|---|
 | Phase 0 — 架构验证 | ✅ 2026-08-29 完成并经产品负责人确认（[验证报告](docs/reports/ARCHITECTURE_SPIKE_V1.md)） |
-| Phase 1 — 微型世界内核 | 🔨 进行中：19 个任务已规划（[计划](docs/PHASE_1_PLAN.md)），CHRON-018（workspace 边界）已完成，其余待逐任务批准 |
+| Phase 1 — 微型世界内核 | 微型世界已实现；[验证报告](docs/reports/PHASE_1_MICRO_WORLD_KERNEL_V1.md)与 [Draft PR #2](https://github.com/GabrielMu2006/Palimpsest/pull/2)记录收尾检查，待产品负责人验收 |
 | Phase 2+ — 生命/经济/记忆/战争/史官等 | 📋 仅路线图，见 `MASTER_SPEC.md` |
 
-请注意：仓库目前还没有任何可玩的游戏内容。Phase 0 交付的是经过实测的架构地基——确定性时间、持久实体身份、结构化事件、调度队列、SQLite 事件库、快照、Godot 桥——而不是游戏系统。
+当前可运行的是早期微世界演示：100 人在生成地形中自主移动、吃饭、睡觉和工作，Godot 提供暂停、步进、倍速及指标显示。100 人十年验证已通过；这不代表出生死亡、经济、关系、记忆或史官等完整游戏系统已实现。Phase 2 尚未授权。
 
 ## 架构一句话
 
@@ -46,16 +46,24 @@ Rust 模拟核心是权威，完全脱离 Godot 无头运行；Godot 4 只负责
 
 ```sh
 # 完整 Rust 门禁：MASTER_SPEC 哈希、格式、clippy、全部测试、MSRV、基准冒烟
-sh tools/ci-rust.sh
+bash tools/ci-rust.sh
 
 # Godot 客户端冒烟（需本机安装 Godot 4.7）
-sh tools/ci-godot.sh
+bash tools/ci-godot.sh
 ```
+
+默认无头入口现运行真实内核（100 人、一天），旧 spike 工作负载已退役：
+
+```sh
+cargo run --release --locked -p palimpsest-headless-runner --bin palimpsest-headless-runner -- --entities 100 --seconds 86400
+```
+
+规模、RSS 和帧率方法与限制见 [性能文档](docs/PERFORMANCE.md)。约 60 Hz 的观测包含抖动，不承诺每帧恒定 60 FPS。
 
 ## 治理方式
 
 - 仓库持续保持公开（产品负责人于 2026-08-30 确认，替代此前私有要求）；`main` 必须保留严格 Rust/Godot 必需检查、管理员保护，禁止强推和删除。远端保护状态必须实际核验，不能只凭文档宣称已生效。
 - `MASTER_SPEC.md` 为只读最高权威；与之冲突的需求必须先在 `docs/proposals/` 写变更提案。
 - 跨模块公共契约必须先记录 ADR（`docs/adr/`）。
-- Phase 1 的每个任务需产品负责人单独批准后才实现；任务规格在 `docs/tasks/`。
+- Phase 1 实施需任务或明确执行计划的批准；已接受的计划不重复逐项确认。任务规格在 `docs/tasks/`。
 - 不删除、不削弱测试；不擅自放宽性能预算。

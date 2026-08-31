@@ -64,6 +64,8 @@ func _persons_match(node: PersonRenderer, frame: Dictionary) -> bool:
 
 
 func _run() -> void:
+	var proof_bridge := PalimpsestBridge.new()
+	_check(not proof_bridge.has_method("benchmark_spike_workload"), "retired spike method is unavailable")
 	var world := PalimpsestMicroWorld.new()
 	var created: Dictionary = world.create_world("42", 100)
 	_check(created.get("ok", false), "world created with seed 42 and 100 persons")
