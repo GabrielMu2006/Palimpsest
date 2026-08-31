@@ -298,3 +298,98 @@ fn current_rss_bytes() -> Option<u64> {
 fn json_u64(value: Option<u64>) -> String {
     value.map_or_else(|| "null".to_owned(), |number| number.to_string())
 }
+
+/// Retains one complete selection result per person for the selected fixture.
+/// This is the memory workload: candidate lists are prepared before the first
+/// observation, and results remain live through the second observation.
+///
+/// # Panics
+///
+/// Panics when `case` is not one of the four supported scale/epsilon selectors.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    let (count, epsilon) = match case {
+        "100-0" => (100, 0),
+        "100-25" => (100, 25),
+        "1000-0" => (1_000, 0),
+        "1000-25" => (1_000, 25),
+        other => panic!("invalid utility-score memory workload selector: {other}"),
+    };
+    let map = WorldMap::generate(WorldSeed::new(0), WorldGenConfig::default());
+    let sites = ActivitySites::place_defaults(&map);
+    assert_eq!(sites.len(), 6);
+    let persons = generate_persons(&map, &sites, count);
+    let mut prepared: Vec<(CandidateContext<'_>, Vec<ActionCandidate>)> =
+        Vec::with_capacity(persons.len());
+    for &(location, needs) in &persons {
+        let context = CandidateContext::new(location, needs, &sites, &map, PathConfig::default());
+        let candidates = candidate_actions(&context);
+        assert_eq!(candidates.len(), CANDIDATES_PER_PERSON);
+        prepared.push((context, candidates));
+    }
+    let weights = Weights::default();
+    let spec = if epsilon == 0 {
+        PerturbationSpec::ZERO
+    } else {
+        PerturbationSpec::new(PERTURBATION_SEED, PerturbationRange::Bounded(25))
+            .expect("epsilon in range")
+    };
+
+    observe();
+    let retained = retain_all_selections(&prepared, &weights, &spec);
+    assert_eq!(retained.len(), count);
+    let expected = match case {
+        "100-0" => 627_687,
+        "100-25" => 628_808,
+        "1000-0" => 6_372_907,
+        "1000-25" => 6_381_399,
+        _ => unreachable!(),
+    };
+    let mut checksum = 0_u64;
+    for (selection, (_, candidates)) in retained.iter().zip(&prepared) {
+        assert_eq!(selection.all_scores().len(), candidates.len());
+        assert_eq!(
+            selection.trace().selected(),
+            Some(selection.candidate().order())
+        );
+        for entry in selection.all_scores() {
+            assert_eq!(
+                entry.score().get(),
+                entry.base().get().saturating_add(entry.perturbation())
+            );
+        }
+        let kind_key = match selection.candidate().kind() {
+            ActionKind::Move => 0_u64,
+            ActionKind::Eat => 1,
+            ActionKind::Sleep => 2,
+            ActionKind::Work => 3,
+            ActionKind::Idle => 4,
+        };
+        checksum = checksum
+            .wrapping_add(kind_key)
+            .wrapping_add(selection.candidate().order())
+            .wrapping_add(selection.score().get().cast_unsigned());
+    }
+    assert_eq!(checksum, expected);
+    black_box(&retained);
+    observe();
+    checksum
+}
+
+#[cfg(test)]
+mod tests {
+    use super::memory_workload;
+
+    #[test]
+    fn memory_adapter_observes_twice_and_matches_golden() {
+        let mut callbacks = 0;
+        let checksum = memory_workload("100-0", &mut || callbacks += 1);
+        assert_eq!(callbacks, 2);
+        assert_eq!(checksum, 627_687);
+    }
+
+    #[test]
+    #[should_panic(expected = "invalid utility-score memory workload selector")]
+    fn memory_adapter_rejects_invalid_selector() {
+        let _ = memory_workload("bad", &mut || {});
+    }
+}

@@ -1,0 +1,2121 @@
+{
+  "config": {
+    "person_count": 100,
+    "seed": 42,
+    "sim_seconds_per_year": 172800,
+    "years": 1
+  },
+  "determinism": true,
+  "max_wall_seconds": 0.969594917,
+  "median_wall_seconds": 0.969594917,
+  "min_wall_seconds": 0.965604375,
+  "report": {
+    "aggregate_completions": {
+      "eats": 400,
+      "movement_phases": 1300,
+      "moves": 0,
+      "sleeps": 400,
+      "works": 3000
+    },
+    "config": {
+      "person_count": 100,
+      "seed": 42,
+      "sim_seconds_per_year": 172800,
+      "years": 1
+    },
+    "database_consistency": "NotApplicable",
+    "day_samples": [
+      {
+        "action_counts": {
+          "eating": 28,
+          "idle": 0,
+          "moving": 63,
+          "sleeping": 0,
+          "working": 9
+        },
+        "buffered_events": 0,
+        "day": 1,
+        "population": 100,
+        "queue_depth": 200,
+        "queue_nodes": 254,
+        "seconds": 86400
+      },
+      {
+        "action_counts": {
+          "eating": 0,
+          "idle": 0,
+          "moving": 0,
+          "sleeping": 0,
+          "working": 100
+        },
+        "buffered_events": 0,
+        "day": 2,
+        "population": 100,
+        "queue_depth": 200,
+        "queue_nodes": 425,
+        "seconds": 172800
+      }
+    ],
+    "death_stats": "NotApplicable",
+    "decisions_total": 3800,
+    "events_digest": 1465290804353536122,
+    "events_total": 3800,
+    "final_instant_seconds": 172800,
+    "final_next_due_seconds": 174488,
+    "idle_observed_persons": 0,
+    "idle_observed_total": 0,
+    "measurement": {
+      "events_per_wall": 3919.162459883234,
+      "peak_rss_delta_bytes": null,
+      "sim_seconds_per_wall": 178218.7560704797,
+      "wall_seconds": 0.969594917
+    },
+    "per_person_completions": [
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 1
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 2
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 3
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 4
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 5
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 6
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 7
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 8
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 9
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 10
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 11
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 12
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 13
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 14
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 15
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 16
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 17
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 18
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 19
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 20
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 21
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 22
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 23
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 24
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 25
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 26
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 27
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 28
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 29
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 30
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 31
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 32
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 33
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 34
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 35
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 36
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 37
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 38
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 39
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 40
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 41
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 42
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 43
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 44
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 45
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 46
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 47
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 48
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 49
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 50
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 51
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 52
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 53
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 54
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 55
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 56
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 57
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 58
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 59
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 60
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 61
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 62
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 63
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 64
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 65
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 66
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 67
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 68
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 69
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 70
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 71
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 72
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 73
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 74
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 75
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 76
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 77
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 78
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 79
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 80
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 81
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 82
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 83
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 84
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 85
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 86
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 87
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 88
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 89
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 90
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 91
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 92
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 93
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 94
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 95
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 96
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 97
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 98
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 99
+      },
+      {
+        "completions": {
+          "eats": 4,
+          "movement_phases": 13,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "ever_idle": false,
+        "id": 100
+      }
+    ],
+    "per_person_digest": 10443897453674976133,
+    "person_count": 100,
+    "persons_completed_all_kinds": 100,
+    "queue_depth_max": 200,
+    "queue_nodes_max": 449,
+    "queue_observations": {
+      "boundary_count": 6,
+      "persons": {
+        "1": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1166,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "10": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1157,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "100": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1141,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "11": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1156,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "12": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1155,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "13": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1154,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "14": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1153,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "15": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1146,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "16": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1145,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "17": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1144,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "18": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1143,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "19": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1142,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "2": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1165,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "20": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1141,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "21": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1140,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "22": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1139,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "23": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1138,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "24": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1137,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "25": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1136,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "26": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1135,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "27": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1134,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "28": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1133,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "29": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1132,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "3": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1164,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "30": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1131,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "31": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1130,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "32": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1129,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "33": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1128,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "34": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1127,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "35": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1126,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "36": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1125,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "37": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1126,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "38": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1111,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "39": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1110,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "4": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1163,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "40": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1109,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "41": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1108,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "42": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1107,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "43": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1106,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "44": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1105,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "45": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1104,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "46": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1103,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "47": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1102,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "48": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1101,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "49": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1100,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "5": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1162,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "50": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1099,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "51": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1098,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "52": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1097,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "53": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1096,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "54": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1095,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "55": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1094,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "56": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1093,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "57": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1092,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "58": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1091,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "59": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1090,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "6": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1161,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "60": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1089,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "61": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1088,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "62": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1087,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "63": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1086,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "64": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1085,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "65": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1084,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "66": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1083,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "67": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1082,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "68": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1081,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "69": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1080,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "7": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1160,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "70": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1079,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "71": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1078,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "72": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1070,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "73": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1069,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "74": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1068,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "75": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1067,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "76": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1066,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "77": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1065,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "78": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1064,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "79": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1063,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "8": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1159,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "80": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1062,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "81": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1165,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "82": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1164,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "83": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1163,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "84": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1162,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "85": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1161,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "86": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1160,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "87": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1159,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "88": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1158,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "89": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1157,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "9": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1158,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "90": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1156,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "91": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1155,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "92": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1154,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "93": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1153,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "94": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1152,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "95": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1146,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "96": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1145,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "97": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1144,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "98": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1143,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        },
+        "99": {
+          "eats": 4,
+          "idles": 0,
+          "movement_phases": 13,
+          "movement_steps": 1142,
+          "moves": 0,
+          "sleeps": 4,
+          "works": 30
+        }
+      },
+      "queue_depth_max": 200,
+      "queue_depth_min": 200,
+      "queue_depth_sum": 1200,
+      "queue_nodes_max": 449,
+      "queue_nodes_min": 254,
+      "queue_nodes_sum": 2147
+    },
+    "rounds_total": 4610,
+    "schema_version": 2,
+    "total_days": 2,
+    "transitions_total": 123727,
+    "truth_hash": 16460070749280821970,
+    "violated_invariants": []
+  },
+  "runs": 2,
+  "runs_series": [
+    {
+      "events_per_wall": 3935.3591371207285,
+      "events_total": 3800,
+      "final_seconds": 172800,
+      "index": 0,
+      "per_person_digest": 10443897453674976133,
+      "sim_per_wall": 178955.27865643732,
+      "truth_hash": 16460070749280821970,
+      "wall_seconds": 0.965604375
+    },
+    {
+      "events_per_wall": 3919.162459883234,
+      "events_total": 3800,
+      "final_seconds": 172800,
+      "index": 1,
+      "per_person_digest": 10443897453674976133,
+      "sim_per_wall": 178218.7560704797,
+      "truth_hash": 16460070749280821970,
+      "wall_seconds": 0.969594917
+    }
+  ]
+}

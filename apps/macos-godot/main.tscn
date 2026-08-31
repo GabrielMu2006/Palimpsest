@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1_main"]
 [ext_resource type="Script" path="res://tile_renderer.gd" id="2_tiles"]
 [ext_resource type="Script" path="res://metrics_overlay.gd" id="3_metrics"]
+[ext_resource type="Script" path="res://person_renderer.gd" id="4_persons"]
+[ext_resource type="Script" path="res://time_controls.gd" id="5_controls"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_main")
@@ -10,11 +12,21 @@ script = ExtResource("1_main")
 [node name="TileMap" type="TileMapLayer" parent="."]
 script = ExtResource("2_tiles")
 
+[node name="Persons" type="MultiMeshInstance2D" parent="."]
+script = ExtResource("4_persons")
+
 [node name="DeveloperUI" type="CanvasLayer" parent="."]
 
 [node name="MetricsOverlay" type="PanelContainer" parent="DeveloperUI"]
 offset_left = 560.0
 offset_top = 24.0
-offset_right = 958.0
+offset_right = 1250.0
 offset_bottom = 439.0
 script = ExtResource("3_metrics")
+
+[node name="TimeControls" type="HBoxContainer" parent="DeveloperUI"]
+offset_left = 24.0
+offset_top = 664.0
+offset_right = 700.0
+offset_bottom = 704.0
+script = ExtResource("5_controls")

@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "command": [
+    "/usr/bin/time",
+    "-l",
+    "/Users/gabrielmu/Applications/Godot.app/Contents/MacOS/Godot",
+    "--path",
+    "/Users/gabrielmu/Documents/Palimpsest/apps/macos-godot",
+    "--script",
+    "res://tests/chron033_rendered_compare.gd",
+    "--",
+    "--output=/Users/gabrielmu/Documents/Palimpsest/docs/reports/data/chron-033-rendered.json"
+  ],
+  "wall_seconds": 11.936679707999929
+}

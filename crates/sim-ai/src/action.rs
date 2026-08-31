@@ -14,7 +14,10 @@
 //! row-major coordinate order, and no float, clock, thread, or hash-order
 //! iteration appears anywhere in the module.
 
-use serde::{Deserialize, Serialize};
+use std::collections::BTreeSet;
+use std::fmt::{Display, Formatter};
+
+use serde::{Deserialize, Deserializer, Serialize};
 
 use palimpsest_sim_world::{
     ActivitySite, ActivitySites, LocalCoord, PathConfig, SiteKind, TerrainKind, WorldMap, find_path,
@@ -50,11 +53,12 @@ pub enum ActionKind {
 /// One enumerated action open to a person: a kind, an optional target
 /// coordinate, and the stable enumeration key `order`.
 ///
-/// `order` is the 0-based position of this candidate in the emitted list of
-/// one enumeration call. It is a per-call enumeration key, not persistent
+/// The provider assigns `order` from the 0-based enumeration position. An
+/// individual candidate may carry any key; selection validates the complete
+/// set of keys, independently of vector position. It is a per-call key, not persistent
 /// identity, truth, or an event reference (CHRON-025, ADR-0014). Serde
 /// encodes the three fields as-is; `target` is `null` for `Idle`.
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct ActionCandidate {
     kind: ActionKind,
     target: Option<LocalCoord>,
@@ -63,12 +67,22 @@ pub struct ActionCandidate {
 
 impl ActionCandidate {
     /// Creates a candidate with an explicit enumeration key.
-    #[must_use]
-    pub const fn new(kind: ActionKind, target: Option<LocalCoord>, order: u64) -> Self {
-        Self {
-            kind,
-            target,
-            order,
+    ///
+    /// # Errors
+    /// Rejects an Idle target or a missing target for any other action.
+    pub const fn new(
+        kind: ActionKind,
+        target: Option<LocalCoord>,
+        order: u64,
+    ) -> Result<Self, CandidateError> {
+        match (kind, target) {
+            (ActionKind::Idle, Some(_)) => Err(CandidateError::IdleHasTarget),
+            (ActionKind::Idle, None) | (_, Some(_)) => Ok(Self {
+                kind,
+                target,
+                order,
+            }),
+            (_, None) => Err(CandidateError::MissingTarget { kind }),
         }
     }
 
@@ -91,12 +105,109 @@ impl ActionCandidate {
     }
 }
 
+impl<'de> Deserialize<'de> for ActionCandidate {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        struct Wire {
+            kind: ActionKind,
+            target: Option<LocalCoord>,
+            order: u64,
+        }
+        let wire = Wire::deserialize(deserializer)?;
+        Self::new(wire.kind, wire.target, wire.order).map_err(serde::de::Error::custom)
+    }
+}
+
+/// Structurally invalid action shape; reachability is a separate concern.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CandidateError {
+    /// Idle must be targetless.
+    IdleHasTarget,
+    /// Every non-Idle action requires a target.
+    MissingTarget { kind: ActionKind },
+}
+
+impl Display for CandidateError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::IdleHasTarget => write!(f, "Idle must not have a target"),
+            Self::MissingTarget { kind } => write!(f, "{kind:?} requires a target"),
+        }
+    }
+}
+impl std::error::Error for CandidateError {}
+
+/// Invalid identity within a collection of candidates (ADR-0019).
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
+pub enum CandidateSetError {
+    /// More than one candidate uses the same enumeration key.
+    DuplicateOrder { order: u64 },
+    /// A complete selection key must be below the collection length.
+    OrderOutOfRange { order: u64, len: usize },
+    /// One action/target pair appears more than once.
+    DuplicateCandidate {
+        kind: ActionKind,
+        target: Option<LocalCoord>,
+    },
+}
+
+impl Display for CandidateSetError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::DuplicateOrder { order } => write!(f, "duplicate candidate order {order}"),
+            Self::OrderOutOfRange { order, len } => {
+                write!(f, "candidate order {order} outside 0..{len}")
+            }
+            Self::DuplicateCandidate { kind, target } => {
+                write!(f, "duplicate candidate {kind:?} at {target:?}")
+            }
+        }
+    }
+}
+impl std::error::Error for CandidateSetError {}
+
+/// Three passes give deterministic error precedence without scanning up to
+/// an input key. Fragments need unique identities, but not contiguous keys.
+pub(crate) fn validate_candidate_set(
+    candidates: &[ActionCandidate],
+    complete: bool,
+) -> Result<(), CandidateSetError> {
+    let mut orders = BTreeSet::new();
+    for candidate in candidates {
+        if !orders.insert(candidate.order()) {
+            return Err(CandidateSetError::DuplicateOrder {
+                order: candidate.order(),
+            });
+        }
+    }
+    if complete {
+        for candidate in candidates {
+            if usize::try_from(candidate.order()).map_or(true, |order| order >= candidates.len()) {
+                return Err(CandidateSetError::OrderOutOfRange {
+                    order: candidate.order(),
+                    len: candidates.len(),
+                });
+            }
+        }
+    }
+    let mut pairs = BTreeSet::new();
+    for candidate in candidates {
+        if !pairs.insert((candidate.kind(), candidate.target())) {
+            return Err(CandidateSetError::DuplicateCandidate {
+                kind: candidate.kind(),
+                target: candidate.target(),
+            });
+        }
+    }
+    Ok(())
+}
+
 /// The complete read-only input for candidate enumeration and trace
 /// construction: one person's location and needs, the static activity sites,
 /// the local terrain map, and the pathfinding budget.
 ///
 /// The context borrows the site collection and the map; it owns no world
-/// state and mutates nothing. Equal contexts yield byte-identical candidate
+/// truth state. An optional diagnostic counter observes queries only. Equal contexts yield byte-identical candidate
 /// lists and traces (CHRON-025 invariant 1).
 #[derive(Clone, Copy, Debug)]
 pub struct CandidateContext<'a> {
@@ -105,6 +216,7 @@ pub struct CandidateContext<'a> {
     sites: &'a ActivitySites,
     map: &'a WorldMap,
     path_config: PathConfig,
+    path_query_counter: Option<&'a std::cell::Cell<u64>>,
 }
 
 impl<'a> CandidateContext<'a> {
@@ -124,7 +236,15 @@ impl<'a> CandidateContext<'a> {
             sites,
             map,
             path_config,
+            path_query_counter: None,
         }
+    }
+
+    /// Observe actual reachability queries without changing candidate semantics.
+    #[must_use]
+    pub const fn with_path_query_counter(mut self, counter: &'a std::cell::Cell<u64>) -> Self {
+        self.path_query_counter = Some(counter);
+        self
     }
 
     /// The person's current location on the local grid.
@@ -239,12 +359,10 @@ pub fn candidate_actions(context: &CandidateContext<'_>) -> Vec<ActionCandidate>
     unique
         .into_iter()
         .enumerate()
-        .map(|(position, (kind, target))| {
-            ActionCandidate::new(
-                kind,
-                target,
-                u64::try_from(position).expect("candidate count is bounded and fits u64"),
-            )
+        .map(|(position, (kind, target))| ActionCandidate {
+            kind,
+            target,
+            order: u64::try_from(position).expect("candidate count is bounded and fits u64"),
         })
         .collect()
 }
@@ -269,6 +387,9 @@ fn reachable_sites_by_distance(context: &CandidateContext<'_>, kind: SiteKind) -
 /// Returns whether `find_path` connects the context location to `target`
 /// under the context's pathfinding budget.
 pub(crate) fn is_reachable(context: &CandidateContext<'_>, target: LocalCoord) -> bool {
+    if let Some(counter) = context.path_query_counter {
+        counter.set(counter.get().saturating_add(1));
+    }
     find_path(
         context.map().local(),
         (context.location().x(), context.location().y()),
@@ -359,6 +480,33 @@ mod tests {
     }
 
     #[test]
+    fn query_observation_preserves_candidates_and_counts_failed_queries() {
+        let (map, sites, origin) = fixture();
+        let plain = context(origin, needs_with(50_000, 50_000), &sites, &map);
+        let count = std::cell::Cell::new(0);
+        let observed = plain.with_path_query_counter(&count);
+        assert_eq!(candidate_actions(&plain), candidate_actions(&observed));
+        assert!(count.get() > 0);
+        let candidates = candidate_actions(&plain);
+        let weights = crate::Weights::default();
+        let spec = crate::PerturbationSpec::default();
+        assert_eq!(
+            crate::select_action(&candidates, &plain, &weights, &spec),
+            crate::select_action(&candidates, &observed, &weights, &spec)
+        );
+        let before = count.get();
+        assert!(super::is_reachable(&observed, origin));
+        assert_eq!(count.get(), before + 1);
+        let blocked = map
+            .local()
+            .coords()
+            .find(|c| !map.local().get(c.x(), c.y()).unwrap().is_walkable())
+            .unwrap();
+        assert!(!super::is_reachable(&observed, blocked));
+        assert_eq!(count.get(), before + 2);
+    }
+
+    #[test]
     fn action_kind_is_exactly_the_five_phase_1_kinds() {
         // An exhaustive match without a wildcard fails to compile if a sixth
         // variant is ever added.
@@ -410,7 +558,8 @@ mod tests {
 
     #[test]
     fn action_candidate_serde_round_trips() {
-        let with_target = ActionCandidate::new(ActionKind::Eat, Some(coord(3, 4)), 2);
+        let with_target = ActionCandidate::new(ActionKind::Eat, Some(coord(3, 4)), 2)
+            .expect("valid diagnostic fixture");
         let encoded = serde_json::to_string(&with_target).expect("serialize candidate");
         assert_eq!(
             encoded,
@@ -421,12 +570,62 @@ mod tests {
             with_target
         );
 
-        let idle = ActionCandidate::new(ActionKind::Idle, None, 9);
+        let idle =
+            ActionCandidate::new(ActionKind::Idle, None, 9).expect("valid diagnostic fixture");
         let encoded = serde_json::to_string(&idle).expect("serialize idle");
         assert_eq!(encoded, "{\"kind\":\"Idle\",\"target\":null,\"order\":9}");
         assert_eq!(
             serde_json::from_str::<ActionCandidate>(&encoded).expect("deserialize idle"),
             idle
+        );
+    }
+
+    #[test]
+    fn malformed_candidate_wire_is_rejected() {
+        for encoded in [
+            r#"{"kind":"Idle","target":{"x":3,"y":4},"order":0}"#,
+            r#"{"kind":"Work","target":null,"order":0}"#,
+        ] {
+            assert!(serde_json::from_str::<ActionCandidate>(encoded).is_err());
+        }
+    }
+
+    #[test]
+    fn native_and_wire_candidate_shape_matrix_agree() {
+        for kind in [
+            ActionKind::Move,
+            ActionKind::Eat,
+            ActionKind::Sleep,
+            ActionKind::Work,
+            ActionKind::Idle,
+        ] {
+            for target in [None, Some(coord(3, 4))] {
+                for order in [0, 1, u64::MAX] {
+                    let native = ActionCandidate::new(kind, target, order);
+                    let wire = serde_json::from_value::<ActionCandidate>(serde_json::json!({
+                        "kind": kind, "target": target, "order": order
+                    }));
+                    let valid = (kind == ActionKind::Idle) == target.is_none();
+                    assert_eq!(native.is_ok(), valid);
+                    assert_eq!(wire.is_ok(), valid);
+                    if valid {
+                        assert_eq!(native.expect("valid shape"), wire.expect("valid wire"));
+                    } else {
+                        let expected = if kind == ActionKind::Idle {
+                            super::CandidateError::IdleHasTarget
+                        } else {
+                            super::CandidateError::MissingTarget { kind }
+                        };
+                        assert_eq!(native, Err(expected));
+                    }
+                }
+            }
+        }
+        assert!(
+            serde_json::from_str::<ActionCandidate>(
+                r#"{"kind":"Eat","target":{"x":128,"y":4},"order":0}"#
+            )
+            .is_err()
         );
     }
 

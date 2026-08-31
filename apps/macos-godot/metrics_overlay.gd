@@ -1,6 +1,11 @@
 class_name DeveloperMetricsOverlay
 extends PanelContainer
 
+## Read-only metrics overlay (CHRON-031): the SIMULATION section mirrors the
+## Rust snapshot/worker metrics verbatim; the CLIENT section is labelled
+## client-side rendering data; fields nobody provides are labelled
+## "unavailable", never fabricated (ADR-0026 §3).
+
 const UPDATE_INTERVAL_SECONDS := 0.25
 
 var overlay_ready: bool = false
@@ -13,7 +18,6 @@ var _metrics_label: Label
 
 func _ready() -> void:
 	_build_panel()
-	_refresh_metrics()
 	overlay_ready = true
 
 
@@ -45,7 +49,7 @@ func _build_panel() -> void:
 	margin.add_child(stack)
 
 	var title := Label.new()
-	title.text = "PALIMPSEST  /  ARCHITECTURE SPIKE"
+	title.text = "PALIMPSEST / MICRO WORLD (Phase 1)"
 	title.add_theme_color_override("font_color", Color("88d1b5"))
 	title.add_theme_font_size_override("font_size", 16)
 	stack.add_child(title)
@@ -55,49 +59,54 @@ func _build_panel() -> void:
 
 	_metrics_label = Label.new()
 	_metrics_label.add_theme_color_override("font_color", Color("d7dfdc"))
-	_metrics_label.add_theme_font_size_override("font_size", 14)
-	_metrics_label.custom_minimum_size = Vector2(350.0, 0.0)
+	_metrics_label.add_theme_font_size_override("font_size", 13)
+	_metrics_label.custom_minimum_size = Vector2(430.0, 0.0)
 	stack.add_child(_metrics_label)
 
 
 func _refresh_metrics() -> void:
 	var main := get_node("../..")
-	var tile_map := main.get_node("TileMap")
-	var snapshot: Dictionary = main.snapshot
-	var fps := Engine.get_frames_per_second()
-	var video_memory_mib := (
-		Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1024.0 / 1024.0
-	)
-	var bridge_status := "OK" if main.bridge_ok else "ERROR"
+	var frame: Dictionary = main.latest_frame
+	if frame.is_empty():
+		return
+	var metrics: Dictionary = frame["metrics"]
+	var worker: Dictionary = frame["worker"]
+	var phase_names := ["PAUSED", "RUNNING", "FAULTED", "CLOSED"]
+	var phase: int = worker["phase"]
+	var speed: int = worker["speed"]
+	var speed_text := "MAX" if speed == 0 else "%dx" % speed
 	var lines: Array[String] = [
-		"MODE                 Rendered / presentation-only",
-		"FPS                  %d" % fps,
-		"FRAME PROCESS        %.3f ms" % (
+		"SIMULATION (snapshot v%d, publication %d)" % [frame["schema_version"], frame["publications"]],
+		"  SIM TIME           %d s" % frame["sim_second"],
+		"  PHASE / SPEED      %s / %s" % [phase_names[phase], speed_text],
+		"  PERSONS            %d (live actions %d)" % [
+			metrics["person_count"], metrics["live_actions"]
+		],
+		"  SCHEDULER QUEUE    %d" % metrics["scheduler_queue_depth"],
+		"  EVENTS             committed %d, buffered %d, rotated %d" % [
+			metrics["events_committed"], metrics["events_buffered"],
+			metrics["buffer_rotations"]
+		],
+		"  ROUNDS/TRANS/DEC   %d / %d / %d" % [
+			metrics["rounds_total"], metrics["transitions_total"],
+			metrics["decisions_total"]
+		],
+		"  COMMANDS           applied %d, rejected %d, queue %d (max %d)" % [
+			worker["commands_applied"], worker["commands_rejected"],
+			worker["queue_depth"], worker["max_queue_depth"]
+		],
+		"  LOD DISTRIBUTION   unavailable (no LOD system in Phase 1)",
+		"CLIENT (rendering only, not simulation truth)",
+		"  FPS                %d" % Engine.get_frames_per_second(),
+		"  FRAME PROCESS      %.3f ms" % (
 			Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0
 		),
-		"DRAW CALLS           %d" % int(
+		"  DRAW CALLS         %d" % int(
 			Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
 		),
-		"VIDEO MEMORY         %.2f MiB" % video_memory_mib,
-		"TILES                %d / %d" % [tile_map.tile_count, 128 * 128],
-		"TILE BENCHMARK       %s" % (
-			"%.2f FPS" % tile_map.render_average_fps
-			if tile_map.render_benchmark_complete else "sampling"
+		"  VIDEO MEMORY       %.2f MiB" % (
+			Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1024.0 / 1024.0
 		),
-		"RUST BRIDGE          %s" % bridge_status,
-		"BRIDGE PING MEDIAN   %.2f ns" % main.bridge_net_nanoseconds_per_call,
-		"RENDERED WORKLOAD    %s" % (
-			"%.2f M work/s" % (
-				main.rendered_workload_result.get("entity_work_per_second", 0.0)
-				/ 1_000_000.0
-			) if main.rendered_workload_complete else "pending"
-		),
-		"SNAPSHOT SCHEMA      v%d / %s" % [
-			snapshot.get("schema_version", -1), snapshot.get("source", "unknown")
-		],
-		"SIM TIME             %d s" % snapshot.get("sim_second", -1),
-		"ENTITY ID SAMPLE     %d" % snapshot.get("example_entity_id", -1),
-		"SCHEDULER QUEUE      n/a (no client-owned simulation)",
 	]
 	visible_metrics_count = lines.size()
 	metrics_text = "\n".join(lines)

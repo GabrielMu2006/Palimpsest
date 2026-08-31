@@ -104,6 +104,29 @@ fn scan(grid: &LocalGrid<u64>) -> u64 {
     checksum
 }
 
+/// Runs the retained-grid workload used by the memory benchmark adapter.
+///
+/// The first observation is after fixture preparation and before construction;
+/// the second is after the grid has been scanned and its checksum verified.
+/// The callback is intentionally injected by the caller so this example stays
+/// independent of any measurement tool or platform-specific operation.
+///
+/// # Panics
+///
+/// Panics when `case` is not `"grid"` or when the fixed grid fixture fails
+/// its checksum/shape assertions.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    assert_eq!(case, "grid", "unknown grid memory workload case: {case}");
+    let expected = 2_041_721_u64;
+    observe();
+    let grid = build_grid();
+    let checksum = scan(&grid);
+    assert_eq!(checksum, expected);
+    black_box(&grid);
+    observe();
+    checksum
+}
+
 fn current_rss_bytes() -> Option<u64> {
     let pid = std::process::id().to_string();
     let output = Command::new("ps")
@@ -116,4 +139,23 @@ fn current_rss_bytes() -> Option<u64> {
 
 fn json_u64(value: Option<u64>) -> String {
     value.map_or_else(|| "null".to_owned(), |number| number.to_string())
+}
+
+#[cfg(test)]
+mod adapter_tests {
+    use super::memory_workload;
+
+    #[test]
+    fn memory_adapter_observes_twice_and_returns_checksum() {
+        let mut observations = 0;
+        let checksum = memory_workload("grid", &mut || observations += 1);
+        assert_eq!(observations, 2);
+        assert_eq!(checksum, 2_041_721);
+    }
+
+    #[test]
+    #[should_panic(expected = "unknown grid memory workload case")]
+    fn memory_adapter_rejects_unknown_case() {
+        let _ = memory_workload("unknown", &mut || {});
+    }
 }

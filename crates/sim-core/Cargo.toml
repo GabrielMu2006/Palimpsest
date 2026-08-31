@@ -15,6 +15,8 @@ palimpsest-sim-scheduler = { path = "../sim-scheduler" }
 palimpsest-sim-time = { path = "../sim-time" }
 palimpsest-sim-world = { path = "../sim-world" }
 serde.workspace = true
+# Fills structured-event metadata values (ADR-0006); no schema change.
+serde_json.workspace = true
 
 [dev-dependencies]
 serde_json.workspace = true

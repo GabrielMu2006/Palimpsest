@@ -1,14 +1,15 @@
-name: Phase 0 CI
+name: Phase 1 CI
 
 on:
   push:
+    branches: [main]
   pull_request:
 
 permissions:
   contents: read
 
 concurrency:
-  group: phase-0-${{ github.workflow }}-${{ github.ref }}
+  group: phase-1-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -47,6 +48,8 @@ jobs:
           grep 'Godot_v4.7.2-stable_macos.universal.zip' SHA512-SUMS.txt \
             | shasum -a 512 --check
           ditto -x -k Godot_v4.7.2-stable_macos.universal.zip .
+      - name: Verify kernel RSS measurement and transient-peak rejection
+        run: cargo test --release --locked -p palimpsest-bench-memory --test cli
       - name: Build and run Godot-Rust smoke test
         env:
           PALIMPSEST_GODOT: ${{ runner.temp }}/Godot.app/Contents/MacOS/Godot

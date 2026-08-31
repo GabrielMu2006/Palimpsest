@@ -28,7 +28,8 @@ mod trace;
 mod utility;
 
 pub use crate::action::{
-    ActionCandidate, ActionKind, CandidateContext, MAX_MOVE_CANDIDATES, candidate_actions,
+    ActionCandidate, ActionKind, CandidateContext, CandidateError, CandidateSetError,
+    MAX_MOVE_CANDIDATES, candidate_actions,
 };
 pub use crate::needs::{
     CRITICAL_PRESSURE, FATIGUE_RATE_PER_SECOND, HUNGER_RATE_PER_SECOND, NEED_MAX, NEED_SCALE,
@@ -36,9 +37,10 @@ pub use crate::needs::{
 };
 pub use crate::trace::{
     CandidateTrace, DecisionTrace, FactorEvaluation, FactorId, FactorInput, TieBreakReason,
-    factor_inputs_for, trace_for,
+    TraceValidationError, factor_inputs_for, trace_for,
 };
 pub use crate::utility::{
-    CandidateScore, DecisionError, FactorWeights, MAX_EPSILON, PerturbationRange, PerturbationSpec,
-    Selection, UtilityScore, Weights, score_candidates, select_action,
+    CandidateScore, DecisionError, FactorWeights, MAX_EPSILON, PerturbationError,
+    PerturbationRange, PerturbationSpec, Selection, UtilityScore, Weights, score_candidates,
+    select_action,
 };

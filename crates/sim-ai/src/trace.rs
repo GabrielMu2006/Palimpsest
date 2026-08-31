@@ -20,11 +20,15 @@
 //! §76). Traces are runtime diagnostic data: they are *not* durable Event
 //! Store records (ADR-0014).
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
+use std::fmt::{Display, Formatter};
 
 use palimpsest_sim_world::ActivitySite;
 
-use crate::action::{ActionCandidate, CandidateContext, is_reachable, manhattan_distance};
+use crate::action::{
+    ActionCandidate, CandidateContext, CandidateSetError, is_reachable, manhattan_distance,
+    validate_candidate_set,
+};
 
 /// The exact set of Phase 1 decision factors (CHRON-025, ADR-0014).
 ///
@@ -239,7 +243,7 @@ pub enum TieBreakReason {
 /// selection; there are deliberately no mutation methods here. Traces are
 /// surfaced read-only to Developer Tools and the Why Inspector and are never
 /// mutated back into the simulation (ADR-0014).
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct DecisionTrace {
     candidates: Vec<CandidateTrace>,
     selected: Option<u64>,
@@ -249,20 +253,51 @@ pub struct DecisionTrace {
 impl DecisionTrace {
     /// Creates a trace over `candidates` with no selection yet (CHRON-026
     /// populates `selected` and `tie_break` during selection).
-    #[must_use]
-    pub const fn new(candidates: Vec<CandidateTrace>) -> Self {
-        Self {
-            candidates,
-            selected: None,
-            tie_break: None,
+    /// Empty and non-contiguous diagnostic fragments are valid.
+    ///
+    /// # Errors
+    /// Rejects duplicate keys or duplicate action/target pairs.
+    pub fn new(candidates: Vec<CandidateTrace>) -> Result<Self, TraceValidationError> {
+        Self::from_parts(candidates, None, None)
+    }
+
+    fn from_parts(
+        candidates: Vec<CandidateTrace>,
+        selected: Option<u64>,
+        tie_break: Option<TieBreakReason>,
+    ) -> Result<Self, TraceValidationError> {
+        let identities: Vec<_> = candidates.iter().map(CandidateTrace::candidate).collect();
+        validate_candidate_set(&identities, selected.is_some())
+            .map_err(TraceValidationError::InvalidCandidates)?;
+        match (selected, tie_break) {
+            (None, Some(_)) => return Err(TraceValidationError::UnexpectedTieBreak),
+            (Some(_), None) => return Err(TraceValidationError::MissingTieBreak),
+            (Some(order), Some(_)) => {
+                if candidates.is_empty() {
+                    return Err(TraceValidationError::EmptySelection);
+                }
+                if !identities
+                    .iter()
+                    .any(|candidate| candidate.order() == order)
+                {
+                    return Err(TraceValidationError::SelectedKeyMissing { order });
+                }
+            }
+            (None, None) => {}
         }
+        Ok(Self {
+            candidates,
+            selected,
+            tie_break,
+        })
     }
 
     /// Creates a trace with the selection outcome populated.
     ///
     /// Crate-internal CHRON-026 selection path: the public trace schema
     /// stays read-only, and only [`crate::utility`] constructs decided
-    /// traces.
+    /// traces. The caller must have validated the complete candidate set;
+    /// the selected key comes from that set, never from external input.
     #[must_use]
     pub(crate) const fn decided(
         candidates: Vec<CandidateTrace>,
@@ -276,7 +311,7 @@ impl DecisionTrace {
         }
     }
 
-    /// Every candidate considered, in enumeration order.
+    /// Every candidate considered, in input order (keys need not be sorted).
     #[must_use]
     pub fn candidates(&self) -> &[CandidateTrace] {
         &self.candidates
@@ -293,6 +328,120 @@ impl DecisionTrace {
     #[must_use]
     pub const fn tie_break(&self) -> Option<TieBreakReason> {
         self.tie_break
+    }
+}
+
+impl<'de> Deserialize<'de> for DecisionTrace {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        struct Wire {
+            candidates: Vec<CandidateTrace>,
+            selected: Option<u64>,
+            tie_break: Option<TieBreakReason>,
+        }
+        let wire = Wire::deserialize(deserializer)?;
+        Self::from_parts(wire.candidates, wire.selected, wire.tie_break)
+            .map_err(serde::de::Error::custom)
+    }
+}
+
+/// Invalid diagnostic identity/correspondence, not a world-truth check.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TraceValidationError {
+    /// Duplicate or invalid collection keys/pairs.
+    InvalidCandidates(CandidateSetError),
+    /// A decided trace cannot be empty.
+    EmptySelection,
+    /// The selected key does not identify a candidate.
+    SelectedKeyMissing { order: u64 },
+    /// Selected traces must explain their tie resolution.
+    MissingTieBreak,
+    /// Unselected fragments cannot report a tie resolution.
+    UnexpectedTieBreak,
+    /// Duplicated selection/score/trace fields disagree for a key.
+    InconsistentSelection { order: u64 },
+    /// The score and trace collections differ in length.
+    CandidateCountMismatch,
+}
+
+impl Display for TraceValidationError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::InvalidCandidates(error) => Display::fmt(error, f),
+            Self::EmptySelection => write!(f, "selected candidate set is empty"),
+            Self::SelectedKeyMissing { order } => write!(f, "selected key {order} is absent"),
+            Self::MissingTieBreak => write!(f, "selected trace requires a tie reason"),
+            Self::UnexpectedTieBreak => write!(f, "unselected trace cannot have a tie reason"),
+            Self::InconsistentSelection { order } => {
+                write!(f, "selection copies disagree for order {order}")
+            }
+            Self::CandidateCountMismatch => write!(f, "score and trace candidate counts differ"),
+        }
+    }
+}
+impl std::error::Error for TraceValidationError {}
+
+#[cfg(test)]
+mod validation_tests {
+    use super::*;
+    use crate::ActionKind;
+
+    fn fragment(order: u64) -> CandidateTrace {
+        CandidateTrace::new(
+            ActionCandidate::new(ActionKind::Idle, None, order).expect("valid idle"),
+            Vec::new(),
+        )
+    }
+
+    #[test]
+    fn fragments_allow_arbitrary_keys_but_not_duplicates() {
+        for traces in [Vec::new(), vec![fragment(6)], vec![fragment(u64::MAX)]] {
+            let trace = DecisionTrace::new(traces).expect("valid fragment");
+            let encoded = serde_json::to_value(&trace).expect("encode");
+            assert_eq!(
+                serde_json::from_value::<DecisionTrace>(encoded).expect("decode"),
+                trace
+            );
+        }
+        let duplicates = vec![fragment(6), fragment(6)];
+        assert_eq!(
+            DecisionTrace::new(duplicates.clone()),
+            Err(TraceValidationError::InvalidCandidates(
+                CandidateSetError::DuplicateOrder { order: 6 }
+            ))
+        );
+        let value =
+            serde_json::json!({"candidates": duplicates, "selected": null, "tie_break": null});
+        assert!(serde_json::from_value::<DecisionTrace>(value).is_err());
+        let repeated_pair = vec![fragment(6), fragment(7)];
+        assert!(matches!(
+            DecisionTrace::new(repeated_pair.clone()),
+            Err(TraceValidationError::InvalidCandidates(
+                CandidateSetError::DuplicateCandidate { .. }
+            ))
+        ));
+        assert!(serde_json::from_value::<DecisionTrace>(serde_json::json!({"candidates": repeated_pair, "selected": null, "tie_break": null})).is_err());
+    }
+
+    #[test]
+    fn selected_trace_requires_complete_identity_and_tie_reason() {
+        let partial = DecisionTrace::new(vec![fragment(6)]).expect("partial");
+        let mut value = serde_json::to_value(partial).expect("encode");
+        value["tie_break"] = serde_json::json!("StableOrder");
+        assert!(serde_json::from_value::<DecisionTrace>(value.clone()).is_err());
+        value["selected"] = serde_json::json!(6);
+        assert!(serde_json::from_value::<DecisionTrace>(value).is_err());
+        let decided = serde_json::json!({"candidates": [fragment(0)], "selected": 0, "tie_break": "UniqueMaximum"});
+        assert!(serde_json::from_value::<DecisionTrace>(decided.clone()).is_ok());
+        for (key, replacement) in [
+            ("selected", serde_json::json!(1)),
+            ("tie_break", serde_json::Value::Null),
+            ("candidates", serde_json::json!([])),
+        ] {
+            let mut invalid = decided.clone();
+            invalid[key] = replacement;
+            assert!(serde_json::from_value::<DecisionTrace>(invalid).is_err());
+        }
     }
 }
 
@@ -344,7 +493,13 @@ pub fn trace_for(candidate: &ActionCandidate, context: &CandidateContext<'_>) ->
         .into_iter()
         .map(FactorEvaluation::new)
         .collect();
-    DecisionTrace::new(vec![CandidateTrace::new(*candidate, factors)])
+    // A single validated candidate always forms a valid partial fragment,
+    // irrespective of its enumeration key. No public input can panic here.
+    DecisionTrace {
+        candidates: vec![CandidateTrace::new(*candidate, factors)],
+        selected: None,
+        tie_break: None,
+    }
 }
 
 /// Computes one factor input under the uniform semantics documented on
@@ -561,7 +716,8 @@ mod tests {
         // from Needs (50_000/100_000 -> 500; 25_000 -> 250), distance is the
         // Manhattan distance, the site is reachable, and only Work carries a
         // progress counter.
-        let eat = ActionCandidate::new(ActionKind::Eat, Some(coord(ox + 2, oy)), 0);
+        let eat = ActionCandidate::new(ActionKind::Eat, Some(coord(ox + 2, oy)), 0)
+            .expect("valid diagnostic fixture");
         assert_eq!(
             inputs_by_factor(&eat, &context),
             vec![
@@ -574,7 +730,8 @@ mod tests {
         );
 
         // The Work candidate reports the site's recorded counter value.
-        let work = ActionCandidate::new(ActionKind::Work, Some(coord(ox + 2, oy + 2)), 1);
+        let work = ActionCandidate::new(ActionKind::Work, Some(coord(ox + 2, oy + 2)), 1)
+            .expect("valid diagnostic fixture");
         assert_eq!(
             inputs_by_factor(&work, &context),
             vec![
@@ -588,7 +745,8 @@ mod tests {
 
         // Idle: no target, zero distance, always-available baseline, no
         // progress.
-        let idle = ActionCandidate::new(ActionKind::Idle, None, 6);
+        let idle =
+            ActionCandidate::new(ActionKind::Idle, None, 6).expect("valid diagnostic fixture");
         assert_eq!(
             inputs_by_factor(&idle, &context),
             vec![
@@ -608,7 +766,8 @@ mod tests {
         let context = context(origin, Needs::default(), &sites, &map);
 
         // A walkable, reachable coordinate without a site is unavailable.
-        let no_site = ActionCandidate::new(ActionKind::Move, Some(coord(ox + 1, oy)), 0);
+        let no_site = ActionCandidate::new(ActionKind::Move, Some(coord(ox + 1, oy)), 0)
+            .expect("valid diagnostic fixture");
         assert_eq!(
             inputs_by_factor(&no_site, &context),
             vec![
@@ -628,14 +787,16 @@ mod tests {
             &map,
             PathConfig::new(usize::MAX, 2),
         );
-        let out_of_budget = ActionCandidate::new(ActionKind::Eat, Some(coord(ox + 2, oy)), 0);
+        let out_of_budget = ActionCandidate::new(ActionKind::Eat, Some(coord(ox + 2, oy)), 0)
+            .expect("valid diagnostic fixture");
         assert_eq!(
             inputs_by_factor(&out_of_budget, &capped)[3],
             (FactorId::SiteAvailable, 0)
         );
 
         // Idle records the always-available baseline even with a zero budget.
-        let idle = ActionCandidate::new(ActionKind::Idle, None, 0);
+        let idle =
+            ActionCandidate::new(ActionKind::Idle, None, 0).expect("valid diagnostic fixture");
         assert_eq!(
             inputs_by_factor(&idle, &capped)[3],
             (FactorId::SiteAvailable, 1)
@@ -734,7 +895,8 @@ mod tests {
             evaluation
         );
 
-        let candidate = ActionCandidate::new(ActionKind::Work, Some(coord(1, 2)), 3);
+        let candidate = ActionCandidate::new(ActionKind::Work, Some(coord(1, 2)), 3)
+            .expect("valid diagnostic fixture");
         let candidate_trace = CandidateTrace::new(candidate, vec![evaluation]);
         let encoded = serde_json::to_string(&candidate_trace).expect("serialize candidate trace");
         assert_eq!(
@@ -742,7 +904,7 @@ mod tests {
             candidate_trace
         );
 
-        let trace = DecisionTrace::new(vec![candidate_trace]);
+        let trace = DecisionTrace::new(vec![candidate_trace]).expect("valid diagnostic fixture");
         let encoded = serde_json::to_string(&trace).expect("serialize decision trace");
         assert!(
             encoded.contains("\"selected\":null"),
@@ -788,7 +950,8 @@ mod tests {
             .sites_of(SiteKind::Work)
             .next()
             .expect("fixture has a work site");
-        let candidate = ActionCandidate::new(ActionKind::Work, Some(work.coord()), 0);
+        let candidate = ActionCandidate::new(ActionKind::Work, Some(work.coord()), 0)
+            .expect("valid diagnostic fixture");
         let progress = factor_inputs_for(&candidate, &context)[4].input();
         assert!((0..=i64::try_from(WorkCounter::MAX).expect("MAX fits i64")).contains(&progress));
     }

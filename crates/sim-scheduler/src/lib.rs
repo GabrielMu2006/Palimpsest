@@ -104,6 +104,19 @@ pub struct SchedulerMetrics {
     pub stale_nodes: usize,
 }
 
+/// Cumulative successful queue operations for read-only diagnostics.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct SchedulerCounters {
+    /// Newly inserted live payloads.
+    pub enqueued: u64,
+    /// Live payloads returned to the caller (not stale heap nodes).
+    pub dequeued: u64,
+    /// Successfully cancelled live payloads.
+    pub cancelled: u64,
+    /// Successful due-time replacements.
+    pub rescheduled: u64,
+}
+
 /// Deterministic due-time queue for event-driven simulation work.
 ///
 /// Equal due instants are popped in insertion order. Rescheduling assigns a new
@@ -114,6 +127,7 @@ pub struct Scheduler<T> {
     entries: HashMap<ScheduleToken, Entry<T>>,
     next_token_raw: u64,
     next_order_raw: u64,
+    counters: SchedulerCounters,
 }
 
 impl<T> Scheduler<T> {
@@ -127,7 +141,14 @@ impl<T> Scheduler<T> {
             entries: HashMap::new(),
             next_token_raw: 1,
             next_order_raw: 1,
+            counters: SchedulerCounters::default(),
         }
+    }
+
+    /// Cumulative successful operations; reading does not mutate queue state.
+    #[must_use]
+    pub const fn counters(&self) -> SchedulerCounters {
+        self.counters
     }
 
     /// Returns the number of live scheduled payloads.
@@ -149,6 +170,50 @@ impl<T> Scheduler<T> {
             scheduled_entries: self.entries.len(),
             queue_nodes: self.queue.len(),
             stale_nodes: self.queue.len().saturating_sub(self.entries.len()),
+        }
+    }
+
+    /// Returns whether `count` further [`schedule_at`](Scheduler::schedule_at)
+    /// calls would succeed by checking the remaining token/order space.
+    ///
+    /// This is a read-only pre-flight for callers that must reserve several
+    /// follow-up tokens before committing a multi-step operation (ADR-0024
+    /// D1). It never mutates the queue; between the check and the commit there
+    /// is no other inserter on the single thread owning this scheduler, so the
+    /// checked count must equal the exact number of schedules the commit will
+    /// make. A `count` of `0` always succeeds.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SchedulerError::TokenSpaceExhausted`] when the token counter
+    /// cannot cover `count` further allocations, or
+    /// [`SchedulerError::OrderSpaceExhausted`] when the insertion-order
+    /// counter cannot. Token exhaustion takes precedence.
+    pub fn check_schedule_capacity(&self, count: usize) -> Result<(), SchedulerError> {
+        if self.remaining_token_slots() < count {
+            return Err(SchedulerError::TokenSpaceExhausted);
+        }
+        if self.remaining_order_slots() < count {
+            return Err(SchedulerError::OrderSpaceExhausted);
+        }
+        Ok(())
+    }
+
+    fn remaining_token_slots(&self) -> usize {
+        if self.next_token_raw == 0 {
+            0
+        } else {
+            usize::try_from(u64::MAX - self.next_token_raw + 1)
+                .expect("u64::MAX - raw + 1 fits usize on the 64-bit target")
+        }
+    }
+
+    fn remaining_order_slots(&self) -> usize {
+        if self.next_order_raw == 0 {
+            0
+        } else {
+            usize::try_from(u64::MAX - self.next_order_raw + 1)
+                .expect("u64::MAX - raw + 1 fits usize on the 64-bit target")
         }
     }
 
@@ -179,6 +244,7 @@ impl<T> Scheduler<T> {
         );
         self.queue.push(QueueKey { due, order, token });
         self.next_token_raw = next_token_raw;
+        self.counters.enqueued = self.counters.enqueued.saturating_add(1);
         Ok(token)
     }
 
@@ -186,6 +252,7 @@ impl<T> Scheduler<T> {
     pub fn cancel(&mut self, token: ScheduleToken) -> bool {
         let removed = self.entries.remove(&token).is_some();
         if removed {
+            self.counters.cancelled = self.counters.cancelled.saturating_add(1);
             self.compact_if_needed();
         }
         removed
@@ -215,6 +282,7 @@ impl<T> Scheduler<T> {
         entry.order = order;
         self.queue.push(QueueKey { due, order, token });
         self.compact_if_needed();
+        self.counters.rescheduled = self.counters.rescheduled.saturating_add(1);
         Ok(true)
     }
 
@@ -242,6 +310,7 @@ impl<T> Scheduler<T> {
             let Some(entry) = self.entries.remove(&key.token) else {
                 continue;
             };
+            self.counters.dequeued = self.counters.dequeued.saturating_add(1);
             return Some(Scheduled {
                 token: key.token,
                 due: entry.due,
@@ -329,7 +398,7 @@ impl Error for SchedulerError {}
 mod tests {
     use palimpsest_sim_time::SimInstant;
 
-    use super::Scheduler;
+    use super::{Scheduler, SchedulerError};
 
     #[test]
     fn empty_queue_has_no_due_work() {
@@ -480,5 +549,86 @@ mod tests {
         }
         assert_eq!(popped, 100_000);
         assert!(scheduler.is_empty());
+    }
+
+    #[test]
+    fn capacity_preflight_covers_zero_one_and_two_requests() {
+        // A fresh scheduler must permit at least two further schedules.
+        let mut scheduler = Scheduler::<u32>::new();
+        assert!(scheduler.check_schedule_capacity(0).is_ok());
+        assert!(scheduler.check_schedule_capacity(1).is_ok());
+        assert!(scheduler.check_schedule_capacity(2).is_ok());
+        // Actually scheduling two then re-checking shows the counter consumed.
+        scheduler
+            .schedule_at(SimInstant::from_seconds(1), 1)
+            .expect("schedule");
+        scheduler
+            .schedule_at(SimInstant::from_seconds(1), 2)
+            .expect("schedule");
+        assert!(scheduler.check_schedule_capacity(1).is_ok());
+    }
+
+    #[test]
+    fn capacity_preflight_reports_exhaustion_without_mutation() {
+        // Drive the token counter to its last slot, then confirm a further
+        // request is rejected and the queue/metrics are unchanged.
+        let mut scheduler = Scheduler::<u32>::new();
+        scheduler.next_token_raw = u64::MAX;
+        scheduler.next_order_raw = u64::MAX;
+        let before = scheduler.metrics();
+        assert!(scheduler.check_schedule_capacity(1).is_ok());
+        assert_eq!(
+            scheduler.check_schedule_capacity(2),
+            Err(SchedulerError::TokenSpaceExhausted)
+        );
+        assert_eq!(scheduler.metrics(), before, "a pre-flight never mutates");
+
+        // Only order space is tight: order exhaustion is reported.
+        let mut scheduler = Scheduler::<u32>::new();
+        scheduler.next_order_raw = u64::MAX;
+        assert_eq!(
+            scheduler.check_schedule_capacity(2),
+            Err(SchedulerError::OrderSpaceExhausted)
+        );
+
+        // Token space is cheap but order is capped at one remaining slot.
+        let mut scheduler = Scheduler::<u32>::new();
+        scheduler.next_token_raw = 3;
+        scheduler.next_order_raw = u64::MAX;
+        assert_eq!(
+            scheduler.check_schedule_capacity(4),
+            Err(SchedulerError::OrderSpaceExhausted)
+        );
+    }
+    #[test]
+    fn operation_counters_distinguish_live_payloads_from_stale_nodes() {
+        let mut queue = Scheduler::new();
+        let first = queue.schedule_at(SimInstant::from_seconds(1), 1).unwrap();
+        let second = queue.schedule_at(SimInstant::from_seconds(2), 2).unwrap();
+        assert!(
+            queue
+                .reschedule(first, SimInstant::from_seconds(3))
+                .unwrap()
+        );
+        assert!(queue.cancel(second));
+        assert!(!queue.cancel(second));
+        assert!(queue.pop_due(SimInstant::from_seconds(2)).is_none());
+        assert_eq!(
+            queue
+                .pop_due(SimInstant::from_seconds(3))
+                .unwrap()
+                .into_payload(),
+            1
+        );
+        assert!(queue.pop_due(SimInstant::MAX).is_none());
+        assert_eq!(
+            queue.counters(),
+            super::SchedulerCounters {
+                enqueued: 2,
+                dequeued: 1,
+                cancelled: 1,
+                rescheduled: 1
+            }
+        );
     }
 }

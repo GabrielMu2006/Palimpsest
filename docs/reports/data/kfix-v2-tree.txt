@@ -1,0 +1,215 @@
+palimpsest-bench-memory v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/tools/bench-memory)
+├── libc v0.2.189
+├── palimpsest-sim-ai v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-ai)
+│   ├── palimpsest-sim-time v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-time)
+│   │   └── serde v1.0.229
+│   │       ├── serde_core v1.0.229
+│   │       └── serde_derive v1.0.229 (proc-macro)
+│   │           ├── proc-macro2 v1.0.107
+│   │           │   └── unicode-ident v1.0.24
+│   │           ├── quote v1.0.47
+│   │           │   └── proc-macro2 v1.0.107 (*)
+│   │           └── syn v3.0.4
+│   │               ├── proc-macro2 v1.0.107 (*)
+│   │               ├── quote v1.0.47 (*)
+│   │               └── unicode-ident v1.0.24
+│   ├── palimpsest-sim-world v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-world)
+│   │   └── serde v1.0.229 (*)
+│   └── serde v1.0.229 (*)
+├── palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+│   ├── bevy_ecs v0.19.1
+│   │   ├── arrayvec v0.7.8
+│   │   ├── bevy_ecs_macros v0.19.1 (proc-macro)
+│   │   │   ├── bevy_ecs_macro_logic v0.19.1
+│   │   │   │   ├── bevy_macro_utils v0.19.1
+│   │   │   │   │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │   │   ├── quote v1.0.47 (*)
+│   │   │   │   │   ├── syn v2.0.119
+│   │   │   │   │   │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │   │   │   ├── quote v1.0.47 (*)
+│   │   │   │   │   │   └── unicode-ident v1.0.24
+│   │   │   │   │   └── toml_edit v0.25.13+spec-1.1.0
+│   │   │   │   │       ├── indexmap v2.14.1
+│   │   │   │   │       │   ├── equivalent v1.0.2
+│   │   │   │   │       │   └── hashbrown v0.17.1
+│   │   │   │   │       ├── toml_datetime v1.1.1+spec-1.1.0
+│   │   │   │   │       ├── toml_parser v1.1.3+spec-1.1.0
+│   │   │   │   │       │   └── winnow v1.0.4
+│   │   │   │   │       └── winnow v1.0.4
+│   │   │   │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │   ├── quote v1.0.47 (*)
+│   │   │   │   └── syn v2.0.119 (*)
+│   │   │   ├── bevy_macro_utils v0.19.1 (*)
+│   │   │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   ├── quote v1.0.47 (*)
+│   │   │   └── syn v2.0.119 (*)
+│   │   ├── bevy_platform v0.19.1
+│   │   │   ├── foldhash v0.2.0
+│   │   │   ├── futures-lite v2.6.1
+│   │   │   │   ├── fastrand v2.5.0
+│   │   │   │   ├── futures-core v0.3.34
+│   │   │   │   ├── futures-io v0.3.34
+│   │   │   │   ├── parking v2.2.1
+│   │   │   │   └── pin-project-lite v0.2.17
+│   │   │   ├── hashbrown v0.16.1
+│   │   │   │   ├── equivalent v1.0.2
+│   │   │   │   └── serde_core v1.0.229
+│   │   │   ├── serde v1.0.229 (*)
+│   │   │   └── spin v0.10.1
+│   │   ├── bevy_ptr v0.19.1
+│   │   ├── bevy_reflect v0.19.1
+│   │   │   ├── assert_type_match v0.1.1 (proc-macro)
+│   │   │   │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │   ├── quote v1.0.47 (*)
+│   │   │   │   └── syn v2.0.119 (*)
+│   │   │   ├── bevy_platform v0.19.1 (*)
+│   │   │   ├── bevy_ptr v0.19.1
+│   │   │   ├── bevy_reflect_derive v0.19.1 (proc-macro)
+│   │   │   │   ├── bevy_macro_utils v0.19.1 (*)
+│   │   │   │   ├── indexmap v2.14.1 (*)
+│   │   │   │   ├── proc-macro2 v1.0.107 (*)
+│   │   │   │   ├── quote v1.0.47 (*)
+│   │   │   │   └── syn v2.0.119 (*)
+│   │   │   ├── bevy_utils v0.19.1
+│   │   │   │   ├── bevy_platform v0.19.1 (*)
+│   │   │   │   ├── disqualified v1.0.0
+│   │   │   │   ├── indexmap v2.14.1
+│   │   │   │   │   ├── equivalent v1.0.2
+│   │   │   │   │   └── hashbrown v0.17.1
+│   │   │   │   │       └── foldhash v0.2.0
+│   │   │   │   └── thread_local v1.1.10
+│   │   │   │       └── cfg-if v1.0.4
+│   │   │   ├── derive_more v2.1.1
+│   │   │   │   └── derive_more-impl v2.1.1 (proc-macro)
+│   │   │   │       ├── convert_case v0.10.0
+│   │   │   │       │   └── unicode-segmentation v1.13.3
+│   │   │   │       ├── proc-macro2 v1.0.107 (*)
+│   │   │   │       ├── quote v1.0.47 (*)
+│   │   │   │       ├── syn v2.0.119 (*)
+│   │   │   │       └── unicode-xid v0.2.6
+│   │   │   ├── disqualified v1.0.0
+│   │   │   ├── downcast-rs v2.0.2
+│   │   │   ├── erased-serde v0.4.10
+│   │   │   │   ├── serde_core v1.0.229
+│   │   │   │   └── typeid v1.0.3
+│   │   │   ├── foldhash v0.2.0
+│   │   │   ├── indexmap v2.14.1 (*)
+│   │   │   ├── serde v1.0.229 (*)
+│   │   │   ├── smallvec v1.15.2
+│   │   │   ├── thiserror v2.0.20
+│   │   │   │   └── thiserror-impl v2.0.20 (proc-macro)
+│   │   │   │       ├── proc-macro2 v1.0.107 (*)
+│   │   │   │       ├── quote v1.0.47 (*)
+│   │   │   │       └── syn v3.0.4 (*)
+│   │   │   └── variadics_please v1.1.0 (proc-macro)
+│   │   │       ├── proc-macro2 v1.0.107 (*)
+│   │   │       ├── quote v1.0.47 (*)
+│   │   │       └── syn v2.0.119 (*)
+│   │   ├── bevy_tasks v0.19.1
+│   │   │   ├── async-executor v1.14.0
+│   │   │   │   ├── async-task v4.7.1
+│   │   │   │   ├── concurrent-queue v2.5.0
+│   │   │   │   │   └── crossbeam-utils v0.8.22
+│   │   │   │   ├── fastrand v2.5.0
+│   │   │   │   ├── futures-lite v2.6.1 (*)
+│   │   │   │   ├── pin-project-lite v0.2.17
+│   │   │   │   └── slab v0.4.12
+│   │   │   ├── async-task v4.7.1
+│   │   │   ├── atomic-waker v1.1.2
+│   │   │   ├── bevy_platform v0.19.1 (*)
+│   │   │   ├── crossbeam-queue v0.3.13
+│   │   │   │   └── crossbeam-utils v0.8.22
+│   │   │   ├── derive_more v2.1.1 (*)
+│   │   │   └── futures-lite v2.6.1 (*)
+│   │   ├── bevy_utils v0.19.1 (*)
+│   │   ├── bitflags v2.13.1
+│   │   ├── bumpalo v3.20.3
+│   │   ├── concurrent-queue v2.5.0 (*)
+│   │   ├── derive_more v2.1.1 (*)
+│   │   ├── fixedbitset v0.5.7
+│   │   ├── indexmap v2.14.1 (*)
+│   │   ├── log v0.4.34
+│   │   ├── nonmax v0.5.5
+│   │   ├── slotmap v1.1.1
+│   │   ├── smallvec v1.15.2
+│   │   ├── thiserror v2.0.20 (*)
+│   │   └── variadics_please v1.1.0 (proc-macro) (*)
+│   ├── palimpsest-sim-ai v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-ai) (*)
+│   ├── palimpsest-sim-entity v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-entity)
+│   │   └── serde v1.0.229 (*)
+│   ├── palimpsest-sim-events v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-events)
+│   │   ├── palimpsest-sim-entity v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-entity) (*)
+│   │   ├── palimpsest-sim-time v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-time) (*)
+│   │   ├── serde v1.0.229 (*)
+│   │   └── serde_json v1.0.151
+│   │       ├── itoa v1.0.18
+│   │       ├── memchr v2.8.3
+│   │       ├── serde_core v1.0.229
+│   │       └── zmij v1.0.23
+│   ├── palimpsest-sim-scheduler v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-scheduler)
+│   │   └── palimpsest-sim-time v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-time) (*)
+│   ├── palimpsest-sim-time v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-time) (*)
+│   ├── palimpsest-sim-world v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-world) (*)
+│   ├── serde v1.0.229 (*)
+│   └── serde_json v1.0.151 (*)
+├── palimpsest-sim-time v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-time) (*)
+├── palimpsest-sim-world v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-world) (*)
+├── serde v1.0.229 (*)
+└── serde_json v1.0.151 (*)
+
+palimpsest-godot-bridge v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/godot-bridge)
+├── godot v0.5.5
+│   ├── godot-core v0.5.5
+│   │   ├── glam v0.32.1
+│   │   ├── godot-cell v0.5.5
+│   │   └── godot-ffi v0.5.5
+│   └── godot-macros v0.5.5 (proc-macro)
+│       ├── proc-macro2 v1.0.107 (*)
+│       ├── quote v1.0.47 (*)
+│       └── venial v0.6.1
+│           ├── proc-macro2 v1.0.107 (*)
+│           └── quote v1.0.47 (*)
+└── palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core) (*)
+
+palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+├── bevy_ecs v0.19.1 (*)
+├── palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core) (*)
+├── serde v1.0.229 (*)
+└── serde_json v1.0.151 (*)
+
+palimpsest-sim-ai v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-ai) (*)
+
+palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core) (*)
+
+palimpsest-sim-entity v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-entity) (*)
+
+palimpsest-sim-events v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-events) (*)
+
+palimpsest-sim-scheduler v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-scheduler) (*)
+
+palimpsest-sim-storage v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-storage)
+├── bincode v2.0.1
+│   ├── bincode_derive v2.0.1 (proc-macro)
+│   │   └── virtue v0.0.18
+│   ├── serde v1.0.229 (*)
+│   └── unty v0.0.4
+├── palimpsest-sim-entity v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-entity) (*)
+├── palimpsest-sim-events v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-events) (*)
+├── palimpsest-sim-time v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-time) (*)
+├── rusqlite v0.40.2
+│   ├── bitflags v2.13.1
+│   ├── fallible-iterator v0.3.0
+│   ├── fallible-streaming-iterator v0.1.9
+│   ├── hashlink v0.12.1
+│   │   └── hashbrown v0.17.1 (*)
+│   ├── libsqlite3-sys v0.38.2
+│   └── smallvec v1.15.2
+├── serde v1.0.229 (*)
+├── serde_json v1.0.151 (*)
+└── zstd v0.13.3
+    └── zstd-safe v7.2.4
+        └── zstd-sys v2.0.16+zstd.1.5.7
+
+palimpsest-sim-time v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-time) (*)
+
+palimpsest-sim-world v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-world) (*)

@@ -1,7 +1,10 @@
 # CHRON-034 — Deterministic Regression and CI
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Implemented locally — hosted candidate gates pending; explicitly authorized033–036 instruction.**
+> Approval of this Task **or its identified execution plan** authorizes its stated steps once.
+> Follow [Execution Contract](../EXECUTION_CONTRACT.md) and
+> [remaining-plan decisions, supporting files and commands](../PHASE_1_REMAINING_EXECUTION.md).
+> Internal design/readiness and agent dispatch do not require repeated owner approval.
 
 ## Objective
 Establish a layered, deterministic regression suite and a CI pipeline: a seed corpus of worlds, a unit/integration/chaos-smoke layer, Linux Rust jobs and macOS Godot jobs, and a guard against using noisy CI numbers as a performance gate.
@@ -18,7 +21,7 @@ Establish a layered, deterministic regression suite and a CI pipeline: a seed co
 - Wire the Rust quality gates into Linux CI: rustfmt, Clippy with warnings denied, debug+release workspace tests, docs, dependency audit, and the regression/chaos-smoke layer. Keep the M5 reference-machine performance gates local (PERFORMANCE.md rule).
 - Wire the Godot integration job into macOS CI: GDExtension discovery/init, scene smoke run, and a version of the CHRON-031 presentation smoke; mark the editor-exit crash path as a monitored risk per ADR-0010.
 - Ensure CI does not assert performance thresholds from noisy numbers; CI runs only correctness/compile/support smoke. Any headless or rendered throughput is produced but labeled non-gating.
-- Record the seed corpus, expected invariants, and exact CI commands. Configure stable Rust/Godot check names suitable for branch protection. Until GitHub permits private-repository rulesets on the current account, document the manual rule that `main` merges require those checks; do not claim server-side enforcement that does not exist.
+- Record the seed corpus, expected invariants, and exact CI commands. The repository must remain public under the product-owner decision of 2026-08-30. Keep stable `rust-quality-and-smoke-benchmarks` and `godot-macos-integration` names as strict required `main` checks, with administrator enforcement and force pushes/branch deletion disabled. Verify live server-side enforcement; report missing protection as a blocker instead of relying on the superseded private-repository/manual-only fallback.
 
 ## Out of Scope
 - Using CI numbers as a performance gate (forbidden by PERFORMANCE.md and by this Task's guard).
@@ -33,6 +36,20 @@ Establish a layered, deterministic regression suite and a CI pipeline: a seed co
 - CHRON-033 complete (benchmark harness methods/harness the CI smoke reuses only as compile/non-gating smoke).
 - CHRON-015/CHRON-017 existing CI and CHRON-011/CHRON-031 Godot jobs.
 
+## Execution Steps / Readiness
+
+1. Fix D4's seed 0/1/42 one-day smoke corpus and expected hash schema. Register
+   root fixtures/tests through the runner's Cargo integration-test target;
+   root `tests/` files are not automatically executed by this virtual workspace.
+2. Independently generate/review initial goldens; assert deliberately corrupted
+   expected data fails. Do not add self-updating golden tests.
+3. Preserve existing Rust, Godot and macOS native RSS tests. Add local-equivalent
+   regression commands to the two stable CI jobs; no noisy timing thresholds.
+4. Execute the explicitly planned candidate-branch commit/push/Draft PR step in
+   P1-REMAINING (not merge). Verify clean candidate checkout, live protection and
+   both hosted checks at the actual candidate SHA. Parent owns workflow/goldens/
+   publication; fixed test leaves may be delegated after these contracts settle.
+
 ## Files Modified / Allowed
 - `.github/workflows/**` (new/updated CI jobs and required checks).
 - `tests/simulation/**`, `tests/regression/**`, `tests/worlds/**` (seed corpus + expected invariants).
@@ -40,7 +57,9 @@ Establish a layered, deterministic regression suite and a CI pipeline: a seed co
 - `docs/reports/CHRON-034_REGRESSION_CI.md` for the CI design/commands/gate policy.
 - `docs/tasks/CHRON-034.md`.
 - Optionally `crates/sim-core/**` for a regression harness/assertion helper, and a `MASTER_SPEC.md` hash guard (already exists) retained.
-- No product doc change; no `MASTER_SPEC.md`, `docs/ARCHITECTURE.md`, or `docs/PERFORMANCE.md` edits without a Change Proposal.
+- `apps/headless-runner/tests/**` and its manifest for executable test registration; local scripts may not count unregistered files as tests.
+- External actions are limited to the candidate branch and Draft PR described in P1-REMAINING. Never change protection/visibility or merge; ordinary local-only Task approval without that publication step cannot be reported as hosted CI success.
+- Include this Task's necessary supporting files under P1-REMAINING §3: tests/fixtures, benchmark adapters, corresponding ADR and relevant architecture/performance/status documentation. Routine synchronization does not need a CP; Master Spec conflicts do. No `MASTER_SPEC.md` edits, unrelated refactoring or budget changes.
 
 ## API Contract
 - A deterministic regression entry, e.g. `run_regression(seed: WorldSeed, years) -> Result<WorldReport, RegressionError>` (reused by the chaos-smoke CI step), where the report includes the final-state hash and the invariant summary.
@@ -54,7 +73,7 @@ Establish a layered, deterministic regression suite and a CI pipeline: a seed co
 - Regression harness: a deliberately broken world config fails the exact invariants and hash, proving the gate has teeth.
 - Chaos smoke: the shortened seed run executes without error and within a CI time budget; the full 10-year seed (CHRON-032) is not run in CI but is reported as the reference-measured local gate.
 - Layering: unit/integration/chaos-smoke each run and each can independently fail; no layer is skipped or weakened.
-- CI syntax/validity: workflow check names are stable and locally equivalent commands pass. Server-side `main` enforcement is verified when GitHub account capability permits it; until then the limitation and manual merge rule are reported.
+- CI syntax/validity: workflow check names are stable and locally equivalent commands pass. Verify public repository visibility and server-side `main` enforcement for the two strict required checks, administrator enforcement, and disabled force pushes/branch deletion. A visibility or enforcement mismatch is reported as a blocker, not a successful manual substitute.
 - Workspace gates: fmt, Clippy warnings denied, debug/release tests (local), docs, dependency audit, and a clean-checkout run.
 
 ## Benchmark
@@ -64,9 +83,9 @@ Establish a layered, deterministic regression suite and a CI pipeline: a seed co
 ## Definition of Done
 - A deterministic seed corpus (fixed worlds) with expected final-state hashes/invariants exists under `tests/worlds/`.
 - A layered unit/integration/chaos-smoke suite runs under a clean checkout; each layer can fail independently.
-- Linux Rust CI (compile/lint/tests/regression/chaos-smoke) and macOS Godot CI (GDExtension init + scene smoke) exist with stable names and are the intended required `main` checks; actual GitHub protection status is reported honestly.
+- Linux Rust CI (compile/lint/tests/regression/chaos-smoke) and macOS Godot CI (GDExtension init + scene smoke) exist with stable names and are verified strict required `main` checks on the public repository; administrator enforcement is enabled, force pushes and branch deletion are disabled, and verification evidence is reported.
 - CI never gates on noisy performance numbers; any throughput is logged as non-gating.
 - No test is deleted, skipped, or weakened; the editor-exit crash path remains a monitored (non-blocking) risk per ADR-0010.
 
 ## Required Completion Report
-Report: change summary; commands run; the seed corpus list + expected invariants; the CI jobs added/updated and their exact triggers; the chaos-smoke wall-clock (as a CI record, not a gate); known limitations (e.g., CI smoke is not the full 10-year run; macOS Godot job platform constraints; editor-exit crash still monitored); and any blocker. Do not auto-start the next Task; each requires separate product-owner approval.
+Report: change summary; commands run; the seed corpus list + expected invariants; the CI jobs added/updated and their exact triggers; the chaos-smoke wall-clock (as a CI record, not a gate); known limitations (e.g., CI smoke is not the full 10-year run; macOS Godot job platform constraints; editor-exit crash still monitored); and any blocker. Continue to the next verified-ready Task already covered by the approved plan; do not ask for routine reconfirmation.

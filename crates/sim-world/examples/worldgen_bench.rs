@@ -86,6 +86,37 @@ fn content_hash(map: &palimpsest_sim_world::LocalGrid<TerrainKind>) -> u64 {
     hash
 }
 
+/// Runs one deterministic retained-map workload for the memory benchmark.
+/// Preparation (seed/config) occurs before the first observation; exactly one
+/// map is generated afterward, validated against its locked golden hash, and
+/// retained through the second observation.
+///
+/// # Panics
+///
+/// Panics when `case` is not one of the documented seed selectors (`"0"`,
+/// `"1"`, or `"42"`) or when the golden map assertion fails.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    let seed_value = match case {
+        "0" | "1" | "42" => case.parse::<u64>().expect("validated seed case"),
+        _ => panic!("unknown worldgen memory workload case: {case}"),
+    };
+    let seed = WorldSeed::new(seed_value);
+    let config = WorldGenConfig::default();
+    observe();
+    let map = WorldMap::generate(seed, config);
+    let hash = content_hash(map.local());
+    let expected = match seed_value {
+        0 => 10_103_231_413_028_631_179_u64,
+        1 => 9_466_269_938_330_766_210_u64,
+        42 => 8_056_959_030_977_719_378_u64,
+        _ => unreachable!(),
+    };
+    assert_eq!(hash, expected, "golden map changed for seed {seed_value}");
+    black_box(&map);
+    observe();
+    hash
+}
+
 fn current_rss_bytes() -> Option<u64> {
     let pid = std::process::id().to_string();
     let output = Command::new("ps")
@@ -98,4 +129,23 @@ fn current_rss_bytes() -> Option<u64> {
 
 fn json_u64(value: Option<u64>) -> String {
     value.map_or_else(|| "null".to_owned(), |number| number.to_string())
+}
+
+#[cfg(test)]
+mod adapter_tests {
+    use super::memory_workload;
+
+    #[test]
+    fn memory_adapter_observes_twice_and_returns_golden_hash() {
+        let mut observations = 0;
+        let hash = memory_workload("42", &mut || observations += 1);
+        assert_eq!(observations, 2);
+        assert_eq!(hash, 8_056_959_030_977_719_378);
+    }
+
+    #[test]
+    #[should_panic(expected = "unknown worldgen memory workload case")]
+    fn memory_adapter_rejects_unknown_case() {
+        let _ = memory_workload("7", &mut || {});
+    }
 }

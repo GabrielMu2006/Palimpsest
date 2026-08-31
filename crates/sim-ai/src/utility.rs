@@ -21,11 +21,14 @@
 
 use core::fmt::{self, Display, Formatter};
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
-use crate::action::{ActionCandidate, ActionKind, CandidateContext};
+use crate::action::{
+    ActionCandidate, ActionKind, CandidateContext, CandidateSetError, validate_candidate_set,
+};
 use crate::trace::{
-    CandidateTrace, DecisionTrace, FactorEvaluation, FactorId, TieBreakReason, factor_inputs_for,
+    CandidateTrace, DecisionTrace, FactorEvaluation, FactorId, TieBreakReason,
+    TraceValidationError, factor_inputs_for,
 };
 
 /// A bounded signed integer utility score (CHRON-026, ADR-0014).
@@ -35,9 +38,9 @@ use crate::trace::{
 /// overflow, silent wrap, and NaN are impossible by construction. With the
 /// Phase 1 default [`Weights`] and the bounded [`FactorId`] inputs
 /// (pressures `0..=1000`, distance `0..=254`, availability `0`/`1`, and the
-/// zero-weighted work progress), the achievable base range is
-/// `[-1_270, 20_000]`; with the maximum perturbation (`ε = 100`, see
-/// [`MAX_EPSILON`]) the achievable total range is `[-1_370, 20_100]`. Serde
+/// zero-weighted work progress), the conservative base range is
+/// `[-1_270, 10_000]`; with the maximum perturbation (`ε = 100`, see
+/// [`MAX_EPSILON`]) the conservative total range is `[-1_370, 10_100]`. Serde
 /// encodes the bare `i64`.
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize)]
 #[serde(transparent)]
@@ -117,19 +120,14 @@ impl FactorWeights {
 /// | kind  | Hunger | Fatigue | Distance | `SiteAvailable` | `WorkProgress` |
 /// |-------|--------|---------|----------|-----------------|----------------|
 /// | Move  | 0      | 0       | −5       | +10             | 0              |
-/// | Eat   | +10    | 0       | −5       | `+10_000`       | 0              |
-/// | Sleep | 0      | +10     | −5       | `+10_000`       | 0              |
-/// | Work  | 0      | 0       | −5       | `+2_000`        | 0              |
+/// | Eat   | +10    | 0       | −5       | 0               | 0              |
+/// | Sleep | 0      | +10     | −5       | 0               | 0              |
+/// | Work  | 0      | 0       | −5       | `+2_300`        | 0              |
 /// | Idle  | 0      | 0       | 0        | −50             | 0              |
 ///
-/// Rationale: the needs-driven kinds score pressure × 10 minus distance; the
-/// `+10_000` [`FactorId::SiteAvailable`] bonus makes a real, reachable
-/// Eat/Sleep site outrank a fabricated or unreachable target by `10_000`
-/// (such a target forgoes the bonus and keeps only its distance term — a
-/// negative weight would have sunk the *available* candidates instead, see
-/// SC-009); Work's `+2_000` makes a reachable work site outrank the `Idle`
-/// baseline (−50 flat) everywhere on the 128×128 grid while losing to any
-/// enumerated Eat/Sleep candidate; and [`FactorId::WorkProgress`] is
+/// Rationale: the needs-driven kinds score pressure × 10 minus distance,
+/// while Work's `+2_300` availability baseline makes a reachable work site
+/// outrank the `Idle` baseline through low need pressure. [`FactorId::WorkProgress`] is
 /// recorded but weight 0 — a complete trace with zero contribution, per the
 /// task contract.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
@@ -188,9 +186,9 @@ impl Default for Weights {
     fn default() -> Self {
         Self::new(
             FactorWeights::new(0, 0, -5, 10, 0),
-            FactorWeights::new(10, 0, -5, 10_000, 0),
-            FactorWeights::new(0, 10, -5, 10_000, 0),
-            FactorWeights::new(0, 0, -5, 2_000, 0),
+            FactorWeights::new(10, 0, -5, 0, 0),
+            FactorWeights::new(0, 10, -5, 0, 0),
+            FactorWeights::new(0, 0, -5, 2_300, 0),
             FactorWeights::new(0, 0, 0, -50, 0),
         )
     }
@@ -209,16 +207,52 @@ pub const MAX_EPSILON: i64 = 100;
 ///
 /// Serde uses the default variant names (`"Zero"`, `{"Bounded": ε}`); those
 /// are the stable wire keys and must never change.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize)]
 pub enum PerturbationRange {
     /// No perturbation at all: the fully deterministic mode (ADR-0014
     /// default in Phase 1).
     Zero,
     /// Uniform integer perturbation in `[-ε, +ε]`. [`PerturbationSpec::new`]
-    /// rejects ε outside `0..=MAX_EPSILON`; the scorer clamps
-    /// wire-constructed values into that range defensively.
+    /// rejects ε outside `0..=MAX_EPSILON`. Native code can form an invalid
+    /// raw request, but cannot use it to construct an execution spec.
+    /// Deserialization rejects invalid ranges too; nothing is clamped.
     Bounded(i64),
 }
+
+impl<'de> Deserialize<'de> for PerturbationRange {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        enum Wire {
+            Zero,
+            Bounded(i64),
+        }
+        let range = match Wire::deserialize(deserializer)? {
+            Wire::Zero => Self::Zero,
+            Wire::Bounded(epsilon) => Self::Bounded(epsilon),
+        };
+        PerturbationSpec::new(0, range)
+            .map(|spec| spec.range())
+            .map_err(serde::de::Error::custom)
+    }
+}
+
+/// An invalid perturbation request, rejected before execution.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PerturbationError {
+    /// Epsilon must be in the inclusive interval 0..=100.
+    EpsilonOutOfRange { epsilon: i64 },
+}
+
+impl Display for PerturbationError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::EpsilonOutOfRange { epsilon } => {
+                write!(f, "epsilon {epsilon} outside 0..={MAX_EPSILON}")
+            }
+        }
+    }
+}
+impl std::error::Error for PerturbationError {}
 
 /// The explicit perturbation input of one decision: a seed and a range
 /// (CHRON-026, ADR-0014).
@@ -228,7 +262,7 @@ pub enum PerturbationRange {
 /// mixer — no external PRNG dependency, no platform dependence. The default
 /// is [`PerturbationSpec::ZERO`]: seed 0, [`PerturbationRange::Zero`]
 /// (ADR-0014: "default 0 in Phase 1").
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize)]
 pub struct PerturbationSpec {
     seed: u64,
     range: PerturbationRange,
@@ -248,15 +282,17 @@ impl PerturbationSpec {
     }
 
     /// Creates a spec, rejecting ε outside `0..=MAX_EPSILON`.
-    #[must_use]
-    pub const fn new(seed: u64, range: PerturbationRange) -> Option<Self> {
+    ///
+    /// # Errors
+    /// Returns a typed error for epsilon outside the permitted interval.
+    pub const fn new(seed: u64, range: PerturbationRange) -> Result<Self, PerturbationError> {
         match range {
-            PerturbationRange::Zero => Some(Self { seed, range }),
+            PerturbationRange::Zero => Ok(Self { seed, range }),
             PerturbationRange::Bounded(epsilon) => {
                 if epsilon < 0 || epsilon > MAX_EPSILON {
-                    None
+                    Err(PerturbationError::EpsilonOutOfRange { epsilon })
                 } else {
-                    Some(Self { seed, range })
+                    Ok(Self { seed, range })
                 }
             }
         }
@@ -272,6 +308,18 @@ impl PerturbationSpec {
     #[must_use]
     pub const fn range(&self) -> PerturbationRange {
         self.range
+    }
+}
+
+impl<'de> Deserialize<'de> for PerturbationSpec {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        struct Wire {
+            seed: u64,
+            range: PerturbationRange,
+        }
+        let wire = Wire::deserialize(deserializer)?;
+        Self::new(wire.seed, wire.range).map_err(serde::de::Error::custom)
     }
 }
 
@@ -332,7 +380,7 @@ impl CandidateScore {
 /// The outcome of one decision: the winning candidate and score, the fully
 /// populated [`DecisionTrace`], and every candidate's score in enumeration
 /// order for Developer Mode (Master Spec §72).
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct Selection {
     candidate: ActionCandidate,
     score: UtilityScore,
@@ -341,6 +389,54 @@ pub struct Selection {
 }
 
 impl Selection {
+    // Identity/copy consistency only: imported diagnostics do not establish
+    // historical world truth or authorize action execution.
+    fn validate(&self) -> Result<(), TraceValidationError> {
+        let identities: Vec<_> = self
+            .all_scores
+            .iter()
+            .map(CandidateScore::candidate)
+            .collect();
+        if identities.is_empty() {
+            return Err(TraceValidationError::EmptySelection);
+        }
+        validate_candidate_set(&identities, true)
+            .map_err(TraceValidationError::InvalidCandidates)?;
+        let order = self.candidate.order();
+        let inconsistent = TraceValidationError::InconsistentSelection { order };
+        if self.trace.selected() != Some(order) {
+            return Err(inconsistent);
+        }
+        if self.trace.candidates().len() != self.all_scores.len() {
+            return Err(TraceValidationError::CandidateCountMismatch);
+        }
+        let chosen = self
+            .all_scores
+            .iter()
+            .find(|entry| entry.candidate.order() == order)
+            .ok_or(TraceValidationError::SelectedKeyMissing { order })?;
+        if chosen.candidate != self.candidate || chosen.score != self.score {
+            return Err(inconsistent);
+        }
+        for entry in &self.all_scores {
+            let order = entry.candidate.order();
+            let trace = self
+                .trace
+                .candidates()
+                .iter()
+                .find(|trace| trace.candidate().order() == order)
+                .ok_or(TraceValidationError::SelectedKeyMissing { order })?;
+            if entry.trace.candidate() != entry.candidate
+                || entry.trace.total() != Some(entry.score.get())
+                || entry.trace.perturbation() != Some(entry.perturbation)
+                || trace != &entry.trace
+            {
+                return Err(TraceValidationError::InconsistentSelection { order });
+            }
+        }
+        Ok(())
+    }
+
     /// The selected candidate.
     #[must_use]
     pub const fn candidate(&self) -> ActionCandidate {
@@ -366,17 +462,41 @@ impl Selection {
     }
 }
 
+impl<'de> Deserialize<'de> for Selection {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        struct Wire {
+            candidate: ActionCandidate,
+            score: UtilityScore,
+            trace: DecisionTrace,
+            all_scores: Vec<CandidateScore>,
+        }
+        let wire = Wire::deserialize(deserializer)?;
+        let selection = Self {
+            candidate: wire.candidate,
+            score: wire.score,
+            trace: wire.trace,
+            all_scores: wire.all_scores,
+        };
+        selection.validate().map_err(serde::de::Error::custom)?;
+        Ok(selection)
+    }
+}
+
 /// Errors from action selection (CHRON-026).
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub enum DecisionError {
     /// The candidate set was empty; no action is synthesized in that case
     /// (invariant 5).
     EmptyCandidates,
+    /// A selection requires unique, contiguous keys and unique action/target pairs.
+    InvalidCandidates(CandidateSetError),
 }
 
 impl Display for DecisionError {
     fn fmt(&self, formatter: &mut Formatter<'_>) -> fmt::Result {
         match self {
+            Self::InvalidCandidates(error) => Display::fmt(error, formatter),
             Self::EmptyCandidates => {
                 write!(
                     formatter,
@@ -399,6 +519,8 @@ impl std::error::Error for DecisionError {}
 /// recorded in the candidate's trace, so the full calculation is auditable
 /// (Master Spec §72). Equal inputs yield identical, identically ordered
 /// output (invariant 2).
+/// Diagnostic subsets may carry arbitrary keys; this function does not
+/// certify a complete selection set or populate a selected key.
 #[must_use]
 pub fn score_candidates(
     candidates: &[ActionCandidate],
@@ -451,6 +573,9 @@ pub fn score_candidates(
 ///
 /// Returns [`DecisionError::EmptyCandidates`] when `candidates` is empty; no
 /// untraced action is synthesized (invariant 5).
+/// Returns [`DecisionError::InvalidCandidates`] for duplicate keys/pairs or
+/// keys outside `0..len`. Input permutation is valid; the order key, not
+/// vector position, resolves ties. No candidate is renumbered or dropped.
 ///
 /// # Panics
 ///
@@ -465,6 +590,7 @@ pub fn select_action(
     if candidates.is_empty() {
         return Err(DecisionError::EmptyCandidates);
     }
+    validate_candidate_set(candidates, true).map_err(DecisionError::InvalidCandidates)?;
     let all_scores = score_candidates(candidates, context, weights, spec);
     let winner_index = all_scores
         .iter()
@@ -512,9 +638,7 @@ fn perturbation_for(spec: &PerturbationSpec, candidate: &ActionCandidate) -> i64
     let PerturbationRange::Bounded(epsilon) = spec.range() else {
         return 0;
     };
-    // `PerturbationSpec::new` rejects out-of-range ε; clamp defensively so a
-    // wire-constructed spec stays inside the documented bound.
-    let epsilon = epsilon.clamp(0, MAX_EPSILON);
+    // Both native construction and deserialization validate this value.
     let kind_key = match candidate.kind() {
         ActionKind::Move => 0_u64,
         ActionKind::Eat => 1,
@@ -546,15 +670,17 @@ const fn splitmix64(value: u64) -> u64 {
 #[cfg(test)]
 mod tests {
     use super::{
-        CandidateScore, DecisionError, FactorWeights, MAX_EPSILON, PerturbationRange,
-        PerturbationSpec, Selection, UtilityScore, Weights, score_candidates, select_action,
+        CandidateScore, DecisionError, FactorWeights, MAX_EPSILON, PerturbationError,
+        PerturbationRange, PerturbationSpec, Selection, UtilityScore, Weights, score_candidates,
+        select_action,
     };
     use crate::action::{ActionCandidate, ActionKind, CandidateContext, candidate_actions};
     use crate::needs::{NeedValue, Needs};
     use crate::trace::{FactorId, FactorInput, TieBreakReason};
+    use palimpsest_sim_time::SimDuration;
     use palimpsest_sim_world::{
-        ActivitySite, ActivitySites, LocalCoord, PathConfig, SiteKind, WorldGenConfig, WorldMap,
-        WorldSeed,
+        ActivitySite, ActivitySites, LocalCoord, PathConfig, SiteKind, TerrainKind, WorldGenConfig,
+        WorldMap, WorldSeed, find_path,
     };
 
     /// Locked fixture seed; any seed works because the generator guarantees a
@@ -593,6 +719,25 @@ mod tests {
                 })
             })
             .expect("spawn clearing contains a 3x3 walkable block")
+    }
+
+    fn distant_reachable_coord(map: &WorldMap, origin: LocalCoord) -> LocalCoord {
+        map.local()
+            .coords()
+            .filter(|target| {
+                (target.x() - origin.x()).abs() + (target.y() - origin.y()).abs() >= 20
+            })
+            .find(|target| {
+                find_path(
+                    map.local(),
+                    (origin.x(), origin.y()),
+                    (target.x(), target.y()),
+                    TerrainKind::is_walkable,
+                    PathConfig::default(),
+                )
+                .is_ok()
+            })
+            .expect("generated map has a distant reachable walkable coordinate")
     }
 
     /// Fixture: person at the block origin; Meal, Rest, Work sites inside
@@ -659,15 +804,15 @@ mod tests {
         );
         assert_eq!(
             weights.weights_for(ActionKind::Eat),
-            FactorWeights::new(10, 0, -5, 10_000, 0)
+            FactorWeights::new(10, 0, -5, 0, 0)
         );
         assert_eq!(
             weights.weights_for(ActionKind::Sleep),
-            FactorWeights::new(0, 10, -5, 10_000, 0)
+            FactorWeights::new(0, 10, -5, 0, 0)
         );
         assert_eq!(
             weights.weights_for(ActionKind::Work),
-            FactorWeights::new(0, 0, -5, 2_000, 0)
+            FactorWeights::new(0, 0, -5, 2_300, 0)
         );
         assert_eq!(
             weights.weights_for(ActionKind::Idle),
@@ -734,10 +879,10 @@ mod tests {
             min_base = min_base.min(low);
             max_base = max_base.max(high);
         }
-        assert_eq!((min_base, max_base), (-1_270, 20_000), "base range");
+        assert_eq!((min_base, max_base), (-1_270, 10_000), "base range");
         assert_eq!(
             (min_base - MAX_EPSILON, max_base + MAX_EPSILON),
-            (-1_370, 20_100),
+            (-1_370, 10_100),
             "total range with maximal perturbation"
         );
     }
@@ -758,13 +903,13 @@ mod tests {
         // Pressures 500/250; distances 2/2/4; every fixture site is
         // available; the Work site carries progress 3 (recorded, weight 0).
         let expected = [
-            (ActionKind::Move, 0_i64),   // −5·2 + 10·1
-            (ActionKind::Move, 0),       // −5·2 + 10·1
-            (ActionKind::Move, -10),     // −5·4 + 10·1
-            (ActionKind::Eat, 14_990),   // 10·500 − 5·2 + 10_000·1
-            (ActionKind::Sleep, 12_490), // 10·250 − 5·2 + 10_000·1
-            (ActionKind::Work, 1_980),   // −5·4 + 2_000·1 (+ 0·3)
-            (ActionKind::Idle, -50),     // −50·1
+            (ActionKind::Move, 0_i64),  // −5·2 + 10·1
+            (ActionKind::Move, 0),      // −5·2 + 10·1
+            (ActionKind::Move, -10),    // −5·4 + 10·1
+            (ActionKind::Eat, 4_990),   // 10·500 − 5·2
+            (ActionKind::Sleep, 2_490), // 10·250 − 5·2
+            (ActionKind::Work, 2_280),  // −5·4 + 2_300·1 (+ 0·3)
+            (ActionKind::Idle, -50),    // −50·1
         ];
         for (entry, (kind, base)) in scores.iter().zip(expected) {
             assert_eq!(entry.candidate().kind(), kind);
@@ -939,16 +1084,18 @@ mod tests {
         assert_eq!(spec.range(), PerturbationRange::Bounded(25));
         assert_eq!(
             PerturbationSpec::new(7, PerturbationRange::Bounded(-1)),
-            None,
+            Err(PerturbationError::EpsilonOutOfRange { epsilon: -1 }),
             "negative ε is rejected"
         );
         assert_eq!(
             PerturbationSpec::new(7, PerturbationRange::Bounded(MAX_EPSILON + 1)),
-            None,
+            Err(PerturbationError::EpsilonOutOfRange {
+                epsilon: MAX_EPSILON + 1
+            }),
             "ε above MAX_EPSILON is rejected"
         );
-        assert!(PerturbationSpec::new(7, PerturbationRange::Bounded(MAX_EPSILON)).is_some());
-        assert!(PerturbationSpec::new(7, PerturbationRange::Bounded(0)).is_some());
+        assert!(PerturbationSpec::new(7, PerturbationRange::Bounded(MAX_EPSILON)).is_ok());
+        assert!(PerturbationSpec::new(7, PerturbationRange::Bounded(0)).is_ok());
         // Bounded(0) behaves exactly like Zero.
         let (map, sites, origin) = fixture();
         let context = context(origin, needs_with(50_000, 25_000), &sites, &map);
@@ -957,6 +1104,238 @@ mod tests {
             PerturbationSpec::new(99, PerturbationRange::Bounded(0)).expect("in range");
         let scores = score_candidates(&candidates, &context, &Weights::default(), &bounded_zero);
         assert!(scores.iter().all(|entry| entry.perturbation() == 0));
+    }
+
+    #[test]
+    fn malformed_perturbation_wire_is_rejected() {
+        for encoded in [
+            r#"{"seed":42,"range":{"Bounded":-1}}"#,
+            r#"{"seed":42,"range":{"Bounded":101}}"#,
+        ] {
+            assert!(serde_json::from_str::<PerturbationSpec>(encoded).is_err());
+        }
+    }
+
+    #[test]
+    fn native_and_wire_epsilon_boundaries_agree() {
+        #[derive(serde::Deserialize)]
+        struct Request {
+            spec: PerturbationSpec,
+        }
+        for epsilon in [i64::MIN, -1, 0, 100, 101, i64::MAX] {
+            let native = PerturbationSpec::new(42, PerturbationRange::Bounded(epsilon));
+            let range = serde_json::json!({"Bounded": epsilon});
+            let spec = serde_json::json!({"seed": 42, "range": range});
+            let decoded = serde_json::from_value::<PerturbationSpec>(spec.clone());
+            let request = serde_json::from_value::<Request>(serde_json::json!({"spec": spec}));
+            let valid = (0..=MAX_EPSILON).contains(&epsilon);
+            assert_eq!(native.is_ok(), valid);
+            assert_eq!(decoded.is_ok(), valid);
+            assert_eq!(request.is_ok(), valid);
+            assert_eq!(
+                serde_json::from_value::<PerturbationRange>(range).is_ok(),
+                valid
+            );
+            if valid {
+                let native = native.expect("valid epsilon");
+                assert_eq!(decoded.expect("valid wire"), native);
+                assert_eq!(request.expect("valid nested wire").spec, native);
+            } else {
+                assert_eq!(
+                    native,
+                    Err(PerturbationError::EpsilonOutOfRange { epsilon })
+                );
+            }
+        }
+        for number in ["0.5", "18446744073709551616", "-9223372036854775809"] {
+            let encoded = format!(r#"{{"seed":42,"range":{{"Bounded":{number}}}}}"#);
+            assert!(serde_json::from_str::<PerturbationSpec>(&encoded).is_err());
+            assert!(
+                serde_json::from_str::<PerturbationRange>(&format!(r#"{{"Bounded":{number}}}"#))
+                    .is_err()
+            );
+        }
+        let zero = PerturbationSpec::new(42, PerturbationRange::Zero).expect("zero");
+        let bounded =
+            PerturbationSpec::new(42, PerturbationRange::Bounded(0)).expect("bounded zero");
+        assert_ne!(
+            serde_json::to_value(zero).expect("encode"),
+            serde_json::to_value(bounded).expect("encode")
+        );
+    }
+
+    #[test]
+    fn selection_keys_are_a_set_not_vector_positions() {
+        use crate::CandidateSetError::{DuplicateCandidate, DuplicateOrder, OrderOutOfRange};
+        let (map, sites, origin) = fixture();
+        let context = context(origin, Needs::default(), &sites, &map);
+        let movement = |order| {
+            ActionCandidate::new(ActionKind::Move, Some(origin), order).expect("valid shape")
+        };
+        let idle =
+            |order| ActionCandidate::new(ActionKind::Idle, None, order).expect("valid shape");
+        let forward = [movement(0), idle(1)];
+        let reverse = [idle(1), movement(0)];
+        let choose = |candidates: &[ActionCandidate]| {
+            select_action(
+                candidates,
+                &context,
+                &flat_weights(),
+                &PerturbationSpec::ZERO,
+            )
+        };
+        let first = choose(&forward).expect("valid complete set");
+        let second = choose(&reverse).expect("valid permutation");
+        assert_eq!(first.candidate(), second.candidate());
+        assert_eq!(first.trace().tie_break(), Some(TieBreakReason::StableOrder));
+        assert_eq!(first.trace().tie_break(), second.trace().tie_break());
+        assert_eq!(
+            second
+                .all_scores()
+                .iter()
+                .map(CandidateScore::candidate)
+                .collect::<Vec<_>>(),
+            reverse
+        );
+        assert_eq!(
+            second
+                .trace()
+                .candidates()
+                .iter()
+                .map(crate::CandidateTrace::candidate)
+                .collect::<Vec<_>>(),
+            reverse
+        );
+        for (input, error) in [
+            (vec![movement(0), idle(0)], DuplicateOrder { order: 0 }),
+            (
+                vec![movement(0), idle(2)],
+                OrderOutOfRange { order: 2, len: 2 },
+            ),
+            (vec![idle(1)], OrderOutOfRange { order: 1, len: 1 }),
+            (
+                vec![movement(0), idle(u64::MAX)],
+                OrderOutOfRange {
+                    order: u64::MAX,
+                    len: 2,
+                },
+            ),
+            (
+                vec![movement(u64::MAX), idle(u64::MAX)],
+                DuplicateOrder { order: u64::MAX },
+            ),
+            (
+                vec![movement(2), movement(0)],
+                OrderOutOfRange { order: 2, len: 2 },
+            ),
+            (
+                vec![movement(0), movement(1)],
+                DuplicateCandidate {
+                    kind: ActionKind::Move,
+                    target: Some(origin),
+                },
+            ),
+        ] {
+            assert_eq!(choose(&input), Err(DecisionError::InvalidCandidates(error)));
+        }
+        // Scoring a diagnostic fragment deliberately does not require a complete set.
+        let scores = score_candidates(
+            &[idle(u64::MAX)],
+            &context,
+            &Weights::default(),
+            &PerturbationSpec::ZERO,
+        );
+        assert_eq!(scores.len(), 1);
+        assert_eq!(scores[0].candidate().order(), u64::MAX);
+    }
+
+    #[test]
+    fn decoded_inputs_preserve_selection_for_zero_and_seeded_modes() {
+        let (map, sites, origin) = fixture();
+        let context = context(origin, needs_with(50_000, 25_000), &sites, &map);
+        let candidates = candidate_actions(&context);
+        let decoded: Vec<ActionCandidate> =
+            serde_json::from_value(serde_json::to_value(&candidates).expect("encode"))
+                .expect("valid provider output");
+        for spec in [
+            PerturbationSpec::ZERO,
+            PerturbationSpec::new(42, PerturbationRange::Bounded(100)).expect("valid epsilon"),
+        ] {
+            let decoded_spec = serde_json::from_value(serde_json::to_value(spec).expect("encode"))
+                .expect("valid spec");
+            let first =
+                select_action(&candidates, &context, &Weights::default(), &spec).expect("select");
+            let second = select_action(&decoded, &context, &Weights::default(), &decoded_spec)
+                .expect("select decoded");
+            assert_eq!(first, second);
+            let mut reversed = candidates.clone();
+            reversed.reverse();
+            let reordered = select_action(&reversed, &context, &Weights::default(), &spec)
+                .expect("valid permutation");
+            assert_eq!(reordered.candidate(), first.candidate());
+            assert_eq!(reordered.score(), first.score());
+            assert_eq!(reordered.trace().tie_break(), first.trace().tie_break());
+            assert_eq!(
+                serde_json::from_value::<Selection>(
+                    serde_json::to_value(&reordered).expect("encode")
+                )
+                .expect("decode reordered selection"),
+                reordered
+            );
+        }
+    }
+
+    #[test]
+    fn selection_wire_rejects_ambiguous_or_conflicting_copies() {
+        let (map, sites, origin) = fixture();
+        let context = context(origin, needs_with(50_000, 25_000), &sites, &map);
+        let selection = select_action(
+            &candidate_actions(&context),
+            &context,
+            &Weights::default(),
+            &PerturbationSpec::ZERO,
+        )
+        .expect("valid selection");
+        let valid = serde_json::to_value(&selection).expect("encode");
+        assert_eq!(
+            serde_json::from_value::<Selection>(valid.clone()).expect("decode valid"),
+            selection
+        );
+        for (pointer, value) in [
+            ("/trace/selected", serde_json::json!(u64::MAX)),
+            ("/trace/selected", serde_json::Value::Null),
+            ("/trace/tie_break", serde_json::Value::Null),
+            ("/trace/candidates/1/candidate/order", serde_json::json!(0)),
+            ("/all_scores/1/candidate/order", serde_json::json!(0)),
+            ("/candidate/order", serde_json::json!(u64::MAX)),
+            ("/score", serde_json::json!(selection.score().get() + 1)),
+            ("/all_scores/0/score", serde_json::json!(123_456)),
+            ("/all_scores/0/trace/total", serde_json::json!(123_456)),
+            (
+                "/all_scores/0/trace/candidate/order",
+                serde_json::json!(u64::MAX),
+            ),
+            ("/all_scores/0/perturbation", serde_json::json!(1)),
+            ("/trace/candidates/0/total", serde_json::json!(123_456)),
+            (
+                "/trace/candidates/0/factors/0/input/input",
+                serde_json::json!(1),
+            ),
+            ("/all_scores", serde_json::json!([])),
+        ] {
+            let mut invalid = valid.clone();
+            *invalid.pointer_mut(pointer).expect("existing field") = value;
+            assert!(
+                serde_json::from_value::<Selection>(invalid).is_err(),
+                "must reject corruption at {pointer}"
+            );
+        }
+        let mut missing_tie = valid;
+        missing_tie["trace"]
+            .as_object_mut()
+            .expect("trace object")
+            .remove("tie_break");
+        assert!(serde_json::from_value::<Selection>(missing_tie).is_err());
     }
 
     #[test]
@@ -1035,7 +1414,7 @@ mod tests {
                 "the tie break is reproducible"
             );
         }
-        // The default-weights fixture has a strict maximum (Eat at 14_990).
+        // The default-weights fixture has a strict maximum (Eat at 4_990).
         let unique = select_action(
             &candidates,
             &context,
@@ -1064,7 +1443,7 @@ mod tests {
             .expect("non-empty");
         assert_eq!(selection.candidate().kind(), ActionKind::Eat);
         assert_eq!(selection.candidate().target(), Some(coord(ox + 2, oy)));
-        assert_eq!(selection.score().get(), 19_990);
+        assert_eq!(selection.score().get(), 9_990);
 
         // High fatigue selects Sleep at the reachable Rest site.
         let tired = context(origin, needs_with(0, 100_000), &sites, &map);
@@ -1073,16 +1452,16 @@ mod tests {
             .expect("non-empty");
         assert_eq!(selection.candidate().kind(), ActionKind::Sleep);
         assert_eq!(selection.candidate().target(), Some(coord(ox, oy + 2)));
-        assert_eq!(selection.score().get(), 19_990);
+        assert_eq!(selection.score().get(), 9_990);
 
         // Satisfied drives: the reachable Work site outranks the Idle
-        // baseline (1_980 vs −50 under the default table).
+        // baseline (2_280 vs −50 under the default table).
         let satisfied = context(origin, Needs::default(), &sites, &map);
         let candidates = candidate_actions(&satisfied);
         let selection = select_action(&candidates, &satisfied, &weights, &PerturbationSpec::ZERO)
             .expect("non-empty");
         assert_eq!(selection.candidate().kind(), ActionKind::Work);
-        assert_eq!(selection.score().get(), 1_980);
+        assert_eq!(selection.score().get(), 2_280);
         let idle = selection
             .all_scores()
             .iter()
@@ -1090,6 +1469,421 @@ mod tests {
             .expect("the Idle baseline is always scored");
         assert_eq!(idle.score().get(), -50);
         assert!(idle.score() < selection.score());
+    }
+
+    #[test]
+    fn one_second_advance_still_selects_work() {
+        let (map, sites, origin) = fixture();
+        // Fresh Needs advance to raw hunger=1/fatigue=2 and integer pressure
+        // 0/0; this must still prefer the reachable Work site.
+        let needs =
+            Needs::default().advance(SimDuration::from_seconds(1).expect("one second is valid"));
+        assert_eq!((needs.hunger().raw(), needs.fatigue().raw()), (1, 2));
+        assert_eq!(needs.hunger_pressure(), 0);
+        assert_eq!(needs.fatigue_pressure(), 0);
+        let fresh_context = context(origin, needs, &sites, &map);
+        let candidates = candidate_actions(&fresh_context);
+        let selection = select_action(
+            &candidates,
+            &fresh_context,
+            &Weights::default(),
+            &PerturbationSpec::ZERO,
+        )
+        .expect("non-empty");
+        assert_eq!(selection.candidate().kind(), ActionKind::Work);
+
+        // Keep the additional near-boundary elapsed-time regression.
+        let near = needs_with(19_900, 0)
+            .advance(SimDuration::from_seconds(1).expect("one second is valid"));
+        let near_context = context(origin, near, &sites, &map);
+        assert_eq!(near.hunger_pressure(), 199);
+        assert_eq!(
+            select_action(
+                &candidate_actions(&near_context),
+                &near_context,
+                &Weights::default(),
+                &PerturbationSpec::ZERO,
+            )
+            .expect("non-empty")
+            .candidate()
+            .kind(),
+            ActionKind::Work
+        );
+    }
+
+    #[test]
+    fn approved_need_work_threshold_sweep_and_ties() {
+        let (map, sites, origin) = fixture();
+        let weights = Weights::default();
+        let raw = |pressure: i64| NeedValue::from_raw(pressure * 100).expect("pressure bound");
+        for pressure in 0..=1_000 {
+            let needs = Needs::new(raw(pressure), NeedValue::MIN);
+            let context = context(origin, needs, &sites, &map);
+            let selection = select_action(
+                &candidate_actions(&context),
+                &context,
+                &weights,
+                &PerturbationSpec::ZERO,
+            )
+            .expect("work is always available");
+            assert_eq!(
+                select_action(
+                    &candidate_actions(&context),
+                    &context,
+                    &weights,
+                    &PerturbationSpec::ZERO
+                )
+                .expect("repeat selection"),
+                selection
+            );
+            let expected_score = if pressure <= 228 {
+                2_280
+            } else {
+                10 * pressure - 10
+            };
+            assert_eq!(selection.score().get(), expected_score);
+            if pressure <= 228 {
+                assert_eq!(selection.candidate().kind(), ActionKind::Work);
+                assert_eq!(
+                    selection.trace().tie_break(),
+                    Some(TieBreakReason::UniqueMaximum)
+                );
+            } else if pressure == 229 {
+                assert_eq!(selection.candidate().kind(), ActionKind::Eat);
+                assert_eq!(
+                    selection.trace().tie_break(),
+                    Some(TieBreakReason::StableOrder)
+                );
+                assert_eq!(selection.score().get(), 2_280);
+            } else {
+                assert_eq!(selection.candidate().kind(), ActionKind::Eat);
+                assert_eq!(
+                    selection.trace().tie_break(),
+                    Some(TieBreakReason::UniqueMaximum)
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn fatigue_work_threshold_sweep_and_ties() {
+        let (map, sites, origin) = fixture();
+        let weights = Weights::default();
+        for pressure in 0..=1_000 {
+            let needs = Needs::new(
+                NeedValue::MIN,
+                NeedValue::from_raw(pressure * 100).expect("pressure bound"),
+            );
+            let context = context(origin, needs, &sites, &map);
+            let selection = select_action(
+                &candidate_actions(&context),
+                &context,
+                &weights,
+                &PerturbationSpec::ZERO,
+            )
+            .expect("work is always available");
+            assert_eq!(
+                select_action(
+                    &candidate_actions(&context),
+                    &context,
+                    &weights,
+                    &PerturbationSpec::ZERO
+                )
+                .expect("repeat selection"),
+                selection
+            );
+            let expected_score = if pressure <= 228 {
+                2_280
+            } else {
+                10 * pressure - 10
+            };
+            assert_eq!(selection.score().get(), expected_score);
+            assert_eq!(
+                selection.candidate().kind(),
+                if pressure <= 228 {
+                    ActionKind::Work
+                } else {
+                    ActionKind::Sleep
+                }
+            );
+            assert_eq!(
+                selection.trace().tie_break(),
+                if pressure == 229 {
+                    Some(TieBreakReason::StableOrder)
+                } else {
+                    Some(TieBreakReason::UniqueMaximum)
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn low_need_margin_exceeds_every_allowed_pairwise_perturbation() {
+        let (map, sites, origin) = fixture();
+        let weights = Weights::default();
+        let p200 = context(origin, needs_with(20_000, 20_000), &sites, &map);
+        let p200_selection = select_action(
+            &candidate_actions(&p200),
+            &p200,
+            &weights,
+            &PerturbationSpec::ZERO,
+        )
+        .expect("non-empty");
+        let score_for = |kind| {
+            p200_selection
+                .all_scores()
+                .iter()
+                .find(|entry| entry.candidate().kind() == kind)
+                .expect("reachable candidate")
+                .score()
+                .get()
+        };
+        let work_score = score_for(ActionKind::Work);
+        let need_score = score_for(ActionKind::Eat);
+        assert_eq!(score_for(ActionKind::Sleep), need_score);
+        assert_eq!(
+            (work_score, need_score, work_score - need_score),
+            (2_280, 1_990, 290)
+        );
+        assert!(work_score - need_score > 2 * MAX_EPSILON);
+        for _ in 0..8 {
+            assert_eq!(
+                select_action(
+                    &candidate_actions(&p200),
+                    &p200,
+                    &weights,
+                    &PerturbationSpec::ZERO
+                )
+                .expect("non-empty"),
+                p200_selection
+            );
+        }
+    }
+
+    #[test]
+    fn both_low_needs_and_raw_values_select_work() {
+        let (map, sites, origin) = fixture();
+        let weights = Weights::default();
+        for hunger_pressure in [0, 1, 199, 200] {
+            for fatigue_pressure in [0, 1, 199, 200] {
+                let context = context(
+                    origin,
+                    needs_with(hunger_pressure * 100, fatigue_pressure * 100),
+                    &sites,
+                    &map,
+                );
+                let selected = select_action(
+                    &candidate_actions(&context),
+                    &context,
+                    &weights,
+                    &PerturbationSpec::ZERO,
+                )
+                .expect("reachable work");
+                assert_eq!(selected.candidate().kind(), ActionKind::Work);
+                assert_eq!(
+                    selected.trace().tie_break(),
+                    Some(TieBreakReason::UniqueMaximum)
+                );
+                assert_eq!(selected.score().get(), 2_280);
+            }
+        }
+        // These are raw values (not pressure); keep the earlier small-input
+        // cases, including all 1/2/99 pairs, in addition to the pressure grid.
+        for (hunger, fatigue) in [
+            (0, 0),
+            (0, 1),
+            (0, 199),
+            (0, 200),
+            (1, 0),
+            (199, 0),
+            (200, 0),
+            (1, 1),
+            (1, 2),
+            (1, 99),
+            (2, 1),
+            (2, 2),
+            (2, 99),
+            (99, 1),
+            (99, 2),
+            (99, 99),
+        ] {
+            let needs = needs_with(hunger, fatigue);
+            let context = context(origin, needs, &sites, &map);
+            let selection = select_action(
+                &candidate_actions(&context),
+                &context,
+                &weights,
+                &PerturbationSpec::ZERO,
+            )
+            .expect("work is always available");
+            assert_eq!(selection.candidate().kind(), ActionKind::Work);
+            assert_eq!(
+                selection.trace().tie_break(),
+                Some(TieBreakReason::UniqueMaximum)
+            );
+        }
+    }
+
+    #[test]
+    fn high_need_axes_and_equal_ties_are_stable() {
+        let (map, sites, origin) = fixture();
+        let weights = Weights::default();
+        for pressure in [699, 700, 900, 1_000] {
+            let equal = context(
+                origin,
+                needs_with(pressure * 100, pressure * 100),
+                &sites,
+                &map,
+            );
+            let selected = select_action(
+                &candidate_actions(&equal),
+                &equal,
+                &weights,
+                &PerturbationSpec::ZERO,
+            )
+            .expect("non-empty");
+            assert_eq!(selected.candidate().kind(), ActionKind::Eat);
+            assert_eq!(
+                selected.trace().tie_break(),
+                Some(TieBreakReason::StableOrder)
+            );
+            let hunger_high = context(
+                origin,
+                needs_with(pressure * 100, (pressure - 1) * 100),
+                &sites,
+                &map,
+            );
+            assert_eq!(
+                select_action(
+                    &candidate_actions(&hunger_high),
+                    &hunger_high,
+                    &weights,
+                    &PerturbationSpec::ZERO
+                )
+                .expect("non-empty")
+                .candidate()
+                .kind(),
+                ActionKind::Eat
+            );
+            let fatigue_high = context(
+                origin,
+                needs_with((pressure - 1) * 100, pressure * 100),
+                &sites,
+                &map,
+            );
+            assert_eq!(
+                select_action(
+                    &candidate_actions(&fatigue_high),
+                    &fatigue_high,
+                    &weights,
+                    &PerturbationSpec::ZERO
+                )
+                .expect("non-empty")
+                .candidate()
+                .kind(),
+                ActionKind::Sleep
+            );
+        }
+    }
+
+    #[test]
+    fn reachable_distance_and_no_site_idle_are_scored() {
+        let (map, sites, origin) = fixture();
+        let fixture_context = context(origin, Needs::default(), &sites, &map);
+        let scored = score_candidates(
+            &candidate_actions(&fixture_context),
+            &fixture_context,
+            &Weights::default(),
+            &PerturbationSpec::ZERO,
+        );
+        let work = scored
+            .iter()
+            .find(|entry| entry.candidate().kind() == ActionKind::Work)
+            .expect("reachable work site");
+        assert_eq!(work.trace().factors()[2].input().input(), 4);
+        assert_eq!(work.trace().factors()[3].input().input(), 1);
+        assert_eq!(work.score().get(), 2_280);
+
+        let empty_sites = ActivitySites::new(Vec::new()).expect("empty site set");
+        let empty_context = context(origin, Needs::default(), &empty_sites, &map);
+        let selected = select_action(
+            &candidate_actions(&empty_context),
+            &empty_context,
+            &Weights::default(),
+            &PerturbationSpec::ZERO,
+        )
+        .expect("idle baseline");
+        assert_eq!(selected.candidate().kind(), ActionKind::Idle);
+        assert_eq!(selected.score().get(), -50);
+
+        // Use the real generated-map/pathfinding provider to show distance
+        // changes the 229-pressure crossover, not a fabricated unreachable
+        // candidate. The reference Meal is distance 2; a farther reachable
+        // Meal loses to Work at the same pressure.
+        let far_target = distant_reachable_coord(&map, origin);
+        let far_sites = ActivitySites::new(vec![
+            ActivitySite::new(&map, far_target, SiteKind::Meal).expect("far target walkable"),
+            ActivitySite::new(&map, coord(origin.x() + 2, origin.y() + 2), SiteKind::Work)
+                .expect("work target walkable"),
+        ])
+        .expect("distinct sites");
+        let far_needs = needs_with(22_900, 0);
+        let far_context = context(origin, far_needs, &far_sites, &map);
+        let far_selection = select_action(
+            &candidate_actions(&far_context),
+            &far_context,
+            &Weights::default(),
+            &PerturbationSpec::ZERO,
+        )
+        .expect("far candidates are reachable");
+        assert!(far_target.x().abs_diff(origin.x()) + far_target.y().abs_diff(origin.y()) >= 20);
+        assert_eq!(far_selection.candidate().kind(), ActionKind::Work);
+        let far_eat = far_selection
+            .all_scores()
+            .iter()
+            .find(|entry| entry.candidate().kind() == ActionKind::Eat)
+            .expect("far reachable Eat");
+        assert_eq!(far_eat.trace().factors()[3].input().input(), 1);
+        let distance = far_eat.trace().factors()[2].input().input();
+        assert!(distance >= 20);
+        assert_eq!(far_eat.score().get(), 2_290 - 5 * distance);
+        assert!(far_eat.score().get() < 2_280);
+
+        // Even a distant reachable critical need beats Work. Exercise both
+        // needs through real sites/provider output, not a fabricated target.
+        for (site_kind, action_kind, needs) in [
+            (SiteKind::Meal, ActionKind::Eat, needs_with(90_000, 0)),
+            (SiteKind::Rest, ActionKind::Sleep, needs_with(0, 90_000)),
+        ] {
+            let critical_sites = ActivitySites::new(vec![
+                ActivitySite::new(&map, far_target, site_kind).expect("reachable far site"),
+                ActivitySite::new(&map, coord(origin.x() + 2, origin.y() + 2), SiteKind::Work)
+                    .expect("reachable work"),
+            ])
+            .expect("distinct sites");
+            let critical_context = context(origin, needs, &critical_sites, &map);
+            let selected = select_action(
+                &candidate_actions(&critical_context),
+                &critical_context,
+                &Weights::default(),
+                &PerturbationSpec::ZERO,
+            )
+            .expect("critical candidate exists");
+            assert_eq!(selected.candidate().kind(), action_kind);
+            assert_eq!(selected.candidate().target(), Some(far_target));
+            let critical = selected
+                .all_scores()
+                .iter()
+                .find(|entry| entry.candidate().kind() == action_kind)
+                .expect("critical need trace");
+            assert_eq!(critical.trace().factors()[2].input().input(), distance);
+            assert_eq!(critical.trace().factors()[3].input().input(), 1);
+            assert_eq!(critical.score().get(), 9_000 - 5 * distance);
+            // Worst legal Manhattan distance is 254. This bound proves the
+            // Work comparison for every permitted perturbation, not sampled seeds.
+            assert!(critical.score().get() >= 7_730);
+            assert!(critical.score().get() - 2_300 > 2 * MAX_EPSILON);
+        }
     }
 
     #[test]

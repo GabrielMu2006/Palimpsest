@@ -268,3 +268,73 @@ fn current_rss_bytes() -> Option<u64> {
 fn json_u64(value: Option<u64>) -> String {
     value.map_or_else(|| "null".to_owned(), |number| number.to_string())
 }
+
+/// Retains every candidate trace for the selected scale. This adapter is
+/// intentionally an all-traces-retained workload rather than the streaming
+/// benchmark above, so the second observation sees the live result.
+///
+/// # Panics
+///
+/// Panics when `case` is not `"100"` or `"1000"`.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    let count = match case {
+        "100" => 100,
+        "1000" => 1_000,
+        other => panic!("invalid utility-ai memory workload selector: {other}"),
+    };
+    let map = WorldMap::generate(WorldSeed::new(0), WorldGenConfig::default());
+    let sites = ActivitySites::place_defaults(&map);
+    assert_eq!(sites.len(), 6);
+    let persons = generate_persons(&map, count);
+    assert_eq!(persons.len(), count);
+
+    observe();
+    let retained = retain_all_traces(&persons, &sites, &map);
+    let expected = match count {
+        100 => 861,
+        1_000 => 9_060,
+        _ => unreachable!(),
+    };
+    assert_eq!(retained.len(), expected);
+    let mut checksum = 0_u64;
+    for trace in &retained {
+        assert_eq!(trace.selected(), None);
+        assert_eq!(trace.tie_break(), None);
+        assert_eq!(trace.candidates().len(), 1);
+        let candidate = &trace.candidates()[0];
+        assert_eq!(candidate.total(), None);
+        assert_eq!(candidate.factors().len(), 5);
+        for factor in candidate.factors() {
+            assert_eq!(factor.contribution(), None);
+            checksum = checksum.wrapping_add(factor.input().input().cast_unsigned());
+        }
+    }
+    let expected_checksum = match count {
+        100 => 889_859,
+        1_000 => 9_748_469,
+        _ => unreachable!(),
+    };
+    assert_eq!(checksum, expected_checksum);
+    black_box(&retained);
+    observe();
+    checksum
+}
+
+#[cfg(test)]
+mod tests {
+    use super::memory_workload;
+
+    #[test]
+    fn memory_adapter_observes_twice_and_matches_golden() {
+        let mut callbacks = 0;
+        let checksum = memory_workload("100", &mut || callbacks += 1);
+        assert_eq!(callbacks, 2);
+        assert_eq!(checksum, 889_859);
+    }
+
+    #[test]
+    #[should_panic(expected = "invalid utility-ai memory workload selector")]
+    fn memory_adapter_rejects_invalid_selector() {
+        let _ = memory_workload("bad", &mut || {});
+    }
+}

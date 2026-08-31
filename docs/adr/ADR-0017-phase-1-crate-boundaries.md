@@ -26,7 +26,8 @@ Add two Godot-independent library boundaries when CHRON-018 is approved:
 integration, Person runtime mapping, action execution, kernel orchestration,
 commands, worker ownership, and Render Snapshot construction.
 
-Dependency direction:
+Dependency direction (the listed dependencies are allow-sets, not mandatory
+edges for every crate or historical task state):
 
 ```text
 sim-entity / sim-time
@@ -40,15 +41,29 @@ sim-entity / sim-time
 headless-runner / godot-bridge
 ```
 
-`sim-world` and `sim-ai` must not depend on `bevy_ecs`, storage, Godot, or an LLM
-runtime. `sim-core` may use `bevy_ecs` provisionally under ADR-0011.
+`sim-world` is permitted `sim-entity`, `sim-time`, and `serde`; `sim-ai` is
+permitted those crates plus `sim-world`. These are allow-sets: CHRON-018's
+empty skeletons were not required to add every permitted edge, and later tasks
+may add an edge when their implementation uses it. Current legitimate edges
+from CHRON-019..026 are retained. All simulation/domain crates must not depend
+outward on the `godot-bridge`; that crate is an outer presentation adapter.
+The additional forbidden dependencies (`sim-core`, storage, `bevy_ecs`, Godot,
+and LLM runtimes) apply specifically to the `sim-world`/`sim-ai` allow-sets.
+`sim-core` may use `bevy_ecs` provisionally under ADR-0011.
+
+The boundary review uses exact normal dependency names from
+`cargo metadata --no-deps --format-version 1` and the corresponding
+`cargo tree --edges normal` output. It does not infer architecture from names
+containing `llm` or names beginning with `godot`. This review is a documented
+manual/agent check performed at the workspace CI/lint gate and whenever
+dependencies change; it is not automatic future enforcement.
 
 ## Public Contract
 
 - Domain crates expose stable domain values and pure/deterministic operations.
 - Runtime ECS handles and worker/thread types remain internal to `sim-core`.
-- `godot-bridge` translates Render Snapshots and commands only; no simulation
-  crate depends on it.
+- `godot-bridge` translates Render Snapshots and commands only; no
+  simulation/domain crate depends outward on it.
 - Phase 1 adds no speculative empty crates beyond these two boundaries.
 
 ## Consequences

@@ -112,3 +112,57 @@ fn current_rss_bytes() -> Option<u64> {
 fn json_u64(value: Option<u64>) -> String {
     value.map_or_else(|| "null".to_owned(), |number| number.to_string())
 }
+
+/// Retains the complete person workload for the memory benchmark adapter.
+/// The callback marks the boundary around the measured allocation/operation.
+///
+/// # Panics
+///
+/// Panics when `case` is not `"100"` or `"1000"`.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    let count = match case {
+        "100" => 100,
+        "1000" => 1_000,
+        other => panic!("invalid person memory workload selector: {other}"),
+    };
+    observe();
+    let runtime = spawn_all(count);
+    assert_eq!(runtime.person_count(), count);
+    let checksum = visible_state_checksum(&runtime, count);
+    let expected = match count {
+        100 => 10_000,
+        1_000 => 566_168,
+        _ => unreachable!(),
+    };
+    assert_eq!(checksum, expected);
+    black_box(&runtime);
+    observe();
+    checksum
+}
+
+#[cfg(test)]
+mod tests {
+    use super::memory_workload;
+
+    #[test]
+    fn memory_adapter_observes_twice_and_matches_golden() {
+        let mut callbacks = 0;
+        let checksum = memory_workload("100", &mut || callbacks += 1);
+        assert_eq!(callbacks, 2);
+        assert_eq!(checksum, 10_000);
+    }
+
+    #[test]
+    fn memory_adapter_matches_1000_golden() {
+        let mut callbacks = 0;
+        let checksum = memory_workload("1000", &mut || callbacks += 1);
+        assert_eq!(callbacks, 2);
+        assert_eq!(checksum, 566_168);
+    }
+
+    #[test]
+    #[should_panic(expected = "invalid person memory workload selector")]
+    fn memory_adapter_rejects_invalid_selector() {
+        let _ = memory_workload("bad", &mut || {});
+    }
+}

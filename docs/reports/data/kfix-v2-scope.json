@@ -1,0 +1,276 @@
+{
+  "baseline_file_count": 216,
+  "changed": [
+    {
+      "path": "AGENTS.md",
+      "before_sha256": "68053a96245439d87868ee1e00a592ae8922c87a82d0ebb0c07a4a34b0096553",
+      "after_sha256": "56bd928555c7452cc816a7b45d52b7c45bb8316e8cb16f3c5741a2be3e974d53"
+    },
+    {
+      "path": "crates/sim-core/examples/action_execution_bench.rs",
+      "before_sha256": "3cc8c29fd455f40c6333ae1ca07671783206f322b17105b616eaf0e8368da427",
+      "after_sha256": "63bf95dd4f2b3bb14df5cc21d26737dc8547a879528f0c6c1f63097200bb07bc"
+    },
+    {
+      "path": "crates/sim-core/examples/kernel_bench.rs",
+      "before_sha256": "4fba249d0b45d1a0806e2e480b3e69299423b860625f1af23961328f9885d458",
+      "after_sha256": "c11b8b7b1137553e5617406c87414dd38c2f361f1c04f2ecbef9a37deb91e68c"
+    },
+    {
+      "path": "crates/sim-core/examples/render_snapshot_bench.rs",
+      "before_sha256": "fbaf9dd6bd52ed8c399f3411ea2b4d03cc4ec9c68173d9f2ee2944c1f13b5952",
+      "after_sha256": "8ca84c6b305ae986e1bccf4ac3122113d89f7f74d45773d811c8d954315a191c"
+    },
+    {
+      "path": "crates/sim-core/src/actions.rs",
+      "before_sha256": "b25957851c29630cab24ac1deadf22684c7cc7fd3738327f165a3beb762ea13b",
+      "after_sha256": "d25494cc8418a58d9cef2adc65b71ac7a1307f494484ee4c9fc5dac226b0ef33"
+    },
+    {
+      "path": "crates/sim-core/src/kernel.rs",
+      "before_sha256": "73989a46e190d19c9da44f31227a8994616929cf0df12aeb33e05b4eb5adc119",
+      "after_sha256": "1a72f32a5942f972582dc988f798dc368a5ee16c39834b24ea423adbb7730ae9"
+    },
+    {
+      "path": "crates/sim-core/src/render.rs",
+      "before_sha256": "963af4f467feab0191da7677142348f7e1264df6d643780e8212d825ff26debc",
+      "after_sha256": "e06a282f35d5ee8397941da7fd0a102afd50ee0babff4027ae14696f438150ba"
+    },
+    {
+      "path": "crates/sim-core/tests/kernel.rs",
+      "before_sha256": "3401948479b7b85ef1300d17dc963a6734b52ad37b45f518ed7aee2a1dd6b8a7",
+      "after_sha256": "23e740bfca96ae83c05807db33f3a76f105c7e01561603280695658fad5066dd"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "before_sha256": "cdd9b976cc0bcf0fff1d7e98c7c195e41ab654bfa793308adc83cd02ad54c6d0",
+      "after_sha256": "75cb2b977aba524816fc718d6fdc524d38a3a9193ef27d736774e194bfff2246"
+    },
+    {
+      "path": "docs/CURRENT_PROGRESS.md",
+      "before_sha256": "e720950d0ee98d169822db7d8e0ebe70f80958feba61247f0d9857ff664d7efb",
+      "after_sha256": "2bb2206764e8fd575ff2486f1c8067c14dfc14cc506934b97f663525fbe14d55"
+    },
+    {
+      "path": "docs/EXECUTION_CONTRACT.md",
+      "before_sha256": "b3dceba7d1e7ffe5009eadf968feaacb706d3ed1bc2fd602304088a1412ea21a",
+      "after_sha256": "1588f4fb1d572b69c61471769b254816061ece07b7a43d4fbfdc855abadaf2c5"
+    },
+    {
+      "path": "docs/PERFORMANCE.md",
+      "before_sha256": "7109eaa11347a91c2fdc85a322ee68d821af65529e2e62097a9e21f517fc0e8d",
+      "after_sha256": "949de6ac1f01d22a6b4081dac61a738031edd6d96d28bf8693539563b11ec303"
+    },
+    {
+      "path": "docs/PHASE_1_PLAN.md",
+      "before_sha256": "2d5455b2794d9393548e70d0e9fe6224f2358d449b383f3001368f5bd868164a",
+      "after_sha256": "22487e558251d5ef8c592357389d92de752c07b7fc44770959d239f104ec1f7e"
+    },
+    {
+      "path": "docs/PHASE_1_REMAINING_EXECUTION.md",
+      "before_sha256": "0f46c2faa20518c7d1fc8bce8abd09a11d4eaf07edf190b785c859bb78e04ff4",
+      "after_sha256": "cd9f1da6faeef299743647eb59735864acc64058d5972abe7629367b997854ba"
+    },
+    {
+      "path": "docs/adr/ADR-0021-phase-1-action-execution-contract.md",
+      "before_sha256": "ef7192583c494b2b6edfd9ff7fa3392552a0c884376578191fa655ec3fdf6c42",
+      "after_sha256": "a69ee83624b6c07c7aaa3c1a3a60fcf0c38c9ac4e4654728418c4fc6db2b77fe"
+    },
+    {
+      "path": "docs/adr/ADR-0022-phase-1-scheduler-kernel-contract.md",
+      "before_sha256": "a52d8deadb9b0556c01b5159bb3af70367dbacdfa4bd2a87596b44e1080efae3",
+      "after_sha256": "3fde41104e881d63a4b5c4e2158c0170bcd468daf72725185c48638a0567c7eb"
+    },
+    {
+      "path": "docs/adr/ADR-0023-phase-1-render-snapshot-dto-contract.md",
+      "before_sha256": "229de83bb3614716095c4ec17ac4203927789dc542429b7985fb17cac6c6cc71",
+      "after_sha256": "9699bfdac09e7303535ac4fc7104b24728d05c16ec18dcd2434a56c847a263a9"
+    },
+    {
+      "path": "docs/adr/ADR-0024-phase-1-kernel-repair-contract.md",
+      "before_sha256": "a0cbcb1f1e257c45c49b2c09afad54fd4c5309182cf2365812147497bcdecd78",
+      "after_sha256": "6f322d9dd5af5152107684c4fa7d6b6dcf014f59ec4a22bef1fb999f9fa6266c"
+    },
+    {
+      "path": "docs/reports/CHRON-027_ACTION_STATE_MACHINE.md",
+      "before_sha256": "924a270517e0a201d181eb1ec94d36be0471baa78002912e17cb3d54990d788c",
+      "after_sha256": "97985ec37ffbc6171bc380ae8ddc98e75cc2a6492a6e969d847ea7fdb756f64e"
+    },
+    {
+      "path": "docs/reports/CHRON-028_KERNEL.md",
+      "before_sha256": "9cbc77537f6c9f7157b3debe0c386c5d49df3d5c966d8ac273d0c94e6ef5d310",
+      "after_sha256": "1f3b6f49b69eea67858de72773c96a71b396f82032d421d15a138ce75148a10b"
+    },
+    {
+      "path": "docs/reports/CHRON-029_RENDER_SNAPSHOT.md",
+      "before_sha256": "0dd78301f6ada2a04318f51880c8d0b8b20e79d4a77328b4331fad41659bef19",
+      "after_sha256": "3b188bfc3bfb791130907cc1c3ca52c449e36424972bb18a108665aa1b437767"
+    },
+    {
+      "path": "docs/reports/P1_KERNEL_REPAIR_V1.md",
+      "before_sha256": "fd8a5ddb167cb98bcf9beb452d5fc1d8e434cb144e0d36bbaa39d39c45cd419b",
+      "after_sha256": "c5316c2f1ef64d52e932727e84dd16c29e1a3e177fa8b7a2868a784586b70800"
+    },
+    {
+      "path": "docs/tasks/CHRON-027.md",
+      "before_sha256": "a8f192289f29cb4cf17d4b8f3f2f2adb7fac197c89a9e2ad8e50a70ac5ecac0e",
+      "after_sha256": "948db417c2f72a90cf49174d527b87902b22053227ec46ed315bd2389c84f75b"
+    },
+    {
+      "path": "docs/tasks/CHRON-028.md",
+      "before_sha256": "1910e95de9f7ff5ad8f3e7e1e2200af6b18516fff96dfa23a6107d7c894d82ba",
+      "after_sha256": "d92a5321998b99dd0bd617e63020366e832585f963e592d351e2961ceb996119"
+    },
+    {
+      "path": "docs/tasks/CHRON-029.md",
+      "before_sha256": "ae9b4b041549e476e33a12b8f997d8f2bdfd55b40939121bfe20273ba831639f",
+      "after_sha256": "f14675c0d75f5c37f893b4864e378d84e5b6a22df5405e9cbe992602f4e4d93f"
+    },
+    {
+      "path": "docs/tasks/P1_KERNEL_REPAIR_V1.md",
+      "before_sha256": "092f54e9544d94e4ba064ee8fe16752a4fee448088be0d721855504a8baf0f08",
+      "after_sha256": "e887f2e2500d4c41f342aa4aa3203095118fdae2b2d1c1d2e17cb1f5baad830c"
+    },
+    {
+      "path": "tools/bench-memory/README.md",
+      "before_sha256": "87918423615940eb3c71e25868d2900a1385d919eee1fc3845ad0024ab62baa3",
+      "after_sha256": "4298e25ac6a4142f5a0ef7cbb9df29302e892d28a6d5961467c4043de89744c8"
+    },
+    {
+      "path": "tools/bench-memory/src/main.rs",
+      "before_sha256": "644566153c34038a7a3447e8ee481c826cbbb03bb60cd6ca8e830e094b14e80a",
+      "after_sha256": "78d8a3f79293ff7ce1e67da787e270cc8e39620b66725a56c7bd1367fb844102"
+    },
+    {
+      "path": "tools/bench-memory/tests/cli.rs",
+      "before_sha256": "5cbaeb95ce419ebe5d06dcf0844c41474fd9ceb5010cabee114e85080e0b58fa",
+      "after_sha256": "7d9e3810cf72f65ce17dd03fe1f8219fe4093203129ce630bf021f5d86df3985"
+    }
+  ],
+  "added": [
+    {
+      "path": "crates/sim-core/examples/support/bench_protocol.rs",
+      "sha256": "2476821a42ae61e7c24089747ae3629b5bcb3dd7264131c2046a05db5ed5904e"
+    },
+    {
+      "path": "crates/sim-core/tests/action_repair_v2.rs",
+      "sha256": "83e9efaeac4435974721f68fcfb60bcb05994fff7fa1a9a51fad34e24a370b87"
+    },
+    {
+      "path": "crates/sim-core/tests/benchmark_protocol_v2.rs",
+      "sha256": "34d7a37bd9cb64c5b72e493cedd642e326dad2d317abcf876b30e7a7dae04191"
+    },
+    {
+      "path": "crates/sim-core/tests/kernel_repair_v2.rs",
+      "sha256": "3b47abbb6b9f48ad98600b9c31522c5525c57a90111409cdb3f27a5498727830"
+    },
+    {
+      "path": "crates/sim-core/tests/render_repair_v2.rs",
+      "sha256": "52c2ccb0e4a7671a6524a75041bf1d2bc5e6e019f7308593f96d99c2fe2c19ae"
+    },
+    {
+      "path": "docs/TASK_INDEX.md",
+      "sha256": "ed893a2bc821b6260dc78a6868d0e15e761b93de73c642f71e8fc3cb08bd8336"
+    },
+    {
+      "path": "docs/adr/ADR-0025-kernel-repair-completion.md",
+      "sha256": "b466f08e20d21bd17259d7ecdfb9dbdaa08cef853cf027790d413d19d133e52c"
+    },
+    {
+      "path": "docs/reports/P1_KERNEL_REPAIR_V2.md",
+      "sha256": "06137c2600458418d4cb8a0e3bf7fe6b81e61cf8a2de23fa35f049e9d316f87c"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-action-timing.jsonl",
+      "sha256": "91a6c185c00373ae95efed7f8e26a8172b6458119d3e23c012a24b5a1cd359d2"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-build.txt",
+      "sha256": "f896143aa9efc9157867ec5b97ce69232df4d8549ccee0d3907c07d9afffdf0d"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-ci-rust.txt",
+      "sha256": "5e09b1ee2c3f6ec41ef9eb01d5c6b539df607747f316897d1741ae5633069201"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-commands.jsonl",
+      "sha256": "d290a39703b9c40eaf8185d53e6b54596e23f4eab2489505b941974af99c5d93"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-doctest.txt",
+      "sha256": "f1cdae4e68202fd4c22dc0708a5f4f1546716711c6fb5a011e0e1d4f7ec3cbb4"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-environment.json",
+      "sha256": "067e101c86e640269a9b6a784e6ecb8a12f0eeabcccb9c98bab7d2178953c86f"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-godot.txt",
+      "sha256": "adf62fa35601f6dcb3c676e0402d6edbb63c83ac5d20ee2d1f98a86b576bc015"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-interrupted-action-timing.jsonl",
+      "sha256": "498a3d82d3c1f9ba697d2d7241906814b6522e8a8af2a9fcfabd4793319a35f4"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-interrupted-commands.jsonl",
+      "sha256": "e59a93aed82dc958b3d54900c2448d0be07ce03c8262437077126998d564e59d"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-interrupted-environment.json",
+      "sha256": "b464a05fffc8d7b7593120a76853ea6d6ca15aa20cc69ce6d93d8aed174df1e5"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-interrupted-kernel-timing.jsonl",
+      "sha256": "fd0e5052bea4d3d6bbe6a534e4385520245fc5a3646910e66f26e3c2729d963f"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-kernel-timing.jsonl",
+      "sha256": "1934c9bd07e0cb58756f956e92c4a20ad3bd353f268c93b7e29864c355c522f9"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-memory.jsonl",
+      "sha256": "74d7ea61ef5d40fc813ab2dd0dfcb36afb208a63cec5d65257db76d491b7d758"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-metadata.json",
+      "sha256": "479aa3c6612811b8a7b97e1343140a0d113fc0097c8f729da3eeb1c046a076a2"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-preexisting-sha256.json",
+      "sha256": "4e4b04ab0b0789d4c2038db7349ed5cee46a29841b7a100330f6ee732360943e"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-release.txt",
+      "sha256": "f910ae6862515b9c17a4e845c9b5db61794371933f02e242039e332ab63049b0"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-render-timing.jsonl",
+      "sha256": "3f0faae463ac6ec238615d975b859c9ead1a91abbe549e249627319c071b3b06"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-rustdoc.txt",
+      "sha256": "105b439b305f72de22fe98a1c529522523cbaac8e72f9bec21ee2cc1d4e4b06b"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-tree.txt",
+      "sha256": "d04c7e9b7ed808ff6fe4c1d4174fc123190140ab4c6dcb513b7f89bef7621f14"
+    },
+    {
+      "path": "docs/reports/data/kfix-v2-validation.json",
+      "sha256": "fa2983b06fc115785d5b219f5c9684ade6a96f0d4c1fdddc6a1b076c48d4fa67"
+    },
+    {
+      "path": "docs/tasks/P1_KERNEL_REPAIR_V2.md",
+      "sha256": "16f20d973c7c5560b9f7dc74f82ec0e10f85c23bb5470a86b9a2c100638fe2ba"
+    },
+    {
+      "path": "tools/collect-kfix-v2.rb",
+      "sha256": "e190ff3ec80ce0c1282704185ab6ab20dd52bb1c5cd62e0d97bd1206453ee9d6"
+    }
+  ],
+  "removed": [],
+  "outside_allowed_scope": [],
+  "all_preexisting_data_unchanged": true,
+  "self_hash_excluded": true
+}

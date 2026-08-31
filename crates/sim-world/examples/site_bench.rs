@@ -175,6 +175,38 @@ fn run_advances(sites: &ActivitySites, work_coords: &[LocalCoord]) -> u64 {
         .sum()
 }
 
+/// Runs the fixed 20-site workload for incremental-memory measurement.
+/// Preparation is complete before the first observation. The operation phase
+/// performs exactly one query batch and one advance batch, then verifies both
+/// fixed checksums before the retained fixture reaches the second observation.
+///
+/// # Panics
+///
+/// Panics when `case` is not `"sites"` or when the deterministic fixture or
+/// either fixed checksum assertion fails.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    const EXPECTED_QUERY_CHECKSUM: u64 = 81_748_317;
+    assert_eq!(case, "sites", "unknown site memory workload case: {case}");
+    let map = WorldMap::generate(WorldSeed::new(FIXTURE_SEED), WorldGenConfig::default());
+    let sites = fixture_sites(&map);
+    let work_coords: Vec<LocalCoord> = sites
+        .sites_of(SiteKind::Work)
+        .map(ActivitySite::coord)
+        .collect();
+    assert!(!work_coords.is_empty(), "fixture must contain work sites");
+    observe();
+    let query_checksum = run_queries(&sites);
+    let advanced = run_advances(&sites, &work_coords);
+    assert_eq!(query_checksum, EXPECTED_QUERY_CHECKSUM);
+    assert_eq!(
+        advanced,
+        u64::try_from(ADVANCE_OPS).expect("op count fits u64")
+    );
+    black_box(&sites);
+    observe();
+    query_checksum
+}
+
 /// The splitmix64 generator (Stafford/Vigna, public domain reference
 /// constants) for a deterministic, reproducible query-coordinate stream.
 struct Splitmix64(u64);

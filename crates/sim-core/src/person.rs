@@ -96,8 +96,26 @@ impl PersonView {
 /// `EntityId -> Entity` handle map.
 ///
 /// The handle map is rebuilt together with the world and is never serialized
-/// (ADR-0011). No public method exposes a runtime handle, except a
-/// `#[doc(hidden)]` diagnostics accessor; all public identity is `EntityId`.
+/// (ADR-0011). No public method exposes a runtime handle; all public identity
+/// is `EntityId`.
+///
+/// The stable identity API remains available to external callers:
+///
+/// ```
+/// use palimpsest_sim_core::{EntityId, PersonRuntime};
+///
+/// let runtime = PersonRuntime::new();
+/// assert_eq!(runtime.location(EntityId::MIN), None);
+/// ```
+///
+/// Runtime ECS handles are intentionally not part of that API:
+///
+/// ```compile_fail
+/// use palimpsest_sim_core::{EntityId, PersonRuntime};
+///
+/// let runtime = PersonRuntime::new();
+/// let _handle = runtime.runtime_handle(EntityId::MIN);
+/// ```
 #[derive(Debug, Default)]
 pub struct PersonRuntime {
     world: World,
@@ -190,12 +208,12 @@ impl PersonRuntime {
         Ok(())
     }
 
-    /// Diagnostics-only handle lookup. Runtime handles are rebuildable
-    /// indexes: they are never serialized and never cross the
-    /// persistence/bridge boundary (ADR-0002/0011).
-    #[doc(hidden)]
+    /// Test-only handle lookup. Runtime handles are rebuildable indexes: they
+    /// are never serialized and never cross the persistence/bridge boundary
+    /// (ADR-0002/0011).
+    #[cfg(test)]
     #[must_use]
-    pub fn runtime_handle(&self, id: EntityId) -> Option<Entity> {
+    fn runtime_handle(&self, id: EntityId) -> Option<Entity> {
         self.handles.get(&id).copied()
     }
 
@@ -369,9 +387,9 @@ mod tests {
         let restored: PersonView = serde_json::from_str(&encoded).expect("deserialize view");
         assert_eq!(restored, view);
         // `PersonRuntime` deliberately has no `Serialize` implementation and
-        // the handle map is reachable only through the #[doc(hidden)]
-        // `runtime_handle` diagnostics accessor: handles never cross the
-        // persistence or bridge boundary (ADR-0002/0011).
+        // the handle map is reachable only through the test-only private
+        // `runtime_handle` helper: handles never cross the persistence or
+        // bridge boundary (ADR-0002/0011).
     }
 
     #[test]

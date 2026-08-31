@@ -433,6 +433,58 @@ fn content_hash(map: &LocalGrid<TerrainKind>) -> u64 {
     hash
 }
 
+/// Runs one named query from the fixed seed-42 query fixture for memory
+/// measurement. Map generation and query construction are preparation and are
+/// observed before the operation; the second observation occurs only after
+/// the validated result remains alive. Expansion measurement is deliberately
+/// excluded from this operation workload.
+///
+/// # Panics
+///
+/// Panics when `case` is not one of the seven documented query selectors, when
+/// the seed-42 golden map changes, or when the selected outcome is invalid.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    const VALID_CASES: [&str; 7] = [
+        "trivial",
+        "short",
+        "medium",
+        "long",
+        "unreachable",
+        "node_budget",
+        "path_budget",
+    ];
+    assert!(
+        VALID_CASES.contains(&case),
+        "unknown path memory workload case: {case}"
+    );
+    let map = WorldMap::generate(WorldSeed::new(SEED), WorldGenConfig::default());
+    assert_eq!(
+        content_hash(map.local()),
+        SEED_42_MAP_HASH,
+        "seed 42 map must match the CHRON-020 golden hash"
+    );
+    let grid = map.local();
+    let queries = build_queries(grid);
+    let query = queries
+        .iter()
+        .find(|query| query.name == case)
+        .expect("validated path query case exists");
+    observe();
+    let result = run_query(grid, query);
+    check_outcome(grid, query, &result);
+    let checksum = match &result {
+        Ok(path) => u64::try_from(path.len()).expect("path length fits u64"),
+        Err(PathError::Unreachable) => u64::MAX,
+        Err(PathError::LimitExceeded { nodes, .. }) => {
+            u64::try_from(*nodes).expect("node count fits u64")
+        }
+        Err(error) => panic!("unexpected terminal result for {case}: {error}"),
+    };
+    black_box(&result);
+    observe();
+    checksum
+}
+
 fn current_rss_bytes() -> Option<u64> {
     let pid = std::process::id().to_string();
     let output = Command::new("ps")

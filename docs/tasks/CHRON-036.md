@@ -1,7 +1,10 @@
 # CHRON-036 — Phase 1 Validation Report
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Authorized — current033–036 owner instruction; completion waits for verified dependencies.**
+> Approval of this Task **or its identified execution plan** authorizes its stated steps once.
+> Follow [Execution Contract](../EXECUTION_CONTRACT.md) and
+> [remaining-plan decisions, supporting files and commands](../PHASE_1_REMAINING_EXECUTION.md).
+> Internal design/readiness and agent dispatch do not require repeated owner approval.
 
 ## Objective
 Consolidate the verified Phase 1 results into `docs/reports/PHASE_1_MICRO_WORLD_KERNEL_V1.md`: the M5 measured outcomes, the 100-person 10-year run, presentation FPS, headless-vs-rendered comparison, risks, recommendations for `bevy_ecs` and the Simulation worker, and the product-owner decisions required before Phase 2. This Task reports only; it does not enter Phase 2.
@@ -39,14 +42,27 @@ Phase 0 ended with `ARCHITECTURE_SPIKE_V1.md`, which confirmed Godot+Rust and pr
 - CHRON-035 (spike-workload retirement status) for the honesty/removal record.
 - `ARCHITECTURE_SPIKE_V1.md`, `docs/PERFORMANCE.md`, all ADRs, and `docs/ARCHITECTURE.md` for the context the report must reference.
 
+## Execution Steps / Readiness
+
+1. Build a DoD-to-evidence table from 027–035, recording each source revision,
+   command, raw artifact and verdict. Missing mandatory evidence is incomplete,
+   not N/A or a reason to create imaginary numbers.
+2. Verify required data matches the final candidate implementation. If earlier
+   measurements were invalidated, return to their owning Task for in-scope
+   reruns; this report Task does not implement fixes or new workloads.
+3. Rerun final local gates, publish report changes on the same planned candidate
+   branch and verify both hosted checks at that SHA. Parent reviews the complete
+   report; prose assembly is delegable only after the evidence table is fixed.
+4. Deliver Phase 1 report and stop for phase acceptance. No Phase 2 implementation.
+
 ## Files Modified / Allowed
 - `docs/reports/PHASE_1_MICRO_WORLD_KERNEL_V1.md` (**new report**; the sole required deliverable).
 - `docs/tasks/CHRON-036.md`.
 - Reference to raw result artifacts only; do not reproduce full tables with invented values.
-- No product document change; no `MASTER_SPEC.md`, `docs/ARCHITECTURE.md`, or `docs/PERFORMANCE.md` edits without a Change Proposal. ADRs are referenced, not rewritten.
+- Documentation-only: this report/Task and directly related result indexes in `docs/PHASE_1_PLAN.md`, `docs/ARCHITECTURE.md`, and `docs/PERFORMANCE.md`. Reference ADRs; do not rewrite accepted decisions, budget lines, historical evidence or `MASTER_SPEC.md`.
 
 ## API Contract / Evidence
-- The report must carry an explicit header: Phase (1 — Micro World Kernel), reference machine (Apple M5 10-core/16 GiB), OS, status (Complete & pending product-owner confirmation), and confirmation date placeholder.
+- The report must carry Phase, reference machine, OS, candidate source revision and evidence status. Use `Complete & pending product-owner confirmation` only after all mandatory gates pass; otherwise name the incomplete evidence. Confirmation date stays unset until the owner confirms.
 - Every required question (bevy_ecs durability, worker/IPC sufficiency, Phase 1 gate, memory budget interpretation) is answered with a named measurement and a clear "continue / change / defer" verdict.
 - Any statement that a measurement does not support must be labeled as such; no invented conclusion (mirrors CHRON-014's "no invented/unmeasured conclusions" rule).
 - The report must explicitly state that Phase 2 is blocked pending product-owner approval and that the spike-workload retirement (if done) is historical-only.
@@ -71,4 +87,4 @@ Phase 0 ended with `ARCHITECTURE_SPIKE_V1.md`, which confirmed Godot+Rust and pr
 - Phase 2 remains stopped until the product owner approves the next phase.
 
 ## Required Completion Report
-Report: change summary; commands run; benchmark consolidated table or explicit N/A-per-source with pointer to each source report; the list of covered questions and their evidence; known limitations (e.g., single-threaded kernel, no Phase 2+ systems, snapshot/save hardness, editor-exit crash monitoring); the Phase 2 recommendation presented to the product owner; and any blocker. Do not start Phase 2 or any next Task; each requires separate product-owner approval.
+Report: change summary; commands run; benchmark consolidated table with any N/A restricted to genuinely inapplicable metrics, never missing mandatory evidence with pointer to each source report; the list of covered questions and their evidence; known limitations (e.g., single-threaded kernel, no Phase 2+ systems, snapshot/save hardness, editor-exit crash monitoring); the Phase 2 recommendation presented to the product owner; and any blocker. Stop at delivery for product-owner Phase 1 acceptance. Do not start Phase 2; execution approval for this plan does not authorize it.

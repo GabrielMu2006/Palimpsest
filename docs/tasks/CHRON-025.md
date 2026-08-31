@@ -3,6 +3,12 @@
 > **Status: Complete — awaiting product-owner confirmation.**
 > The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
+> Accepted remediation clarification (2026-08-30): ADR-0019 defines validated
+> native/serde candidate construction, complete selection sets versus partial
+> traces, and selected-key correspondence. It authorizes fallible
+> `ActionCandidate::new` and `DecisionTrace::new` without adding action kinds,
+> execution, or durable history. See REM-007 and its completion report.
+
 ## Objective
 Define and implement the action-candidate and decision-trace *contracts* (types + construction) for Phase 1 Utility AI: the enumerable set of candidate actions and the complete, factor-by-factor trace used by Developer Mode's "Why" (Master Spec §72), but without computing any score or making any selection. Scoring/selection is CHRON-026.
 

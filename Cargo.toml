@@ -11,6 +11,7 @@ members = [
     "crates/sim-storage",
     "crates/sim-time",
     "crates/sim-world",
+    "tools/bench-memory",
 ]
 default-members = ["crates/sim-core"]
 

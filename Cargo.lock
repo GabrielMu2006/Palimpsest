@@ -738,11 +738,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
 
 [[package]]
+name = "palimpsest-bench-memory"
+version = "0.0.0"
+dependencies = [
+ "libc",
+ "palimpsest-headless-runner",
+ "palimpsest-sim-ai",
+ "palimpsest-sim-core",
+ "palimpsest-sim-time",
+ "palimpsest-sim-world",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "palimpsest-godot-bridge"
 version = "0.0.0"
 dependencies = [
  "godot",
+ "palimpsest-sim-ai",
  "palimpsest-sim-core",
+ "palimpsest-sim-world",
 ]
 
 [[package]]
@@ -751,6 +767,7 @@ version = "0.0.0"
 dependencies = [
  "bevy_ecs",
  "palimpsest-sim-core",
+ "palimpsest-sim-world",
  "serde",
  "serde_json",
 ]

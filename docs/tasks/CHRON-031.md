@@ -1,7 +1,12 @@
 # CHRON-031 — Godot Micro World Presentation
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Implemented and locally verified 2026-08-31 — see
+> [report](../reports/CHRON-031_GODOT_MICRO_WORLD.md) and
+> [ADR-0026](../adr/ADR-0026-phase-1-godot-presentation-contract.md).**
+> Approval of this Task **or its identified execution plan** authorizes its stated steps once.
+> Follow [Execution Contract](../EXECUTION_CONTRACT.md) and
+> [remaining-plan decisions, supporting files and commands](../PHASE_1_REMAINING_EXECUTION.md).
+> Internal design/readiness and agent dispatch do not require repeated owner approval.
 
 ## Objective
 Present the Phase 1 micro world in the Godot macOS client: render up to 100 persons moving over terrain tiles, provide time controls (pause/speed/step), and show developer metrics, all driven by the Rust Render Snapshot (CHRON-029) and the Simulation worker (CHRON-030), with the Scene Tree kept strictly read-only and a 60 FPS target on the M5 reference machine.
@@ -35,17 +40,30 @@ Phase 0 demonstrated a 128×128 TileMap at a stable 60 FPS and a minimal bridge 
 - CHRON-010 developer metrics conventions and CHRON-011 tile renderer baseline to reuse/refactor.
 - CHRON-002 Godot project and ADR-0007 Godot bridge boundary.
 
+## Execution Steps / Readiness
+
+1. Check the actual 029/030 fields and lifecycle/ack API; parent records the
+   thin Godot conversion contract, including lossless full-range EntityId.
+2. Adapt existing tile renderer, add markers/controls/metrics from snapshots.
+   Scene Tree may update presentation mirrors; it is not immutable UI, and
+   none of those updates may drive Rust truth.
+3. Add headless integration smoke and a separate windowed frame-capture path
+   in the allowed Godot tools (§3/4). Capture 120 warm-up + at least 300 measured
+   frames; distinguish base-terrain draw calls from whole-scene draw calls.
+4. Parent verifies runtime fidelity, rejection feedback and M5 measurements.
+   A script/UI leaf may be delegated; worker lifecycle/bridge review stays local.
+
 ## Files Modified / Allowed
 - `apps/macos-godot/**` (scene, GDScript, renderer/sprite node, metrics overlay, time controls).
 - `crates/godot-bridge/**` (presentation conversion from the Render Snapshot; the only Godot-dependent crate per ADR-0007).
 - `apps/macos-godot/project.godot`, tile/atlas assets, and any presentation resources.
 - `docs/reports/CHRON-031_GODOT_MICRO_WORLD.md` for the measured FPS result.
 - `docs/tasks/CHRON-031.md`.
-- No product doc changes; no `MASTER_SPEC.md`, `docs/ARCHITECTURE.md`, or `docs/PERFORMANCE.md` edits without a Change Proposal. Do not exercise the editor-only crash path flagged in ADR-0010.
+- Include this Task's necessary supporting files under P1-REMAINING §3: tests/fixtures, benchmark adapters, corresponding ADR and relevant architecture/performance/status documentation. Routine synchronization does not need a CP; Master Spec conflicts do. No `MASTER_SPEC.md` edits, unrelated refactoring or budget changes.
 
 ## API Contract
 - Godot calls a bridge method `get_micro_world() -> Dictionary` (or the worker-driven equivalent) that returns the latest complete Render Snapshot; it is read-only and immutable from Godot's perspective.
-- Godot issues commands via `command_worker(command)` mapping to CA `WorkerCommand`: `Pause`, `Resume`, `SetSpeed`, `Step`, `AdvanceTo`.
+- Godot issues commands via `command_worker(command)` mapping to `WorkerCommand`; normal UI exposes Pause/Resume/SetSpeed/Step. AdvanceTo stays a diagnostic/benchmark path. Enqueue failure and application acknowledgement are distinct UI states.
 - The bridge must not expose any method that mutates kernel world state except through the worker's bounded command path.
 - Presentation invariant: the Scene Tree holds only a presentation mirror; no node stores authoritative position/action truth used to drive simulation.
 - The presenter must not invent a simulation value (e.g., scheduler depth) the snapshot does not provide; it labels unavailable fields as unavailable.
@@ -53,7 +71,7 @@ Phase 0 demonstrated a 128×128 TileMap at a stable 60 FPS and a minimal bridge 
 
 ## Tests
 - Snapshot fidelity: after N worker ticks, the Godot-presented persons/tiles/actions match the Rust snapshot for the same committed tick; no drift or invented values.
-- Read-only guarantee: no Godot method mutates kernel state except through the worker command path; attempts to mutate via a node result in a no-op/error.
+- Authority guarantee: changing/removing a presentation Node may alter the local drawing, but cannot change the Rust snapshot/truth. Only approved worker commands affect simulation.
 - Time-control correctness: Pause freezes the presented `sim_second`; SetSpeed/Step change it only at tick boundaries; N-step advances by exactly the requested ticks.
 - Metrics overlay: overlay values exactly mirror snapshot metrics; unavailable client-side fields are labeled unavailable, not fabricated.
 - 60 FPS target: rendering 100 moving persons + full tile map sustains 60 FPS on the M5 reference machine (mirroring CHRON-011 method, discarding warm-up, ≥300 frames, p95/min/mean reported).
@@ -74,4 +92,4 @@ Phase 0 demonstrated a 128×128 TileMap at a stable 60 FPS and a minimal bridge 
 - Rust Core remains headless and Godot-independent.
 
 ## Required Completion Report
-Report: change summary; commands run; benchmark result (FPS min/mean/p95, frame time, draw calls, video memory, presentation latency) or explicit N/A; list of covered tests; known limitations (e.g., placeholder art, no animation rigs, single worker in-process, no persistence/history); any editor-only crash recurrence (stop signal per ADR-0010); and any blocker. Do not auto-start the next Task; each requires separate product-owner approval.
+Report: change summary; commands run; benchmark result (FPS min/mean/p95, frame time, draw calls, video memory, presentation latency) with any N/A restricted to genuinely inapplicable metrics, never missing mandatory evidence; list of covered tests; known limitations (e.g., placeholder art, no animation rigs, single worker in-process, no persistence/history); any editor-only crash recurrence (monitor the isolated exit case; stop affected acceptance for normal-runtime recurrence); and any blocker. Continue to the next verified-ready Task already covered by the approved plan; do not ask for routine reconfirmation.

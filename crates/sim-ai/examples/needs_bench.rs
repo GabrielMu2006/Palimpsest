@@ -102,3 +102,52 @@ fn current_rss_bytes() -> Option<u64> {
 fn json_u64(value: Option<u64>) -> String {
     value.map_or_else(|| "null".to_owned(), |number| number.to_string())
 }
+
+/// Retains the complete one-year needs workload for the memory benchmark
+/// adapter. The callback marks the boundary around the measured operation.
+///
+/// # Panics
+///
+/// Panics when `case` is not `"100"` or `"1000"`.
+pub fn memory_workload(case: &str, observe: &mut dyn FnMut()) -> u64 {
+    let count = match case {
+        "100" => 100,
+        "1000" => 1_000,
+        other => panic!("invalid needs memory workload selector: {other}"),
+    };
+    let one_hour = SimDuration::from_seconds(3_600).expect("non-negative duration");
+    observe();
+    let all_needs = advance_year(count, one_hour);
+    assert_eq!(all_needs.len(), count);
+    let checksum = u64::try_from(count).expect("person count fits u64") * HOURS_PER_YEAR;
+    black_box(&all_needs);
+    observe();
+    checksum
+}
+
+#[cfg(test)]
+mod tests {
+    use super::memory_workload;
+
+    #[test]
+    fn memory_adapter_observes_twice_and_matches_golden() {
+        let mut callbacks = 0;
+        let checksum = memory_workload("100", &mut || callbacks += 1);
+        assert_eq!(callbacks, 2);
+        assert_eq!(checksum, 876_000);
+    }
+
+    #[test]
+    fn memory_adapter_matches_1000_golden() {
+        let mut callbacks = 0;
+        let checksum = memory_workload("1000", &mut || callbacks += 1);
+        assert_eq!(callbacks, 2);
+        assert_eq!(checksum, 8_760_000);
+    }
+
+    #[test]
+    #[should_panic(expected = "invalid needs memory workload selector")]
+    fn memory_adapter_rejects_invalid_selector() {
+        let _ = memory_workload("bad", &mut || {});
+    }
+}

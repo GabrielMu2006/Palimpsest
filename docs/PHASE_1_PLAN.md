@@ -1,5 +1,26 @@
 # Phase 1 — Micro World Kernel Plan
 
+> Current execution/status entry: [CURRENT_PROGRESS](CURRENT_PROGRESS.md).
+> CHRON-027–031 are implemented and locally verified (027–029 via the
+> [V2 repair](reports/P1_KERNEL_REPAIR_V2.md); 030 via
+> [its report](reports/CHRON-030_SIMULATION_WORKER.md); 031 via
+> [its report](reports/CHRON-031_GODOT_MICRO_WORLD.md)). Historical
+> planning/proposed language below does not override per-task approvals or
+> authorize CHRON-032+.
+
+> Approval clarification (product owner, 2026-08-30): an explicit instruction
+> to follow/execute an identified plan accepts that plan's stated decisions
+> and implementation steps without repeated per-Task or dispatch approval.
+> A planning/review request alone does not. This clarification supersedes
+> routine reconfirmation wording below; see `AGENTS.md`. The currently
+> accepted remediation plan does not include CHRON-027+ implementation.
+
+Current execution surface for the remaining work:
+[P1-REMAINING / 2026-08-30-r1](PHASE_1_REMAINING_EXECUTION.md), together with
+CHRON-027–036. It specifies recommended semantics, supporting files/tools,
+commands, ownership and the terminal boundary. It remains **Proposed**, not
+implementation approval. All future plans use [Execution Contract](EXECUTION_CONTRACT.md).
+
 - Phase: **1 — Micro World Kernel**
 - Owner: Palimpsest Phase 1 planning document author
 - Reference machine: Apple M5, 10 cores, 16 GiB unified memory — same as Phase 0
@@ -11,9 +32,10 @@
 `MASTER_SPEC.md` remains the read-only, highest-authority product specification.
 This plan implements a **bounded subset** of it and may not override it, `AGENTS.md`,
 `docs/ARCHITECTURE.md`, `docs/PERFORMANCE.md`, or any accepted ADR. Where a
-requested scope conflicts with any of those, a Change Proposal
-(`docs/proposals/CP-XXXX.md`) must be created first and the conflicting
-implementation must stop (see Change Governance below).
+requested scope conflicts with the Master Spec, create a Change Proposal
+(`docs/proposals/CP-XXXX.md`) and stop the conflicting implementation.
+Other contract changes require the relevant ADR/plan update before code; ordinary
+in-scope documentation synchronization does not require a CP.
 
 ---
 
@@ -36,16 +58,18 @@ validation report.
 
 - Phase 1 **planning**, per-`docs/tasks/CHRON-0NN.md` **specifications**, and
   **ADR work** are authorized immediately.
-- Phase 1 **implementation may begin only for one explicitly product-owner
-  approved Task at a time.** Approval of this overall plan is **not** blanket
-  approval to implement its Tasks.
+- Phase 1 implementation requires approval of a Task **or an identified execution
+  plan containing it**. An instruction to execute that plan accepts its stated
+  recommendations and steps once. Continue verified, dependency-ready Tasks
+  without repeated approval. Drafting/reviewing a plan alone does not authorize code.
 
 ---
 
 ## 2. Hard Out of Scope (Phase 1)
 
 These are **not** in Phase 1 scope and must never drift in "because it is
-easy". Every one is a `docs/proposals/CP-XXXX.md` blocker if requested.
+easy". A request to add one requires a scope decision; a CP is required for an
+actual Master Spec conflict, not for every ordinary plan clarification.
 
 - Phase 2+ systems: war, politics, religion, magic, machinery/technology,
   disease ecology, open markets, crimes/laws.
@@ -88,9 +112,10 @@ Derived from `MASTER_SPEC.md`, `docs/ARCHITECTURE.md`, and ADR-0001/2/3/4/5/6/7/
    entity scan; queue health observable (ADR-0004).
 6. **Structured event truth**, never `Vec<String>`; prose/beliefs/claims remain
    separate (ADR-0006).
-7. **`godot-bridge` is the only crate with unsafe code**, only the
-   `ExtensionLibrary` marker; simulation crates are `unsafe_code = "forbid"`.
-   Bridge is presentation-only (ADR-0007).
+7. **Simulation crates forbid unsafe code.** `godot-bridge` has only the
+   `ExtensionLibrary` marker exception (ADR-0007). The separate outward-only
+   benchmark tool has the accepted private native measurement/probe exceptions
+   in ADR-0020; it is not a simulation dependency.
 8. **Storage persists stable domain reps only**, never ECS handles or heap
    internals; snapshots are versioned bincode+zstd (ADR-0008/0009).
 9. **Dependency direction is inward** toward domain primitives; `sim-core`
@@ -125,8 +150,9 @@ be **bit-for-bit reproducible for a given (world seed, fixed input sequence)**.
    into utility or event ordering.
 5. Scheduler order is due-time then FIFO (ADR-0004); equal-time work order is
    deterministic by insertion or a stable tie-break.
-6. Pathfinding ties are broken deterministically (lowest grid index, then
-   lowest `EntityId`) — no arbitrary heap/queue order dependence.
+6. Pathfinding keeps CHRON-024's actual `(f, h, row-major coordinate)` ordering
+   and fixed neighbours; it has no EntityId tie-break. No arbitrary heap/queue
+   order dependence is allowed.
 7. A fixed seed plus fixed config and input-command sequence yields a fixed world,
    population, schedule, decision traces, and event sequence. Any divergence is
    a determinism **regression**, not a flake.
@@ -190,9 +216,9 @@ be **bit-for-bit reproducible for a given (world seed, fixed input sequence)**.
 
 ### 5.2 Parallel Waves
 
-Tasks in the same wave have **no file overlap** and mutually satisfied
-dependencies, so they may be dispatched to separate agents in parallel (subject
-to Section 15's OpenCode protocol; any shared file still forces serialization).
+Waves identify dependency-ready candidates, **not proof of file independence**.
+Parent verifies disjoint file ownership before any parallel dispatch (Section 15).
+Shared manifests, exports, fixtures and ADRs stay parent-owned and serialized.
 
 - **Wave 1** — `018`
 - **Wave 2** — `019`
@@ -253,15 +279,19 @@ when **all** of the following are true:
 12. No task left a regression suite weaker than it started; no test was deleted,
     skipped, or disabled to make checks pass.
 
-**Implementation remains stopped** until the product owner explicitly approves
-each bounded Task. Approval of this plan is not approval to implement.
+Implementation requires explicit execution approval of the identified Task or
+plan; that approval is recorded once. The current documentation clarification
+does not start CHRON-027+.
 
 ---
 
 ## 7. Task Definitions
 
 Each Task's detailed spec lives in `docs/tasks/CHRON-0NN.md` (Phase 0 layout).
-The summaries below follow that contract and are the approval surface.
+The summaries below are a roadmap. For 018–026, completed Task reports and
+accepted ADRs describe the actual implementation. For 027–036, the detailed
+Task plus P1-REMAINING form the execution contract; a summary's N/A or placeholder
+does not remove a detailed Task's required benchmark or error contract.
 
 ### 018 — Workspace Boundaries
 
@@ -392,6 +422,9 @@ The summaries below follow that contract and are the approval surface.
 
 ### 027 — Action Execution State Machine
 
+> Implemented 2026-08-30 under P1-REMAINING / 2026-08-30-r1; contract ADR-0021;
+> evidence `docs/reports/CHRON-027_ACTION_STATE_MACHINE.md`.
+
 - **Purpose:** Run a selected action through concrete states (moving → arriving →
   performing → done) as a scheduled state machine.
 - Scope: action states for move/eat/sleep/work, Needs satisfaction on completion,
@@ -402,11 +435,13 @@ The summaries below follow that contract and are the approval surface.
 - API Contract: actions are scheduled work with deterministic transitions;
   high-level outcomes may emit bounded in-memory structured events.
 - Tests: happy path, interruption, invalid targets, state invariant, no infinite loop.
-- Benchmark: N/A.
-- DoD: actions complete deterministically, emit structured events, never loop forever.
+- Benchmark: 100/1,000-person transitions, peak RSS and queue growth (027 + P1-REMAINING).
+- DoD: actions complete deterministically, emit structured events, never loop forever;
+  the ADR-0018 actual decide/move/execute/needs loop passes.
 
 ### 028 — Scheduler / Kernel Orchestration
 
+- **Status — implemented 2026-08-31 (ADR-0022), repaired 2026-08-31 (ADR-0024); see `docs/reports/CHRON-028_KERNEL.md` and `docs/reports/P1_KERNEL_REPAIR_V1.md`.**
 - **Purpose:** Compose clock, scheduler, persons, needs, sites, pathfinding, and
   actions into one headless world kernel.
 - Scope: `SimClock`/`Scheduler` wiring (ADR-0003/0004), systems tick on demand
@@ -414,13 +449,14 @@ The summaries below follow that contract and are the approval surface.
 - Out of Scope: storage integration, render worker, any gameplay beyond micro-world.
 - Dependencies: 021, 022, 027.
 - Files: kernel module, wiring, integration tests.
-- API Contract: `step(world, due_instant)` deterministic; systems fire only when due.
+- API Contract: `advance_to(target, work_budget)` deterministic; systems fire only when due.
 - Tests: determinism across runs, due-time FIFO, no cross-tick leak, invariant checks.
 - Benchmark: kernel throughput and queue health.
 - DoD: the kernel advances deterministically, honors scheduling, exposes metrics.
 
 ### 029 — Render Snapshot DTO
 
+- **Status — implemented 2026-08-31 (ADR-0023, schema 2), repaired 2026-08-31 (ADR-0024); see `docs/reports/CHRON-029_RENDER_SNAPSHOT.md` and `docs/reports/P1_KERNEL_REPAIR_V1.md`.**
 - **Purpose:** Publish an immutable, render-oriented snapshot for Godot from Rust.
 - Scope: DTO for terrain + Person positions + minimal micro-world state, batching,
   no simulation mutation crossing the boundary.
@@ -434,6 +470,8 @@ The summaries below follow that contract and are the approval surface.
 
 ### 030 — Simulation Worker / Command Bridge
 
+- **Status — implemented and locally verified 2026-08-31 (ADR-0015 Phase 1
+  supplement); see `docs/reports/CHRON-030_SIMULATION_WORKER.md`.**
 - **Purpose:** Run simulation off Godot's main thread and publish immutable,
   batched snapshots, plus accept commands.
 - Scope: worker thread driving the kernel, batched snapshot publication, command
@@ -445,14 +483,17 @@ The summaries below follow that contract and are the approval surface.
   main-thread simulation truth.
 - Tests: no frame-stall feedback, correct batching, determinism preserved, clean shutdown.
 - Benchmark: snapshot publish rate, frame-stall measurement.
-- DoD: simulation runs off main thread; Godot sees immutable snapshots; no CPU
-  stall in presented frames.
+- DoD: simulation runs off main thread; Godot sees immutable snapshots; no
+  main-thread simulation tick is introduced. Frame cost/latency is measured
+  by 031, not asserted to be universally zero.
 
 ### 031 — Godot Micro-World Presentation
 
+- **Status — implemented and locally verified 2026-08-31 (ADR-0026); see
+  `docs/reports/CHRON-031_GODOT_MICRO_WORLD.md`.**
 - **Purpose:** Render the deterministic micro-world from snapshots and show Persons.
 - Scope: tile rendering from DTO, person/activity-site markers, camera, 60 FPS target.
-- Out of Scope: full UI panels, inspector, archive, real-time controls beyond speed.
+- Out of Scope: full UI panels, inspector, archive; pause/resume/speed/step are in scope.
 - Dependencies: 020, 029, 030.
 - Files: `apps/macos-godot/**` presentation, scenes, scripts.
 - Tests: visual/runtime smoke, FPS measurement over N frames, snapshot-driven render.
@@ -474,6 +515,7 @@ The summaries below follow that contract and are the approval surface.
 - Benchmark: wall time / RSS for the 10-year run.
 - DoD: 10 years of 100 NPCs completes without crash, NaN, hang, dangling
   reference, or memory blowup; reproducible from seed.
+- **Status — implemented 2026-08-31 (ADR-0027); see `docs/reports/CHRON-032_CHAOS_10YEAR.md`.**
 
 ### 033 — Representative Scale Benchmarks
 
@@ -528,7 +570,8 @@ The summaries below follow that contract and are the approval surface.
 - Dependencies: 031, 032, 033, 034, 035.
 - Files: report plus referenced raw artifacts only.
 - Tests: links/commands/results audited; required fields present; clean CI re-run.
-- Benchmark: final M5 reference suite.
+- Benchmark: consolidate the final M5 reference suite; reruns belong to the
+  originating measurement Task, not a new workload in this report Task.
 - DoD: report evidences every global DoD item (Section 6) and records known
   limitations/blockers; stable Phase 1 status is recorded.
 
@@ -539,8 +582,9 @@ The summaries below follow that contract and are the approval surface.
 - Any change to a **cross-module public API**, database/schema, identity, ECS,
   serialization, Godot bridge, AI, history retention, NLG, or Rule IR contract
   requires an **ADR** before implementation (AGENTS.md Change Governance).
-- Phase 1 planning ADRs are ADR-0011 through ADR-0017. A new ADR is required
-  only when implementation would change or exceed those accepted contracts.
+- Accepted Phase 1/measurement decisions now include ADR-0011–0020. Remaining
+  Tasks record their new public execution/kernel/DTO/worker contracts before
+  implementation; this is planned work, not an extra owner-approval ceremony.
 - Conflicts with `MASTER_SPEC.md` produce a `docs/proposals/CP-XXXX.md` (template
   exists at `docs/proposals/TEMPLATE.md`) and **stop** only the conflicting
   implementation.
@@ -600,14 +644,17 @@ A **failed gate blocks** the Task from being marked complete and blocks
 
 ## 11. Stop Conditions
 
-Implementation of any Phase 1 Task **stops immediately** when an explicit approval
-or boundary condition is violated:
+The following prevent acceptance of affected work. Fix ordinary defects within
+the approved Task; stopping for a new user decision is reserved for the real
+scope/authority blockers in `EXECUTION_CONTRACT.md`:
 
-- A requested Task/change falls outside Phase 1 scope (Section 2) → decline or
-  require a Change Proposal; do not "extend scope a little".
+- A requested Task/change falls outside Phase 1 scope (Section 2) → report the
+  scope decision; create a CP if it conflicts with Master Spec. Do not extend
+  the phase implicitly.
 - A requested change conflicts with `MASTER_SPEC.md` → create a CP and stop the
   conflicting implementation.
-- A public cross-module contract would change without an ADR → stop, write ADR.
+- A public cross-module contract needs its planned ADR → write/review it before
+  code, then continue. Ask only if the semantics materially depart from the plan.
 - The isolated **Godot `--headless --editor --quit` editor-exit crash recurs** in
   normal editor, game, or CI paths (spike §Known Risks #5). Recurrence in a
   normal path is a stop signal; the isolated editor-exit-only case is monitored.
@@ -615,39 +662,34 @@ or boundary condition is violated:
   variance → stop and fix before proceeding.
 - A determinism regression (same seed, different output) → stop; it is a bug, not
   a flake.
-- Product-owner approval for a Task is not granted → that Task stays blocked and
-  implementation does not start.
+- Neither the Task nor its containing execution plan is approved → no implementation.
 
 ---
 
-## 12. Per-Task Product-Owner Approval Gates
+## 12. Whole-Plan Approval and Internal Readiness
 
-Implementation follows the same contract as Phase 0 with an added explicit
-approval step. For each Task:
-
-1. Author the detailed spec in `docs/tasks/CHRON-0NN.md` (Context, Scope, Out of
-   Scope, Dependencies, Files Modified/Allowed, API Contract, Tests, Benchmark,
-   DoD).
-2. **Product owner reviews and explicitly approves** that single Task. No Task is
-   implemented on the strength of this overall plan.
-3. Implement in an isolated workspace/feature branch (Section 15), gate on its
-   own Tests and Benchmark, then record DoD evidence.
-4. After completion, an independent reviewer (Codex diff/architecture/tests/
-   benchmark/CI review) verifies before merge/advance.
-
-Because implementation stays stopped pending approval, the DAG (Section 5),
-Waves (5.2), and DoD (Section 6) are an ordered **plan and approval sequence**,
-not an automatic build order.
+1. Codex prepares an identifiable execution plan and Task contracts, including
+   decisions, affected callers, tests, measurement tools, CI and documents.
+2. The product owner approves that plan once, or explicitly selects individual
+   Tasks. An instruction to follow the identified plan is full acceptance of
+   its stated recommendations and execution steps.
+3. Parent verifies prerequisites and writes exact public contracts/ADRs before
+   code. These are internal readiness steps, not new owner approvals.
+4. Implement, test, benchmark and independently review; then continue to the
+   next ready Task already in the approval. No evidence, no Done.
+5. Stop at the plan's end or for a material unplanned decision/Master conflict/
+   genuine unresolvable blocker. Phase 2 requires a new authorization.
 
 ---
 
 ## 13. Change Governance (unchanged from AGENTS.md)
 
-- Never modify `MASTER_SPEC.md`. Modify `AGENTS.md`, architecture/performance
-  docs, an existing ADR, or a task specification only when the approved Task
-  explicitly allows that exact file and governance purpose. Unrelated edits are
-  forbidden.
-- Conflicts → CP-XXXX + stop.
+- Never modify `MASTER_SPEC.md`. Use the Task's implementation and supporting-file
+  allowances, including bounded same-module helpers/tests and relevant ADR/docs
+  synchronization. Refine exact filenames within that allowance without another
+  approval; unrelated edits remain forbidden.
+- Master Spec conflicts → CP-XXXX + stop. Other material contract changes → ADR
+  and, when not already settled by the plan, a focused decision increment.
 - Public API/identity/ECS/serialization/bridge/AI/history/NLG/Rule IR decisions →
   ADR.
 - No test deletion/weakening; no budget relaxation without product-owner approval.
@@ -656,34 +698,66 @@ not an automatic build order.
 
 ## 14. GitHub Branch Protection
 
-**Updated 2026-08-29: protection is now IN FORCE.** The product owner converted
-`GabrielMu2006/Palimpsest` from private to **public** on 2026-08-29, which
-removed the previous HTTP 403 plan limitation. Branch protection on `main` now
-requires the `rust-quality-and-smoke-benchmarks` and
-`godot-macos-integration` checks (strict mode; branches must be up to date),
-enforces the rules for admins, and disables force pushes and branch deletion.
-This completes decision 8 of the Phase 0 spike report.
+**Current policy — product-owner decision, 2026-08-30:**
+`GabrielMu2006/Palimpsest` must remain **public** on an ongoing basis. This
+supersedes all previous requirements to keep it private. Agents must not change
+it to private without a new explicit product-owner decision.
 
-Historical record: the repository was initialized as **private** and `main`
-was established, but branch protection initially could not be created (the
-private-repo plan returned HTTP 403). During that window, governance was
-enforced only via the local gate script and hosted workflow definitions
-(`CHRON-034`); no server-side enforcement was claimed.
+`main` must require `rust-quality-and-smoke-benchmarks` and
+`godot-macos-integration` in strict mode (branches must be up to date), enforce
+the rules for administrators, and prohibit force pushes and branch deletion.
+The former recommendation to upgrade GitHub for private-repository protection
+is no longer part of the plan. Public visibility does not weaken any CI or
+Task-approval requirement.
+
+Historical record, not current policy: the repository began private, was made
+public with protection verified on 2026-08-29, and was subsequently made private
+again, when the protection API returned HTTP 403. The 2026-08-30 decision settles
+the policy as continuously public. This documentation update does not change or
+reverify GitHub settings. REM-001 in
+`docs/reports/PHASE_1_REVIEW_REMEDIATION_PLAN_V1.md` must verify live public
+visibility and the exact `main` protection before claiming enforcement. Any
+missing protection is a blocker to report, not a reason to silently change
+visibility, lower checks, or substitute a manual policy as equivalent protection.
+
+Live REM-001 read-only check, 2026-08-30 (Asia/Shanghai):
+`gh repo view GabrielMu2006/Palimpsest --json nameWithOwner,visibility,url`
+returned `PRIVATE`. `gh api repos/GabrielMu2006/Palimpsest/branches/main/protection`
+returned HTTP 403 with the public-repository/plan requirement. The first
+visibility request timed out; the retry produced this concrete result. No
+remote setting was changed. This is a policy mismatch, not a new private
+policy or verified protection. Explicit authorization to make the live
+repository public and restore the exact approved protections was requested;
+REM-001 remained unresolved at that checkpoint.
+
+After the product owner's four-item confirmation on 2026-08-30, REM-001 made
+the actual repository PUBLIC. The now-accessible protection endpoint initially
+returned 404 (no protection), so the exact approved protections were restored.
+Fresh read-back at approximately 12:54 +08:00 confirmed PUBLIC, strict=true,
+both required check names (GitHub Actions app ID 15368), enforce_admins=true,
+allow_force_pushes=false, and allow_deletions=false. PR #1 remains Draft at
+head `e5b0aeb676372a123dd8c27190e94b6a606d498c`; no push/merge or test-status
+mutation was used to verify the policy. Detailed commands and limitations
+are in the remediation report's execution continuation.
 
 ---
 
-## 15. OpenCode Execution Protocol
+## 15. Codex / Optional Agent Execution Protocol
 
-The following governs implementation whenever OpenCode is used for a separately
-approved Phase 1 Task. Codex may implement directly, but the same task boundary,
-branch isolation, tests, and independent review gates still apply.
+Codex owns design, integration and independent acceptance. Agent use is not a
+prerequisite for progress. When the user requests delegation, use the applicable
+skill and dispatch only bounded, internally assessed tasks. No dispatch approval
+is needed for work already in the approved plan.
 
 ### 15.1 Model and routing
 
-- Implementation uses the user's locally configured OpenCode DS provider:
+- When Luna is requested, use `codex-luna-dispatch` and GPT-5.6 Luna for suitable
+  leaf implementations/tests/adapters; unresolved design stays with the parent.
+- When OpenCode is explicitly selected, use the user's configured DS provider:
   `deepseek/deepseek-v4-flash-vision-exp`. Do not use `opencode-go/*` and do not
-  silently fall back to another provider/model if it is unavailable; stop and
-  report the blocker. The design, not the model, is authoritative.
+  silently fall back to another external provider/model if it is unavailable.
+  Report the routing limitation; Codex may take over in-scope work unless the
+  user specifically requires that external route. Do not rewrite user config.
 - Route work through the project Skills: start with `palimpsest-task-executor`;
   add `palimpsest-rust-sim` for Rust Core work, `palimpsest-architecture-guard`
   for cross-module/architecture changes, `palimpsest-performance-gate` for
@@ -697,16 +771,18 @@ Multiple agents may run **in parallel only** when:
 
 - their Tasks fall in the same Wave (Section 5.2) AND
 - they touch **disjoint files** (no overlap) AND
-- their dependencies are already satisfied (SAT-based on the DAG).
+- their dependencies are already verified complete against the DAG.
 
 Otherwise work is strictly serialized. **No two agents may modify a shared public
 interface or a shared module at the same time.**
 
 ### 15.3 Branch / worktree isolation
 
-- Each Task is implemented on its **own feature branch or worktree** (e.g.,
-  `phase-1/chron-0NN`) so parallel work cannot collide.
-- Never commit multiple Tasks in one branch; never push unrelated work.
+- Preserve the current dirty worktree. Use `codex/` branches when creating new
+  ones; isolate concurrent work by disjoint ownership or separate worktrees.
+  A sequential approved plan may share a branch with task-separated changes.
+- Commit/push/merge only as explicitly included in the execution plan; never
+  push unrelated work or treat task completion as automatic merge permission.
 - An agent must not update git config, skip hooks, force-push, create empty
   commits, or amend a failed commit.
 
@@ -749,6 +825,6 @@ interface or a shared module at the same time.**
 - `docs/PERFORMANCE.md` — measurement rules and results index.
 - `docs/reports/ARCHITECTURE_SPIKE_V1.md` — confirmed spike; Phase 0 complete.
 - `docs/tasks/TEMPLATE.md` + `docs/tasks/CHRON-0NN.md` — Phase 0 task contract.
-- Accepted ADRs 0001–0011 and 0015–0016; proposed Phase 1 ADRs 0012–0014 and
-  0017 remain approval-gated with their first implementing Tasks.
+- Accepted ADRs 0001–0020, with their recorded phase/prototype limits. New
+  remaining-task decisions are Proposed in P1-REMAINING until execution approval.
 - `AGENTS.md` — repository instructions (Scope/Phase, architecture, governance).

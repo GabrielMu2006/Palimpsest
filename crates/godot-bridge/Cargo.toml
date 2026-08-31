@@ -11,7 +11,9 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 godot.workspace = true
+palimpsest-sim-ai = { path = "../sim-ai" }
 palimpsest-sim-core = { path = "../sim-core" }
+palimpsest-sim-world = { path = "../sim-world" }
 
 [lints.rust]
 unsafe_code = "allow"

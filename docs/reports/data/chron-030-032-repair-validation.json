@@ -1,0 +1,86 @@
+{
+  "status": "repair short gates; ten-year pending",
+  "tests_release_passed": 391,
+  "checks": [
+    {
+      "name": "release_workspace",
+      "command": "cargo test --release --locked --workspace --all-targets --all-features",
+      "exit_code": 0,
+      "stdout_sha256": "4771cb4759d692dc48e25a03932d76f47e5a077358c8952c2107a37cae66255f",
+      "log_tail": [
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "",
+        "     Running unittests examples/worldgen_bench.rs (target/release/examples/worldgen_bench-5b89f925960b787b)",
+        "",
+        "running 2 tests",
+        "test adapter_tests::memory_adapter_observes_twice_and_returns_golden_hash ... ok",
+        "test adapter_tests::memory_adapter_rejects_unknown_case - should panic ... ok",
+        "",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ""
+      ]
+    },
+    {
+      "name": "repair_clippy",
+      "command": "cargo clippy --locked -p palimpsest-sim-core -p palimpsest-sim-scheduler -p palimpsest-headless-runner -p palimpsest-bench-memory -p palimpsest-godot-bridge --all-targets -- -D warnings",
+      "exit_code": 0,
+      "stdout_sha256": "920d51e4153d8505560e496243ed8f53759ace2072abe913730ee9bcdcbdf32d",
+      "log_tail": [
+        "    Checking palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)",
+        "    Checking palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)",
+        "    Checking palimpsest-bench-memory v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/tools/bench-memory)",
+        "    Checking palimpsest-godot-bridge v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/godot-bridge)",
+        "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.76s"
+      ]
+    },
+    {
+      "name": "windowed_integration",
+      "command": "Godot --path apps/macos-godot --script res://tests/chron031_integration.gd",
+      "exit_code": 0,
+      "stdout_sha256": "90e3615efa718e21255ff38a5d63628a9660e901358813d329bedac014ece99e",
+      "log_tail": [
+        "ok: unpaused step rejected",
+        "ok: set_speed 1000 enqueued",
+        "ok: running worker advances beyond prior boundary",
+        "ok: pause freezes the presented sim_second",
+        "ok: editing/removing presentation nodes preserves Rust frame",
+        "ok: presentation mutation never reaches the snapshot",
+        "ok: shutdown enqueued",
+        "ok: worker closed after shutdown",
+        "ok: closed worker rejects commands",
+        "CHRON-031 integration: ALL PASS"
+      ]
+    },
+    {
+      "name": "publication_debug_regression",
+      "command": "cargo test --locked -p palimpsest-sim-core --test worker publication_and_metadata_remain_paired_during_running_reads",
+      "exit_code": 0,
+      "stdout_sha256": "88c7a82c58dbd9594c69ea3085ea941fc228cf419ca5f0e3287bc970c2dc1ccf",
+      "log_tail": [
+        "   Compiling palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)",
+        "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.94s",
+        "     Running tests/worker.rs (target/debug/deps/worker-baaa2a1032bcc060)",
+        "",
+        "running 1 test",
+        "test publication_and_metadata_remain_paired_during_running_reads ... ok",
+        "",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 7.28s",
+        ""
+      ]
+    }
+  ],
+  "corrected_ten_year": {
+    "status": "passed",
+    "artifact": "chron-032-repair-chaos-memory.json",
+    "samples": 1,
+    "historical_unchanged_fields": [
+      "events_total",
+      "events_digest",
+      "decisions_total",
+      "transitions_total",
+      "rounds_total",
+      "person_count",
+      "final_instant_seconds"
+    ]
+  }
+}

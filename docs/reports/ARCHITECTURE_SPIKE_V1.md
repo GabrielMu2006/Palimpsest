@@ -191,8 +191,13 @@ The product owner accepted the following recommendations on 2026-08-29:
    thread; do not introduce a separate process yet.
 7. Keep the isolated Godot editor-exit crash as a monitored, non-blocking risk;
    recurrence in normal editor, game, or CI paths is a stop signal.
-8. Keep the GitHub repository private and establish a protected `main` branch
-   with required hosted CI checks.
+8. **Updated by the product owner on 2026-08-30:** keep the GitHub repository
+   public on an ongoing basis and retain a protected `main` branch with strict
+   required `rust-quality-and-smoke-benchmarks` and `godot-macos-integration`
+   checks, administrator enforcement, and no force pushes or branch deletion.
+   This supersedes the original private-visibility requirement accepted on
+   2026-08-29. Live protection must be verified separately; this policy update
+   does not assert that GitHub settings have been changed or reverified.
 
 This confirmation authorizes Phase 1 planning and ADR preparation. It does not
 authorize implementation of any Phase 1 Task until that Task is explicitly

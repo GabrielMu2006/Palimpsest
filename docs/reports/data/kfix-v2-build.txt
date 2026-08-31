@@ -1,0 +1,4 @@
+   Compiling palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+    Finished `release` profile [optimized] target(s) in 5.07s
+   Compiling palimpsest-bench-memory v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/tools/bench-memory)
+    Finished `release` profile [optimized] target(s) in 2.82s

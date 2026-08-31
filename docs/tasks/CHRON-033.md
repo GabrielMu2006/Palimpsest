@@ -1,7 +1,11 @@
 # CHRON-033 — Representative Scale Benchmarks
 
-> **Status: Proposed — awaiting separate product-owner approval.**
-> This Task is not authorized for implementation until the product owner explicitly approves this single Task.
+> **Status: Complete — reference measurements verified 2026-08-31 under the owner’s explicit033–036 instruction.**
+> Evidence: [scale report](../reports/CHRON-033_SCALE_BENCHMARKS.md); ADR0028/0029.
+> Approval of this Task **or its identified execution plan** authorizes its stated steps once.
+> Follow [Execution Contract](../EXECUTION_CONTRACT.md) and
+> [remaining-plan decisions, supporting files and commands](../PHASE_1_REMAINING_EXECUTION.md).
+> Internal design/readiness and agent dispatch do not require repeated owner approval.
 
 ## Objective
 Measure the Phase 1 micro world on the M5 16GB reference machine at 100 / 1K / 3K / 5K / 10K persons, reporting RSS, simulation throughput (TPS/advance rate), scheduler, pathfinding, utility, events, and snapshot/bridge metrics where each is applicable. The 100-person result is the Phase 1 hard gate; the higher scales are diagnostic and must not be used to relax the 3 GB / 5 GB / 7 GB memory caps.
@@ -29,8 +33,23 @@ Measure the Phase 1 micro world on the M5 16GB reference machine at 100 / 1K / 3
 - CHRON-028 complete (kernel/unit that is raced at scale).
 - CHRON-029 complete (Render Snapshot DTO measurement input).
 - CHRON-030 complete (worker command/snapshot latency applicable input).
+- CHRON-031 complete (real Godot presentation and frame/bridge capture input; required for rendered comparison).
 - CHRON-032 complete (10-year chaos report as the correctness baseline the benchmarks must not regress).
 - CHRON-027 (action throughput), CHRON-026 (utility), and CHRON-024 (pathfinding) provide applicable per-system counters transitively through the kernel.
+
+## Execution Steps / Readiness
+
+1. Inventory each metric's production path, counter and instrument before the
+   sweep; D4/§4 define the same-workload controls. Add missing adapters/counters
+   within §3 rather than inventing metrics after the run.
+2. Create `bench_micro_world`; smoke 100 Persons and verify action completions,
+   actual pathfinding calls, queue bounds and deterministic digests.
+3. Run scales sequentially with two warm-ups and at least ten timing samples;
+   memory uses separate cold samples. Run direct/worker/rendered comparison
+   with matching simulated work, not mismatched pacing or an old spike ratio.
+4. Parent reviews raw samples and method; failed/unfinished scales remain
+   visible. No hidden scale-specific shortcut, budget adjustment or gameplay
+   optimization is authorized by this measurement Task.
 
 ## Files Modified / Allowed
 - `benchmarks/**` and `apps/headless-runner/**` benchmark bins (mirroring `bench_10k_entities`, `bench_event_throughput`).
@@ -38,7 +57,7 @@ Measure the Phase 1 micro world on the M5 16GB reference machine at 100 / 1K / 3
 - `docs/PERFORMANCE.md` (add task-specific raw-result references only; do NOT relax the budget lines or the caps).
 - `docs/reports/CHRON-033_SCALE_BENCHMARKS.md` and any per-scale raw artifacts.
 - `docs/tasks/CHRON-033.md`.
-- No product/architecture change; no `MASTER_SPEC.md` or `docs/ARCHITECTURE.md` edits without a Change Proposal.
+- Include this Task's necessary supporting files under P1-REMAINING §3: tests/fixtures, benchmark adapters, corresponding ADR and relevant architecture/performance/status documentation. Routine synchronization does not need a CP; Master Spec conflicts do. No `MASTER_SPEC.md` edits, unrelated refactoring or budget changes.
 
 ## API Contract
 - One entry, e.g. `bench_scale(persons: usize, seconds: SimDuration) -> ScaleResult`, where `ScaleResult` is a structured, serializable bag of per-metric medians with a `scale` label (100/1000/3000/5000/10000).
@@ -50,7 +69,7 @@ Measure the Phase 1 micro world on the M5 16GB reference machine at 100 / 1K / 3
 ## Tests / Validation
 - Fixture correctness: each scale's workload genuinely exercises the representative loop (needs, utility, movement, action) and respects the person count exactly.
 - Warm-up/sample conventions: no single-sample claim; median over ≥10 post-warm-up samples per scale.
-- Escalation monotonicity sanity: measured RSS and throughput are reported monotonic (or the deviation explained); no hidden per-scale branching.
+- Scaling sanity: report the actual RSS/throughput trend and investigate deviations; do not force monotonic results, discard samples or add hidden per-scale branches.
 - Workspace gates: fmt, Clippy with warnings denied, release tests (bench binaries compile and run a smoke scale), docs, dependency audit.
 
 ## Benchmark
@@ -66,4 +85,4 @@ Measure the Phase 1 micro world on the M5 16GB reference machine at 100 / 1K / 3
 - Results are reproducible and documented in `docs/PERFORMANCE.md` and a `docs/reports/` task report, and feed into CHRON-036.
 
 ## Required Completion Report
-Report: change summary; commands run; the full scale-sweep table (RSS delta, throughput, scheduler, utility, pathfinding where present, events, snapshot/bridge) per scale; the 100-person Phase 1 gate verdict; any metric that hit N/A and why; known limitations (e.g., single-threaded kernel, no Phase 2+ systems, dummy-vs-real distance); and any observation that the caps may be at risk (without relaxing them). Do not auto-start the next Task; each requires separate product-owner approval.
+Report: change summary; commands run; the full scale-sweep table (RSS delta, throughput, scheduler, utility, pathfinding where present, events, snapshot/bridge) per scale; the 100-person Phase 1 gate verdict; any metric that hit N/A and why; known limitations (e.g., single-threaded kernel, no Phase 2+ systems, dummy-vs-real distance); and any observation that the caps may be at risk (without relaxing them). Continue to the next verified-ready Task already covered by the approved plan; do not ask for routine reconfirmation.

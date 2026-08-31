@@ -3,6 +3,18 @@
 > **Status: Complete — awaiting product-owner confirmation.**
 > The product owner approved this single Task on 2026-08-29; implementation stayed within the Files Modified / Allowed boundary.
 
+> Accepted remediation clarifications (2026-08-30): ADR-0018 governs the
+> default Need/Work weight policy and trajectory tests; ADR-0019 governs
+> fallible `PerturbationSpec::new`, validated native/serde inputs, complete
+> selection-set keys, and trace correspondence. These supersede the weaker
+> original construction rules, not the five-action, integer, headless boundary.
+
+> REM-005 implementation (2026-08-30): ADR-0018's accepted Need/Work policy is
+> now applied by the default table: Eat/Sleep `SiteAvailable = 0`, Work
+> `SiteAvailable = 2,300`; all other weights and scoring mechanics are
+> unchanged. The regression and threshold trajectory evidence is recorded in
+> [CHRON-026 Utility Scoring](../reports/CHRON-026_UTILITY_SCORING.md).
+
 ## Objective
 Implement integer Utility scoring and a stable, deterministic selection over the candidate set from CHRON-025, with an explicit, seed-derived perturbation that may be zero, limited to the Phase 1 actions (Move, Eat, Sleep, Work, Idle). No Personality, Values, Goals, Memory, or Social factors are used.
 
