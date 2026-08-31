@@ -1,0 +1,39 @@
+{
+  "command": [
+    "target/release/chaos_runner",
+    "--seed",
+    "42",
+    "--persons",
+    "100",
+    "--seconds",
+    "86400",
+    "--runs",
+    "2",
+    "--out",
+    "/tmp/palimpsest-034-seed-42.json"
+  ],
+  "runs": 2,
+  "determinism": true,
+  "runs_series": [
+    {
+      "events_per_wall": 3553.2379131031985,
+      "events_total": 1872,
+      "final_seconds": 86400,
+      "index": 0,
+      "per_person_digest": 18442351870968773359,
+      "sim_per_wall": 163995.59598937837,
+      "truth_hash": 15313465221851226201,
+      "wall_seconds": 0.526843416
+    },
+    {
+      "events_per_wall": 3562.5639612970817,
+      "events_total": 1872,
+      "final_seconds": 86400,
+      "index": 1,
+      "per_person_digest": 18442351870968773359,
+      "sim_per_wall": 164426.02898294223,
+      "truth_hash": 15313465221851226201,
+      "wall_seconds": 0.52546425
+    }
+  ]
+}

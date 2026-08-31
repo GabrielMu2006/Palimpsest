@@ -1,0 +1,28 @@
+[package]
+name = "palimpsest-bench-memory"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+palimpsest-sim-ai = { path = "../../crates/sim-ai" }
+palimpsest-sim-core = { path = "../../crates/sim-core" }
+palimpsest-sim-time = { path = "../../crates/sim-time" }
+palimpsest-sim-world = { path = "../../crates/sim-world" }
+palimpsest-headless-runner = { path = "../../apps/headless-runner" }
+serde.workspace = true
+serde_json.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "0.2"
+
+# ADR-0020: only the private native read is allowed unsafe; production crates
+# retain workspace forbid. Keep all other lint levels equal to the workspace.
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+all = "warn"
+pedantic = "warn"

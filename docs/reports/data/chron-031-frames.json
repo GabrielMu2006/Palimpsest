@@ -1,0 +1,20 @@
+{
+  "draw_calls_mean": 19.0,
+  "draw_calls_min": 19,
+  "draw_calls_p95": 19,
+  "fps_mean": 60.0000000000001,
+  "fps_min": 60.0,
+  "fps_p95": 60.0,
+  "frame_ms_max": 16.6666666666667,
+  "frame_ms_mean": 16.6666666666666,
+  "frame_ms_p95": 16.6666666666667,
+  "measured_frames": 300,
+  "persons": 100,
+  "publications_end": 64,
+  "seed": "42",
+  "sim_second_end": 666,
+  "speed": "100x",
+  "task": "CHRON-031",
+  "video_memory_bytes_p95": 57245696,
+  "warmup_frames": 120
+}

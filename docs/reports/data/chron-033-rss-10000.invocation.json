@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "command": [
+    "/Users/gabrielmu/Documents/Palimpsest/target/release/micro_memory",
+    "10000"
+  ],
+  "wall_seconds": 52.24415112499992
+}

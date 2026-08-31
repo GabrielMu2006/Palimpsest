@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "command": [
+    "/Users/gabrielmu/Documents/Palimpsest/target/release/bench_micro_worker"
+  ],
+  "wall_seconds": 14.576023665999855
+}

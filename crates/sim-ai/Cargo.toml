@@ -1,0 +1,25 @@
+# Authored by Kimi Code (AI coding agent) — task CHRON-018.
+# Extended by Kimi Code (AI coding agent) — task CHRON-025.
+[package]
+name = "palimpsest-sim-ai"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+# Dependency allow-set (ADR-0017; reviewed from Cargo metadata/tree):
+# sim-world, sim-entity, sim-time, serde, and std are permitted. This is an
+# allow-set, not a requirement that an empty or historical crate add each item.
+# The domain boundary remains inward: no sim-core, storage, Godot, bridge, ECS,
+# or LLM dependency.
+[dependencies]
+palimpsest-sim-time = { path = "../sim-time" }
+palimpsest-sim-world = { path = "../sim-world" }
+serde.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+
+[lints]
+workspace = true

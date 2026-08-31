@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "command": [
+    "/Users/gabrielmu/Documents/Palimpsest/target/release/bench_micro_world",
+    "--scales",
+    "5000",
+    "--seconds",
+    "86400",
+    "--warmups",
+    "2",
+    "--samples",
+    "10"
+  ],
+  "wall_seconds": 298.17599950000005
+}

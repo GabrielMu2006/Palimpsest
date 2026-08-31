@@ -1,0 +1,26 @@
+{
+  "candidate_head": "8dc15954ad28c34c2b1ca213f308a180bc2cdc4c",
+  "commands": [
+    "bash tools/ci-rust.sh",
+    "bash tools/ci-godot.sh"
+  ],
+  "local": "passed",
+  "hosted": "passed",
+  "logs": {
+    "rust": {
+      "artifact": "chron-034-local-rust.txt",
+      "sha256": "9273f789850c9d1363a1e274f7c3c3d6d3949758c9b74ec420172923b2f8d439",
+      "exit_code": 0
+    },
+    "godot": {
+      "artifact": "chron-034-local-godot.txt",
+      "sha256": "0cbdae92dc47dc277c3ef6dd1114f5ac457c685748982a01f438ea201b6bea10",
+      "exit_code": 0
+    }
+  },
+  "test_executions_including_debug_release_and_doctests": 809,
+  "failed": 0,
+  "ignored": 0,
+  "historical_eof_whitespace": "initial cached diff-check flags seven pre-existing report/log EOF blank lines; archived bytes preserved, no runtime issue",
+  "hosted_evidence": "chron-034-hosted.json"
+}

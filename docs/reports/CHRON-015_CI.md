@@ -28,8 +28,14 @@ manifest verification passed on the hosted macOS runner.
 
 ## Evidence Boundary
 
-The private GitHub remote is
+The GitHub remote used for the recorded CI evidence is
 [`GabrielMu2006/Palimpsest`](https://github.com/GabrielMu2006/Palimpsest).
+The current product-owner policy, confirmed on 2026-08-30, requires the
+repository to remain public with a protected `main` branch (see
+`docs/PHASE_1_PLAN.md` §14). Earlier private-repository requirements are
+superseded. This policy note does not reverify remote visibility/protection or
+alter the historical CI evidence below.
+
 Hosted run
 [`33241747464`](https://github.com/GabrielMu2006/Palimpsest/actions/runs/33241747464)
 passed both jobs from commit `40bcd9c`: Rust/Linux in 6m17s and Godot/macOS in

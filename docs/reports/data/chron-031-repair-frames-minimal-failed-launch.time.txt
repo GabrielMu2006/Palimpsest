@@ -1,0 +1,19 @@
+mktemp: mkstemp failed on /var/folders/nf/x69g9nlx2834r7zs_52xykj80000gn/T//palimpsest-capture.XXXXXX.log: File exists
+        0.01 real         0.00 user         0.00 sys
+             2064384  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                1779  page reclaims
+                   8  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   4  signals received
+                   8  voluntary context switches
+                  29  involuntary context switches
+            28352936  instructions retired
+            11270785  cycles elapsed
+             1278264  peak memory footprint

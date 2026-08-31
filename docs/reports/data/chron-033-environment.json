@@ -1,0 +1,9 @@
+{
+  "captured_at": "2026-08-31T15:05:57.485850+00:00",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "Apple M5",
+  "memory_bytes": 17179869184,
+  "rust": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: aarch64-apple-darwin\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "performance_policy": "2 warmups / 10 timed; one cold RSS per scale; no concurrent build/test/benchmark while sampling"
+}

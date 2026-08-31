@@ -2,6 +2,7 @@
 resolver = "3"
 members = [
     "apps/headless-runner",
+    "crates/sim-ai",
     "crates/sim-core",
     "crates/sim-entity",
     "crates/sim-events",
@@ -9,6 +10,8 @@ members = [
     "crates/sim-scheduler",
     "crates/sim-storage",
     "crates/sim-time",
+    "crates/sim-world",
+    "tools/bench-memory",
 ]
 default-members = ["crates/sim-core"]
 

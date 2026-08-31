@@ -1,0 +1,2076 @@
+{
+  "schema_version": 1,
+  "purpose": "reviewed Phase1 real chaos smoke; tests never rewrite this file",
+  "config": {
+    "person_count": 100,
+    "seed": 0,
+    "sim_seconds_per_year": 86400,
+    "years": 1
+  },
+  "expected": {
+    "aggregate_completions": {
+      "eats": 200,
+      "movement_phases": 699,
+      "moves": 0,
+      "sleeps": 200,
+      "works": 1500
+    },
+    "config": {
+      "person_count": 100,
+      "seed": 0,
+      "sim_seconds_per_year": 86400,
+      "years": 1
+    },
+    "database_consistency": "NotApplicable",
+    "day_samples": [
+      {
+        "action_counts": {
+          "eating": 0,
+          "idle": 0,
+          "moving": 1,
+          "sleeping": 0,
+          "working": 99
+        },
+        "buffered_events": 0,
+        "day": 1,
+        "population": 100,
+        "queue_depth": 200,
+        "queue_nodes": 313,
+        "seconds": 86400
+      }
+    ],
+    "death_stats": "NotApplicable",
+    "decisions_total": 1900,
+    "events_digest": 17582660196631000813,
+    "events_total": 1900,
+    "final_instant_seconds": 86400,
+    "final_next_due_seconds": 86401,
+    "idle_observed_persons": 0,
+    "idle_observed_total": 0,
+    "measurement": null,
+    "per_person_completions": [
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 1
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 2
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 3
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 4
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 5
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 6
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 7
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 8
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 9
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 10
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 11
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 12
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 13
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 14
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 15
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 16
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 17
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 18
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 19
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 20
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 21
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 22
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 23
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 24
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 25
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 26
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 27
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 28
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 29
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 30
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 31
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 32
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 33
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 34
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 35
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 36
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 37
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 38
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 39
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 40
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 41
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 42
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 43
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 44
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 45
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 46
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 47
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 48
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 49
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 50
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 51
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 52
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 53
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 54
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 55
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 56
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 57
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 58
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 59
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 60
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 61
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 62
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 63
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 64
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 65
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 66
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 67
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 68
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 69
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 70
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 71
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 72
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 6,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 73
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 74
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 75
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 76
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 77
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 78
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 79
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 80
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 81
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 82
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 83
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 84
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 85
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 86
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 87
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 88
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 89
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 90
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 91
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 92
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 93
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 94
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 95
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 96
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 97
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 98
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 99
+      },
+      {
+        "completions": {
+          "eats": 2,
+          "movement_phases": 7,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "ever_idle": false,
+        "id": 100
+      }
+    ],
+    "per_person_digest": 3006099473440533273,
+    "person_count": 100,
+    "persons_completed_all_kinds": 100,
+    "queue_depth_max": 200,
+    "queue_nodes_max": 351,
+    "queue_observations": {
+      "boundary_count": 3,
+      "persons": {
+        "1": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 459,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "10": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 437,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "100": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 451,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "11": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 438,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "12": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 439,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "13": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 440,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "14": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 441,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "15": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 442,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "16": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 443,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "17": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 444,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "18": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 445,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "19": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 446,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "2": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 458,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "20": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 447,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "21": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 448,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "22": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 449,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "23": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 450,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "24": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 451,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "25": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 452,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "26": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 453,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "27": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 454,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "28": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 455,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "29": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 456,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "3": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 457,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "30": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 578,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "31": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 577,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "32": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 576,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "33": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 575,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "34": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 574,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "35": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 573,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "36": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 572,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "37": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 571,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "38": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 570,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "39": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 569,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "4": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 431,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "40": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 568,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "41": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 567,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "42": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 566,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "43": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 565,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "44": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 564,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "45": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 563,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "46": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 562,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "47": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 561,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "48": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 560,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "49": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 559,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "5": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 432,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "50": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 558,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "51": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 557,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "52": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 556,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "53": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 555,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "54": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 554,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "55": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 553,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "56": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 552,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "57": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 551,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "58": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 550,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "59": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 536,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "6": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 433,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "60": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 535,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "61": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 534,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "62": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 533,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "63": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 532,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "64": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 531,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "65": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 530,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "66": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 529,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "67": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 528,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "68": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 527,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "69": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 528,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "7": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 434,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "70": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 585,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "71": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 586,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "72": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 587,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "73": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 6,
+          "movement_steps": 587,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "74": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 459,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "75": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 458,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "76": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 457,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "77": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 456,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "78": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 455,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "79": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 430,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "8": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 435,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "80": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 431,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "81": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 432,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "82": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 433,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "83": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 434,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "84": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 435,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "85": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 436,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "86": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 437,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "87": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 438,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "88": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 439,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "89": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 440,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "9": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 436,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "90": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 441,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "91": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 442,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "92": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 443,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "93": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 444,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "94": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 445,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "95": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 446,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "96": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 447,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "97": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 448,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "98": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 449,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        },
+        "99": {
+          "eats": 2,
+          "idles": 0,
+          "movement_phases": 7,
+          "movement_steps": 450,
+          "moves": 0,
+          "sleeps": 2,
+          "works": 15
+        }
+      },
+      "queue_depth_max": 200,
+      "queue_depth_min": 200,
+      "queue_depth_sum": 600,
+      "queue_nodes_max": 351,
+      "queue_nodes_min": 234,
+      "queue_nodes_sum": 898
+    },
+    "rounds_total": 2470,
+    "schema_version": 2,
+    "total_days": 1,
+    "transitions_total": 55224,
+    "truth_hash": 17944541615393029991,
+    "violated_invariants": []
+  }
+}

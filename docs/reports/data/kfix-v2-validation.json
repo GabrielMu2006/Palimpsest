@@ -1,0 +1,11 @@
+{
+  "validated_at": "2026-08-31T12:12:28+08:00",
+  "timing_samples": {
+    "action": 20,
+    "kernel": 11,
+    "render": 10
+  },
+  "cold_samples": 15,
+  "ambiguous_prepared": 0,
+  "source_and_binary_hashes_match": true
+}

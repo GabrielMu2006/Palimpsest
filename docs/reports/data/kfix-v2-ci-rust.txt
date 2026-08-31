@@ -1,0 +1,592 @@
+    Checking palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+    Checking palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+    Checking palimpsest-godot-bridge v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/godot-bridge)
+    Checking palimpsest-bench-memory v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/tools/bench-memory)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.16s
+   Compiling palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+   Compiling palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+   Compiling palimpsest-bench-memory v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/tools/bench-memory)
+   Compiling palimpsest-godot-bridge v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/godot-bridge)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.84s
+     Running unittests src/main.rs (target/debug/deps/palimpsest_bench_memory-09fb58392a728450)
+
+running 38 tests
+test action::protocol::tests::preserves_submicro_units ... ok
+test action::protocol::tests::upper_median_even ... ok
+test action::protocol::tests::rejects_bad_protocol ... ok
+test action::tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test candidates::tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test grid::adapter_tests::memory_adapter_rejects_unknown_case - should panic ... ok
+test kernel::protocol::tests::preserves_submicro_units ... ok
+test kernel::protocol::tests::rejects_bad_protocol ... ok
+test kernel::protocol::tests::upper_median_even ... ok
+test grid::adapter_tests::memory_adapter_observes_twice_and_returns_checksum ... ok
+test kernel::tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test needs::tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test person::tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test person::tests::memory_adapter_observes_twice_and_matches_golden ... ok
+test render::protocol::tests::preserves_submicro_units ... ok
+test render::protocol::tests::rejects_bad_protocol ... ok
+test render::protocol::tests::upper_median_even ... ok
+test render::tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test person::tests::memory_adapter_matches_1000_golden ... ok
+test needs::tests::memory_adapter_observes_twice_and_matches_golden ... ok
+test rss::tests::baseline_at_peak_proves_zero_and_released_peak ... ok
+test rss::tests::full_u64_range_is_checked_without_wrapping ... ok
+test rss::tests::impossible_or_regressing_readings_fail ... ok
+test rss::tests::new_peak_proves_interval_even_after_earlier_allocation ... ok
+test rss::tests::old_peak_cannot_be_subtracted_or_reported_as_zero ... ok
+test render::tests::zero_people_have_null_ratio_and_exact_section_accounting ... ok
+test utility::tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test worldgen::adapter_tests::memory_adapter_observes_twice_and_returns_golden_hash ... ok
+test worldgen::adapter_tests::memory_adapter_rejects_unknown_case - should panic ... ok
+test needs::tests::memory_adapter_matches_1000_golden ... ok
+test kernel::tests::colocated_fixture_reaches_target_and_accumulates_rounds ... ok
+test candidates::tests::memory_adapter_observes_twice_and_matches_golden ... ok
+test render::tests::memory_adapter_control_observes_twice ... ok
+test render::tests::memory_adapter_snapshot_observes_twice ... ok
+test action::tests::memory_adapter_observes_twice_and_matches_golden ... ok
+test render::tests::snapshot_and_readonly_control_have_identical_underlying_truth ... ok
+test action::tests::memory_adapter_matches_1000_golden ... ok
+test utility::tests::memory_adapter_observes_twice_and_matches_golden ... ok
+
+test result: ok. 38 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.79s
+
+     Running tests/cli.rs (target/debug/deps/cli-2b572d8cb56fbf2c)
+
+running 8 tests
+test list_has_exactly_the_27_unique_planned_cases ... ok
+test child_failure_is_not_retried_or_turned_into_a_success_row ... ok
+test kernel_peak_captures_64mib_released_between_endpoints ... ok
+test prior_peak_marks_prepared_interval_ambiguous ... ok
+test retained_pages_use_byte_units_and_remain_resident_at_end ... ok
+test each_sample_is_a_new_process_and_a_previous_peak_does_not_leak ... ok
+test invalid_case_count_or_cli_fails_without_measurement_output ... ok
+test render_selectors_report_the_same_prepared_truth_and_two_intervals ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.35s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_godot_bridge-97942e5595faf445)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_headless_runner-e027f51e81a05e82)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/bench_10k_entities.rs (target/debug/deps/bench_10k_entities-b0ab2330e29a3cdd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/bench_event_throughput.rs (target/debug/deps/bench_event_throughput-383025af036e9a4a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/bench_mode_workload.rs (target/debug/deps/bench_mode_workload-b824d41b7772f058)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/palimpsest_headless_runner-76dc3ab81f7d6164)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_ai-3c5e74c9829449e3)
+
+running 60 tests
+test action::tests::manhattan_distance_matches_site_semantics ... ok
+test action::tests::action_kind_is_exactly_the_five_phase_1_kinds ... ok
+test action::tests::action_kind_serde_wire_keys_are_stable ... ok
+test action::tests::action_candidate_serde_round_trips ... ok
+test action::tests::malformed_candidate_wire_is_rejected ... ok
+test needs::tests::advance_is_monotonic_and_zero_is_a_noop ... ok
+test needs::tests::advance_saturates_without_overflow ... ok
+test action::tests::native_and_wire_candidate_shape_matrix_agree ... ok
+test needs::tests::default_is_fully_satisfied ... ok
+test needs::tests::determinism_repeats_exactly ... ok
+test needs::tests::fixed_point_advance_is_exact_and_associative ... ok
+test needs::tests::eat_and_rest_clamp_without_underflow ... ok
+test needs::tests::pressure_is_bounded_and_critical_threshold_is_documented ... ok
+test needs::tests::serde_round_trips_and_rejects_out_of_range ... ok
+test trace::tests::factor_id_is_exactly_the_five_phase_1_factors_in_order ... ok
+test action::tests::candidate_set_is_deduplicated_and_bounded ... ok
+test action::tests::move_picks_nearest_reachable_not_just_nearest ... ok
+test action::tests::enumeration_follows_action_kind_declaration_order ... ok
+test action::tests::absent_site_kind_yields_no_candidates_of_its_actions ... ok
+test action::tests::closed_loop_gates_and_presence_hold ... ok
+test action::tests::per_kind_candidates_are_distance_then_coord_ordered ... ok
+test trace::tests::trace_types_serde_round_trip ... ok
+test trace::validation_tests::fragments_allow_arbitrary_keys_but_not_duplicates ... ok
+test trace::validation_tests::selected_trace_requires_complete_identity_and_tie_reason ... ok
+test action::tests::unreachable_sites_are_skipped_and_idle_remains ... ok
+test trace::tests::site_available_distinguishes_unknown_unreachable_and_baseline ... ok
+test trace::tests::factor_inputs_record_the_documented_semantics ... ok
+test trace::tests::factor_inputs_are_uniform_and_in_declaration_order_for_every_kind ... ok
+test trace::tests::trace_is_deterministic_and_byte_identical ... ok
+test trace::tests::trace_for_leaves_every_scoring_field_unset ... ok
+test trace::tests::trace_ordering_is_stable_without_hash_iteration ... ok
+test utility::tests::default_weights_achievable_range_is_as_documented ... ok
+test utility::tests::default_weights_match_the_documented_phase_1_table ... ok
+test action::tests::enumeration_is_deterministic_and_byte_identical ... ok
+test utility::tests::all_scores_cover_every_candidate_in_order_and_select_the_maximum ... ok
+test trace::tests::traces_are_integer_only ... ok
+test utility::tests::base_term_matches_the_documented_arithmetic ... ok
+test utility::tests::malformed_perturbation_wire_is_rejected ... ok
+test utility::tests::native_and_wire_epsilon_boundaries_agree ... ok
+test utility::tests::empty_candidate_set_returns_the_documented_error ... ok
+test utility::tests::closed_loop_selects_the_documented_phase_1_actions ... ok
+test utility::tests::extreme_weights_saturate_instead_of_wrapping ... ok
+test utility::tests::decoded_inputs_preserve_selection_for_zero_and_seeded_modes ... ok
+test utility::tests::one_second_advance_still_selects_work ... ok
+test utility::tests::perturbation_spec_validates_the_range ... ok
+test utility::tests::scoring_and_selection_are_integer_only ... ok
+test utility::tests::low_need_margin_exceeds_every_allowed_pairwise_perturbation ... ok
+test utility::tests::reachable_distance_and_no_site_idle_are_scored ... ok
+test utility::tests::selection_keys_are_a_set_not_vector_positions ... ok
+test utility::tests::utility_score_is_a_bounded_i64_newtype ... ok
+test utility::tests::high_need_axes_and_equal_ties_are_stable ... ok
+test utility::tests::selection_wire_rejects_ambiguous_or_conflicting_copies ... ok
+test utility::tests::selection_is_byte_identical_across_repeated_runs ... ok
+test utility::tests::utility_types_serde_round_trip ... ok
+test utility::tests::zero_perturbation_mode_ignores_the_seed ... ok
+test utility::tests::ties_break_by_stable_order_and_strict_maxima_are_unique ... ok
+test utility::tests::both_low_needs_and_raw_values_select_work ... ok
+test utility::tests::nonzero_perturbation_is_bounded_deterministic_and_seed_dependent ... ok
+test utility::tests::approved_need_work_threshold_sweep_and_ties ... ok
+test utility::tests::fatigue_work_threshold_sweep_and_ties ... ok
+
+test result: ok. 60 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.11s
+
+     Running unittests examples/needs_bench.rs (target/debug/examples/needs_bench-f5e04124a733c539)
+
+running 3 tests
+test tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test tests::memory_adapter_observes_twice_and_matches_golden ... ok
+test tests::memory_adapter_matches_1000_golden ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running unittests examples/utility_ai_bench.rs (target/debug/examples/utility_ai_bench-cca62165e47ef0ed)
+
+running 2 tests
+test tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test tests::memory_adapter_observes_twice_and_matches_golden ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+
+     Running unittests examples/utility_score_bench.rs (target/debug/examples/utility_score_bench-a3a90d5303702712)
+
+running 2 tests
+test tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test tests::memory_adapter_observes_twice_and_matches_golden ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 34.76s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_core-4d31d4df3075fbb2)
+
+running 41 tests
+test actions::tests::config_rejects_nonpositive_durations ... ok
+test actions::tests::critical_boundary_fires_and_rechecks_with_positive_delay ... ok
+test actions::tests::eat_completion_relieves_hunger_after_growth ... ok
+test actions::tests::blocked_arrival_recovers_to_idle_and_retries_after_delay ... ok
+test actions::tests::exhausted_event_id_rejects_cancel_without_mutation ... ok
+test actions::tests::blocked_and_unreachable_starts_change_nothing ... ok
+test actions::tests::failed_work_completion_recovers_to_idle ... ok
+test actions::tests::idle_wait_blocks_overlap_and_completes_without_event ... ok
+test actions::tests::decide_and_start_uses_the_live_reference_context ... ok
+test actions::tests::metrics_bound_two_live_tokens_per_person ... ok
+test actions::tests::driver_interrupts_only_when_another_action_wins ... ok
+test actions::tests::interrupt_commits_one_transition_and_cancels_live_tokens ... ok
+test actions::tests::move_action_steps_one_cell_per_second_and_completes ... ok
+test actions::tests::old_tokens_cannot_execute_twice_after_restart ... ok
+test actions::tests::overlap_is_rejected_and_leaves_state_unchanged ... ok
+test kernel::tests::config_rejects_zero_budget_and_zero_capacity ... ok
+test actions::tests::unknown_person_and_repeated_cancel_are_typed_errors ... ok
+test actions::tests::sleep_completion_relieves_fatigue_after_growth ... ok
+test actions::tests::zero_distance_action_still_occupies_one_second ... ok
+test actions::tests::work_lifecycle_counts_completion_and_materializes_needs ... ok
+test person::tests::allocator_exhaustion_is_an_explicit_error ... ok
+test person::tests::fresh_spawn_has_the_supplied_location ... ok
+test person::tests::identical_sequences_produce_identical_visible_state ... ok
+test actions::tests::identical_runs_produce_byte_identical_transition_logs ... ok
+test person::tests::invalid_locations_are_unrepresentable ... ok
+test person::tests::needs_update_round_trips_through_stable_identity ... ok
+test person::tests::only_stable_identity_and_location_are_serializable ... ok
+test person::tests::set_location_is_explicit_and_unknown_ids_change_nothing ... ok
+test person::tests::spawn_attaches_fully_satisfied_needs ... ok
+test person::tests::spawn_pairs_unique_stable_ids_with_distinct_handles ... ok
+test spike_workload::tests::invalid_time_is_rejected ... ok
+test tests::workspace_test_harness_runs ... ok
+test kernel::tests::partial_person_completion_before_a_real_error_never_publishes_history ... ok
+test kernel::tests::zero_budget_advance_is_rejected ... ok
+test actions::tests::one_long_advance_equals_per_instant_stepping ... ok
+test kernel::tests::a_fault_blocks_dynamic_reads_advance_and_preserves_complete_totals ... ok
+test kernel::tests::forward_advance_before_start_is_not_started ... ok
+test kernel::tests::start_world_twice_and_post_start_spawn_are_rejected ... ok
+test actions::tests::run_until_drives_the_closed_loop ... ok
+test spike_workload::tests::deterministic_fixture_finishes_and_drains_queue ... ok
+test actions::tests::event_buffer_is_bounded_with_visible_rotation ... ok
+
+test result: ok. 41 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s
+
+     Running tests/action_closed_loop.rs (target/debug/deps/action_closed_loop-bf07d04e1f5273c7)
+
+running 5 tests
+test cancel_is_the_only_external_abort_and_it_is_clean ... ok
+test driver_interrupts_work_when_a_critical_need_wins ... ok
+test unreachable_world_degrades_to_idle_waits ... ok
+test closed_loop_two_days_crosses_all_thresholds_and_returns_to_work ... ok
+test closed_loop_is_deterministic_across_repeated_runs ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/action_repair_v2.rs (target/debug/deps/action_repair_v2-500a1fdd4c71c19d)
+
+running 6 tests
+test upper_bound_start_rejects_before_any_boundary_mutation ... ok
+test start_before_epoch_does_not_create_a_runtime_entry ... ok
+test cancel_rejects_a_time_watermark_overflow_without_side_effects ... ok
+test arrival_also_advances_the_commit_watermark_without_growing_needs_twice ... ok
+test movement_step_records_a_commit_watermark ... ok
+test rejected_earlier_start_leaves_pending_retry_to_fire_once ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/benchmark_protocol_v2.rs (target/debug/deps/benchmark_protocol_v2-619223e9f2270ec7)
+
+running 6 tests
+test protocol::tests::upper_median_even ... ok
+test protocol::tests::preserves_submicro_units ... ok
+test upper_median_and_submicro_precision_are_preserved ... ok
+test per_tool_flags_cannot_be_silently_ignored ... ok
+test strict_flags_reject_unknown_duplicate_missing_and_zero_samples ... ok
+test protocol::tests::rejects_bad_protocol ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/kernel.rs (target/debug/deps/kernel-1151ed454b0fb01e)
+
+running 9 tests
+test empty_world_advances_to_the_target_directly ... ok
+test clock_regression_is_rejected_without_mutation ... ok
+test equal_target_advance_is_a_noop_after_committing ... ok
+test after_reaching_a_target_no_due_work_remains_at_or_before_it ... ok
+test cadence_jumps_due_instants_and_never_accesses_every_second ... ok
+test decisions_and_events_are_accounted_and_bounded ... ok
+test budget_exhaustion_yields_and_is_resumable_to_the_same_truth ... ok
+test repeated_runs_are_deterministic ... ok
+test all_persons_are_addressable_by_stable_entity_id ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.47s
+
+     Running tests/kernel_repair.rs (target/debug/deps/kernel_repair-3d1874a83315bd03)
+
+running 17 tests
+test kfix_001_rejected_start_does_not_cancel_a_pending_retry ... ok
+test kfix_003_non_empty_setup_forward_advance_is_rejected ... ok
+test kfix_003_read_api_returns_result_shapes ... ok
+test kfix_001_cancel_backwards_keeps_idle_and_token ... ok
+test kfix_003_zero_budget_is_rejected ... ok
+test kfix_002_shared_driver_completes_work_once_and_starts_sleep_without_interrupt ... ok
+test kfix_001_blocked_start_at_nonzero_leaves_needs_and_state_unchanged ... ok
+test kfix_001_unknown_and_duplicate_rejections_leave_state_unchanged ... ok
+test kfix_004_kernel_person_view_projects_needs_to_now ... ok
+test kfix_002_kernel_advances_past_a_work_completion_and_critical_check_same_instant ... ok
+test kfix_006_snapshot_includes_real_sites_and_projected_needs ... ok
+test kfix_006_repeated_build_is_immutable_and_empty_world_is_valid ... ok
+test kfix_006_action_state_target_correlation_is_enforced ... ok
+test kfix_006_site_duplicate_and_unwalkable_are_rejected ... ok
+test kfix_006_schema_one_and_bad_dimensions_are_rejected ... ok
+test kfix_005_event_digest_is_segmentation_invariant ... ok
+test kfix_005_4097_events_count_total_retained_and_rotated_exactly ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.25s
+
+     Running tests/kernel_repair_v2.rs (target/debug/deps/kernel_repair_v2-0de130af502cf53a)
+
+running 4 tests
+test real_fault_preserves_complete_metrics_and_blocks_live_reads ... ok
+test health_complete_marker_tracks_targets_even_without_due_work ... ok
+test digest_matches_independent_oracle_and_is_not_a_retained_buffer_hash ... ok
+test generation_counts_include_upstream_rotation_at_all_capacity_edges ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.70s
+
+     Running tests/render.rs (target/debug/deps/render-2782cb58a3f6bd9e)
+
+running 7 tests
+test snapshot_batches_the_full_local_tile_grid ... ok
+test snapshot_exposes_the_documented_schema_version ... ok
+test snapshot_never_invents_unmeasured_metrics ... ok
+test snapshot_validates_schema_and_wire_invariants ... ok
+test snapshot_is_immutable_and_headless_boundary_safe ... ok
+test malformed_wire_duplicate_or_zero_id_is_rejected ... ok
+test person_batch_carries_stable_identity_and_current_action ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+     Running tests/render_repair_v2.rs (target/debug/deps/render_repair_v2-94ca7190f965ae54)
+
+running 3 tests
+test root_decode_rejects_the_same_invalid_person_wire ... ok
+test person_render_validates_action_state_target_independently ... ok
+test terrain_batch_validates_dimensions_before_cell_count ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running unittests examples/action_execution_bench.rs (target/debug/examples/action_execution_bench-47a526151b8c6a39)
+
+running 6 tests
+test protocol::tests::preserves_submicro_units ... ok
+test protocol::tests::upper_median_even ... ok
+test tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test protocol::tests::rejects_bad_protocol ... ok
+test tests::memory_adapter_observes_twice_and_matches_golden ... ok
+test tests::memory_adapter_matches_1000_golden ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.50s
+
+     Running unittests examples/kernel_bench.rs (target/debug/examples/kernel_bench-46458360d3cc76de)
+
+running 5 tests
+test protocol::tests::preserves_submicro_units ... ok
+test protocol::tests::upper_median_even ... ok
+test tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test protocol::tests::rejects_bad_protocol ... ok
+test tests::colocated_fixture_reaches_target_and_accumulates_rounds ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running unittests examples/person_spawn_bench.rs (target/debug/examples/person_spawn_bench-4abfadfe0405ba72)
+
+running 3 tests
+test tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test tests::memory_adapter_observes_twice_and_matches_golden ... ok
+test tests::memory_adapter_matches_1000_golden ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/render_snapshot_bench.rs (target/debug/examples/render_snapshot_bench-48f13c93f3d02d05)
+
+running 8 tests
+test protocol::tests::upper_median_even ... ok
+test protocol::tests::preserves_submicro_units ... ok
+test protocol::tests::rejects_bad_protocol ... ok
+test tests::memory_adapter_rejects_invalid_selector - should panic ... ok
+test tests::zero_people_have_null_ratio_and_exact_section_accounting ... ok
+test tests::memory_adapter_control_observes_twice ... ok
+test tests::memory_adapter_snapshot_observes_twice ... ok
+test tests::snapshot_and_readonly_control_have_identical_underlying_truth ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.86s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_entity-da9f3179cf95f24f)
+
+running 9 tests
+test tests::allocator_can_advance_beyond_restored_entities ... ok
+test tests::allocator_exhaustion_is_explicit ... ok
+test tests::entity_id_is_exactly_one_u64 ... ok
+test tests::runtime_handles_are_not_the_persistence_contract ... ok
+test tests::allocator_state_round_trip_prevents_reuse ... ok
+test tests::text_round_trip_preserves_numeric_identity ... ok
+test tests::serde_uses_a_plain_non_zero_number ... ok
+test tests::zero_is_always_rejected ... ok
+test tests::allocator_is_monotonic_and_unique ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_events-3bbfb3f896e665bb)
+
+running 3 tests
+test tests::identifiers_scores_and_references_are_validated ... ok
+test tests::deserialization_rejects_duplicate_references ... ok
+test tests::representative_event_round_trips ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_scheduler-ea498e077c98600f)
+
+running 10 tests
+test tests::cancellation_removes_work_and_is_idempotent ... ok
+test tests::capacity_preflight_reports_exhaustion_without_mutation ... ok
+test tests::canceled_or_popped_tokens_cannot_be_rescheduled ... ok
+test tests::caller_controls_reentrant_scheduling ... ok
+test tests::rescheduling_changes_due_time_and_equal_time_order ... ok
+test tests::empty_queue_has_no_due_work ... ok
+test tests::work_is_ordered_by_due_time_then_fifo ... ok
+test tests::capacity_preflight_covers_zero_one_and_two_requests ... ok
+test tests::stale_nodes_are_compactable_and_metrics_are_exact ... ok
+test tests::large_queue_preserves_all_work_without_entity_scans ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running unittests examples/scheduler_bench.rs (target/debug/examples/scheduler_bench-af2ca9f3ce072aa9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_storage-a5afddd2723afd23)
+
+running 4 tests
+test snapshot::tests::corruption_and_dangling_work_are_rejected ... ok
+test snapshot::tests::compressed_round_trip_excludes_runtime_handles ... ok
+test tests::batch_round_trip_and_duplicate_rollback ... ok
+test tests::file_store_survives_checkpoint_and_reopen ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests examples/event_store_bench.rs (target/debug/examples/event_store_bench-3b1813f9cb59a101)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/snapshot_bench.rs (target/debug/examples/snapshot_bench-b4d6080f42cbda72)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_time-a58f26ef863dbe05)
+
+running 9 tests
+test tests::time_reversal_is_explicitly_rejected ... ok
+test tests::advancing_to_the_same_instant_is_allowed ... ok
+test tests::overflow_is_explicit_and_does_not_mutate_clock ... ok
+test tests::duration_since_handles_order_and_boundaries ... ok
+test tests::negative_duration_is_rejected ... ok
+test tests::clock_advances_monotonically ... ok
+test tests::duration_deserialization_rejects_negative_values ... ok
+test tests::instant_serde_is_a_signed_integer ... ok
+test tests::clock_serde_round_trip_preserves_current_time ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/palimpsest_sim_world-f06156424b1f69c4)
+
+running 58 tests
+test coord::tests::in_bounds_agrees_with_constructor ... ok
+test grid::tests::constants_fix_the_128_square ... ok
+test coord::tests::no_tile_is_an_option_not_a_sentinel ... ok
+test coord::tests::hash_is_consistent_with_equality ... ok
+test coord::tests::ordering_is_row_major ... ok
+test coord::tests::new_accepts_corners_and_rejects_out_of_bounds ... ok
+test grid::tests::from_cells_validates_exact_length ... ok
+test coord::tests::serde_round_trips_and_rejects_out_of_bounds ... ok
+test grid::tests::serde_rejects_wrong_cell_count ... ok
+test grid::tests::filled_grid_has_exact_cell_count ... ok
+test grid::tests::accessors_are_boundary_safe_and_never_panic ... ok
+test grid::tests::contains_covers_corners_and_outside ... ok
+test pathfinding::tests::fully_impassable_grid_terminates_without_panic ... ok
+test pathfinding::tests::default_config_is_complete_on_the_open_grid ... ok
+test pathfinding::tests::equal_f_ties_follow_the_documented_break_order ... ok
+test pathfinding::tests::non_walkable_endpoints_are_documented_errors ... ok
+test pathfinding::tests::out_of_bounds_endpoints_are_documented_errors ... ok
+test coord::tests::index_is_row_major_and_invertible ... ok
+test pathfinding::tests::found_path_on_open_grid_is_valid_and_optimal ... ok
+test pathfinding::tests::node_budget_limits_expansions_exactly ... ok
+test pathfinding::tests::path_detours_around_wall_at_minimum_cost ... ok
+test pathfinding::tests::start_equals_goal_returns_the_trivial_path ... ok
+test pathfinding::tests::zero_path_cap_admits_no_path ... ok
+test pathfinding::tests::path_length_cap_bounds_the_result ... ok
+test grid::tests::world_grid_wraps_the_single_local_grid ... ok
+test grid::tests::serde_round_trip_preserves_cells_and_checksum ... ok
+test site::tests::construction_enforces_walkability_and_the_work_invariant ... ok
+test site::tests::collection_rejects_duplicate_coordinates ... ok
+test site::tests::find_nearest_prefers_closer_and_breaks_ties_row_major ... ok
+test site::tests::record_work_saturates_at_the_documented_max ... ok
+test site::tests::site_kind_serde_round_trips_and_rejects_unknown ... ok
+test site::tests::place_defaults_covers_each_kind_on_walkable_ground ... ok
+test site::tests::find_nearest_is_repeatably_deterministic ... ok
+test site::tests::work_counter_advances_exactly_and_saturates_at_max ... ok
+test site::tests::work_counter_serde_round_trips_and_rejects_out_of_range ... ok
+test terrain::tests::exactly_three_variants_with_fixed_walkability ... ok
+test terrain::tests::serde_rejects_unknown_variants ... ok
+test terrain::tests::serde_round_trip_per_variant ... ok
+test worldgen::tests::config_validation_rejects_unsupported_inputs ... ok
+test site::tests::collection_serde_round_trips_with_work_counts ... ok
+test site::tests::record_work_is_checked_and_updates_by_coordinate ... ok
+test pathfinding::tests::repeated_calls_are_bit_identical ... ok
+test site::tests::sites_of_filters_and_iterates_row_major ... ok
+test grid::tests::iteration_is_deterministic_row_major ... ok
+test worldgen::tests::generated_map_has_exact_grid_shape ... ok
+test pathfinding::tests::generated_map_query_is_deterministic_and_valid ... ok
+test site::tests::site_serde_round_trips_and_rejects_kind_counter_mismatch ... ok
+test pathfinding::tests::walled_goal_is_unreachable_even_with_unlimited_budgets ... ok
+test worldgen::tests::provenance_travels_with_the_map ... ok
+test worldgen::tests::custom_spawn_size_is_honored ... ok
+test worldgen::tests::golden_seeds_lock_the_generator ... ok
+test worldgen::tests::different_seeds_diverge ... ok
+test worldgen::tests::walkability_matches_terrain_kind_everywhere ... ok
+test site::tests::place_defaults_is_deterministic ... ok
+test worldgen::tests::serde_round_trips ... ok
+test worldgen::tests::zero_seed_is_valid_and_reproducible ... ok
+test worldgen::tests::same_seed_is_cell_and_byte_identical ... ok
+test worldgen::tests::spawn_clearing_and_impassable_feature_are_guaranteed ... ok
+
+test result: ok. 58 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running unittests examples/grid_bench.rs (target/debug/examples/grid_bench-6c2aec42dffd3374)
+
+running 2 tests
+test adapter_tests::memory_adapter_rejects_unknown_case - should panic ... ok
+test adapter_tests::memory_adapter_observes_twice_and_returns_checksum ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/pathfinding_bench.rs (target/debug/examples/pathfinding_bench-a0ddc8f9eb494546)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/site_bench.rs (target/debug/examples/site_bench-7fc6f74176aad979)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples/worldgen_bench.rs (target/debug/examples/worldgen_bench-ea708da0ba8b502e)
+
+running 2 tests
+test adapter_tests::memory_adapter_rejects_unknown_case - should panic ... ok
+test adapter_tests::memory_adapter_observes_twice_and_returns_golden_hash ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Checking palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+    Checking palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+    Checking palimpsest-bench-memory v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/tools/bench-memory)
+    Checking palimpsest-godot-bridge v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/godot-bridge)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.44s
+   Compiling palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+   Compiling palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+    Finished `release` profile [optimized] target(s) in 2.20s
+     Running `target/release/palimpsest-headless-runner --entities 1000 --seconds 100`
+    Finished `release` profile [optimized] target(s) in 0.03s
+     Running `target/release/examples/scheduler_bench 10000 2`
+   Compiling palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+    Finished `release` profile [optimized] target(s) in 1.80s
+     Running `target/release/bench_10k_entities 10000 10`
+   Compiling palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+    Finished `release` profile [optimized] target(s) in 1.59s
+     Running `target/release/bench_event_throughput 10000 2`
+   Compiling palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+    Finished `release` profile [optimized] target(s) in 1.64s
+     Running `target/release/bench_mode_workload 1000 100 2`
+    Finished `release` profile [optimized] target(s) in 0.04s
+     Running `target/release/examples/event_store_bench 10000 1000`
+    Finished `release` profile [optimized] target(s) in 0.02s
+     Running `target/release/examples/snapshot_bench 1000 2`

@@ -1,0 +1,28 @@
+{
+  "code_source": "2d050b82138d92a6c2caf657f086123ab2d14441",
+  "commands": [
+    "bash tools/ci-rust.sh",
+    "bash tools/ci-godot.sh"
+  ],
+  "result": "passed",
+  "test_executions_debug_release_doctests": 814,
+  "test_target_summaries": 111,
+  "failed": 0,
+  "ignored": 0,
+  "logs": {
+    "rust": {
+      "artifact": "chron-035-036-local-rust.txt",
+      "sha256": "65e288ca07a7fa3a80a6be8b7f7486f60f5be9bec0ece7b51c8bc1ad738017dc"
+    },
+    "godot": {
+      "artifact": "chron-035-036-local-godot.txt",
+      "sha256": "902e2bd16c3f478c8b3ce948142520f10b7ead78c12a24d1637e2e8730ebf025"
+    }
+  },
+  "historical_report_sha256": {
+    "MASTER_SPEC.md": "a6fa0654582eca360b3fc8be6d7989200d310707677f841e58130c301b2de5ea",
+    "docs/reports/ARCHITECTURE_SPIKE_V1.md": "fba1a570501cf094fa8efe2458c01c8e6bfeffbb4dc3735fe2d941d059fce414",
+    "docs/reports/CHRON-008_10K_DUMMY_BENCHMARK.md": "fbf45ad40d648e0e91864e2486fd2660e55f0394be09fbf78abbf887197543fe",
+    "docs/reports/CHRON-017_HEADLESS_RENDERED.md": "9106d310ca7a2ad0b9a89219ac73a1b4b9e6feb3aed7252b5e4a805b757ffeea"
+  }
+}

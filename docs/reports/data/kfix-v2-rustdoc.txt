@@ -1,0 +1,8 @@
+    Checking palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+ Documenting palimpsest-sim-core v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/sim-core)
+    Checking palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+ Documenting palimpsest-headless-runner v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/apps/headless-runner)
+ Documenting palimpsest-bench-memory v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/tools/bench-memory)
+ Documenting palimpsest-godot-bridge v0.0.0 (/Users/gabrielmu/Documents/Palimpsest/crates/godot-bridge)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.55s
+   Generated /Users/gabrielmu/Documents/Palimpsest/target/doc/palimpsest_bench_memory/index.html and 13 other files
